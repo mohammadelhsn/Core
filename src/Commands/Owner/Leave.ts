@@ -4,7 +4,23 @@ import { Message } from 'discord.js';
 
 export default class TesstCommand extends BaseCommand {
 	constructor() {
-		super('leave', 'owner', []);
+		super(
+			'leave',
+			'owner',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			true,
+			false,
+			3000,
+			'WIP'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {}
 }

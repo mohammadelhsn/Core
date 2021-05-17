@@ -87,6 +87,6 @@ export default abstract class BaseCommand {
 	abstract run(
 		client: DiscordClient,
 		message: Message,
-		args: Array<string> | null
-	);
+		args: string[] | null
+	): Promise<any>;
 }
