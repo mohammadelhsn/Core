@@ -15,8 +15,6 @@ export default class TesstCommand extends BaseCommand {
 
 		const index = client.guilds.cache.get(guild);
 
-		console.log(await index.channels.cache.first().createInvite());
-
-		//index.leave();
+		return await index.leave();
 	}
 }
