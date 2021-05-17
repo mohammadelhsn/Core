@@ -15,8 +15,6 @@ export default class ReadyEvent extends BaseEvent {
 			status: 'dnd',
 		});
 
-		console.log(client.guilds.cache);
-
 		for (const g of client.guilds.cache) {
 			const self = this;
 			const guildId = g[1].id;
