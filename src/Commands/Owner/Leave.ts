@@ -9,9 +9,13 @@ export default class TesstCommand extends BaseCommand {
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const guild = args[0];
 
+		if (!guild) {
+			return message.channel.send("You're forgetting the argument!!");
+		}
+
 		const index = client.guilds.cache.get(guild);
 
-		console.log(index.channels.cache.first().createInvite());
+		console.log(await index.channels.cache.first().createInvite());
 
 		//index.leave();
 	}
