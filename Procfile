@@ -1,1 +1,1 @@
-worker: npm run start
+worker: nodemon ./src/index.ts
