@@ -10,7 +10,6 @@ export default class GuildDeleteEvent extends BaseEvent {
 		const con = await this.con.connect();
 
 		try {
-		} catch (error) {
 			await con.query(`BEGIN`);
 			await con.query(
 				`DELETE FROM GuildConfigurable WHERE guildId = '${guild.id}'`
@@ -24,6 +23,8 @@ export default class GuildDeleteEvent extends BaseEvent {
 			await con.query(`DELETE FROM guildstats WHERE guildId '${guild.id}'`);
 			await con.query(`COMMIT`);
 			console.log('Guild removed!');
+		} catch (error) {
+			console.log(error);
 		} finally {
 			con.release();
 		}
