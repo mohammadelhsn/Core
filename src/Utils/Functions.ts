@@ -106,7 +106,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT lang FROM GuildConfigurable WHERE guildId = '${guild.id}'`
+							`SELECT lang FROM GuildConfigurable WHERE guildId = '${id}'`
 						);
 						const lang: string = await res.rows[0].lang;
 
@@ -116,7 +116,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT lang FROM GuildConfigurable WHERE guildId = '${guild.id}'`
+						`SELECT lang FROM GuildConfigurable WHERE guildId = '${id}'`
 					);
 					const lang: string = await res.rows[0].lang;
 					if (cache == true) {
@@ -273,7 +273,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT memberlog FROM GuildLogging WHERE guildId = '${guild.id}'`
+							`SELECT memberlog FROM GuildLogging WHERE guildId = '${id}'`
 						);
 						const memberlog: string = await res.rows[0].memberlog;
 
@@ -283,7 +283,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT memberlog FROM GuildLogging WHERE guildId = '${guild.id}'`
+						`SELECT memberlog FROM GuildLogging WHERE guildId = '${id}'`
 					);
 					const memberlog: string = await res.rows[0].memberlog;
 					if (cache == true) {
@@ -313,7 +313,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT modlog FROM GuildLogging WHERE guildId = '${guild.id}'`
+							`SELECT modlog FROM GuildLogging WHERE guildId = '${id}'`
 						);
 						const modlog: string = await res.rows[0].modlog;
 
@@ -323,7 +323,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT modlog FROM GuildLogging WHERE guildId = '${guild.id}'`
+						`SELECT modlog FROM GuildLogging WHERE guildId = '${id}'`
 					);
 					const modlog: string = await res.rows[0].modlog;
 					if (cache == true) {
@@ -353,7 +353,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT rolelog FROM GuildLogging WHERE guildId = '${guild.id}'`
+							`SELECT rolelog FROM GuildLogging WHERE guildId = '${id}'`
 						);
 						const rolelog: string = await res.rows[0].rolelog;
 
@@ -363,7 +363,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT rolelog FROM GuildLogging WHERE guildId = '${guild.id}'`
+						`SELECT rolelog FROM GuildLogging WHERE guildId = '${id}'`
 					);
 					const rolelog: string = await res.rows[0].rolelog;
 					if (cache == true) {
@@ -393,7 +393,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT appeals FROM GuildLogging WHERE guildId = '${guild.id}'`
+							`SELECT appeals FROM GuildLogging WHERE guildId = '${id}'`
 						);
 						const appeals: string = await res.rows[0].appeals;
 
@@ -403,7 +403,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT appeals FROM GuildLogging WHERE guildId = '${guild.id}'`
+						`SELECT appeals FROM GuildLogging WHERE guildId = '${id}'`
 					);
 					const appeals: string = await res.rows[0].appeals;
 					if (cache == true) {
@@ -433,7 +433,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT reports FROM GuildLogging WHERE guildId = '${guild.id}'`
+							`SELECT reports FROM GuildLogging WHERE guildId = '${id}'`
 						);
 						const reports: string = await res.rows[0].reports;
 
@@ -443,7 +443,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT reports FROM GuildLogging WHERE guildId = '${guild.id}'`
+						`SELECT reports FROM GuildLogging WHERE guildId = '${id}'`
 					);
 					const reports: string = await res.rows[0].reports;
 					if (cache == true) {
@@ -473,7 +473,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT actionlog FROM GuildLogging WHERE guildId = '${guild.id}'`
+							`SELECT actionlog FROM GuildLogging WHERE guildId = '${id}'`
 						);
 						const actionlog: string = await res.rows[0].actionlog;
 
@@ -483,7 +483,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT actionlog FROM GuildLogging WHERE guildId = '${guild.id}'`
+						`SELECT actionlog FROM GuildLogging WHERE guildId = '${id}'`
 					);
 					const actionlog: string = await res.rows[0].actionlog;
 					if (cache == true) {
@@ -513,7 +513,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT suggestions FROM GuildLogging WHERE guildId = '${guild.id}'`
+							`SELECT suggestions FROM GuildLogging WHERE guildId = '${id}'`
 						);
 						const suggestions: string = await res.rows[0].suggestions;
 
@@ -523,7 +523,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT suggestions FROM GuildLogging WHERE guildId = '${guild.id}'`
+						`SELECT suggestions FROM GuildLogging WHERE guildId = '${id}'`
 					);
 					const suggestions: string = await res.rows[0].suggestions;
 					if (cache == true) {
@@ -553,7 +553,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT messagelog FROM GuildLogging WHERE guildId = '${guild.id}'`
+							`SELECT messagelog FROM GuildLogging WHERE guildId = '${id}'`
 						);
 						const messagelog: string = await res.rows[0].messagelog;
 
@@ -563,7 +563,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT messagelog FROM GuildLogging WHERE guildId = '${guild.id}'`
+						`SELECT messagelog FROM GuildLogging WHERE guildId = '${id}'`
 					);
 					const messagelog: string = await res.rows[0].messagelog;
 					if (cache == true) {
@@ -593,7 +593,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT serverlog FROM GuildLogging WHERE guildId = '${guild.id}'`
+							`SELECT serverlog FROM GuildLogging WHERE guildId = '${id}'`
 						);
 						const serverlog: string = await res.rows[0].serverlog;
 
@@ -603,7 +603,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT serverlog FROM GuildLogging WHERE guildId = '${guild.id}'`
+						`SELECT serverlog FROM GuildLogging WHERE guildId = '${id}'`
 					);
 					const serverlog: string = await res.rows[0].serverlog;
 					if (cache == true) {
@@ -633,7 +633,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT invitelog FROM GuildLogging WHERE guildId = '${guild.id}'`
+							`SELECT invitelog FROM GuildLogging WHERE guildId = '${id}'`
 						);
 						const invitelog: string = await res.rows[0].invitelog;
 
@@ -643,7 +643,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT invitelog FROM GuildLogging WHERE guildId = '${guild.id}'`
+						`SELECT invitelog FROM GuildLogging WHERE guildId = '${id}'`
 					);
 					const invitelog: string = await res.rows[0].invitelog;
 					if (cache == true) {
@@ -673,7 +673,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT channellog FROM GuildLogging WHERE guildId = '${guild.id}'`
+							`SELECT channellog FROM GuildLogging WHERE guildId = '${id}'`
 						);
 						const channellog: string = await res.rows[0].channellog;
 
@@ -683,7 +683,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT channellog FROM GuildLogging WHERE guildId = '${guild.id}'`
+						`SELECT channellog FROM GuildLogging WHERE guildId = '${id}'`
 					);
 					const channellog: string = await res.rows[0].channellog;
 					if (cache == true) {
@@ -713,7 +713,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT emojilog FROM GuildLogging WHERE guildId = '${guild.id}'`
+							`SELECT emojilog FROM GuildLogging WHERE guildId = '${id}'`
 						);
 						const emojilog: string = await res.rows[0].emojilog;
 
@@ -723,7 +723,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT emojilog FROM GuildLogging WHERE guildId = '${guild.id}'`
+						`SELECT emojilog FROM GuildLogging WHERE guildId = '${id}'`
 					);
 					const emojilog: string = await res.rows[0].emojilog;
 					if (cache == true) {
@@ -753,7 +753,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT publicmodlog FROM GuildLogging WHERE guildId = '${guild.id}'`
+							`SELECT publicmodlog FROM GuildLogging WHERE guildId = '${id}'`
 						);
 						const publicmodlog: string = await res.rows[0].publicmodlog;
 
@@ -763,7 +763,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT publicmodlog FROM GuildLogging WHERE guildId = '${guild.id}'`
+						`SELECT publicmodlog FROM GuildLogging WHERE guildId = '${id}'`
 					);
 					const publicmodlog: string = await res.rows[0].publicmodlog;
 					if (cache == true) {
@@ -809,7 +809,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT prefix FROM GuildConfigurable WHERE guildId = '${guild.id}'`
+							`SELECT prefix FROM GuildConfigurable WHERE guildId = '${id}'`
 						);
 						const prefix: string = await res.rows[0].prefix;
 
@@ -819,7 +819,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT prefix FROM GuildConfigurable WHERE guildId = '${guild.id}'`
+						`SELECT prefix FROM GuildConfigurable WHERE guildId = '${id}'`
 					);
 					const prefix: string = await res.rows[0].prefix;
 					if (cache == true) {
@@ -849,7 +849,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT adminrole FROM serverroles WHERE guildId = '${guild.id}'`
+							`SELECT adminrole FROM serverroles WHERE guildId = '${id}'`
 						);
 						const adminrole: string = await res.rows[0].adminrole;
 
@@ -859,7 +859,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT adminrole FROM serverroles WHERE guildId = '${guild.id}'`
+						`SELECT adminrole FROM serverroles WHERE guildId = '${id}'`
 					);
 					const adminrole: string = await res.rows[0].adminrole;
 					if (cache == true) {
@@ -889,7 +889,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT modrole FROM serverroles WHERE guildId = '${guild.id}'`
+							`SELECT modrole FROM serverroles WHERE guildId = '${id}'`
 						);
 						const modrole: string = await res.rows[0].modrole;
 
@@ -899,7 +899,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT modrole FROM serverroles WHERE guildId = '${guild.id}'`
+						`SELECT modrole FROM serverroles WHERE guildId = '${id}'`
 					);
 					const modrole: string = await res.rows[0].modrole;
 					if (cache == true) {
@@ -929,7 +929,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT warningrole FROM serverroles WHERE guildId = '${guild.id}'`
+							`SELECT warningrole FROM serverroles WHERE guildId = '${id}'`
 						);
 						const warningrole: string = await res.rows[0].warningrole;
 
@@ -939,7 +939,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT warningrole FROM serverroles WHERE guildId = '${guild.id}'`
+						`SELECT warningrole FROM serverroles WHERE guildId = '${id}'`
 					);
 					const warningrole: string = await res.rows[0].warningrole;
 					if (cache == true) {
@@ -969,7 +969,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT muterole FROM serverroles WHERE guildId = '${guild.id}'`
+							`SELECT muterole FROM serverroles WHERE guildId = '${id}'`
 						);
 						const muterole: string = await res.rows[0].muterole;
 
@@ -979,7 +979,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT muterole FROM serverroles WHERE guildId = '${guild.id}'`
+						`SELECT muterole FROM serverroles WHERE guildId = '${id}'`
 					);
 					const muterole: string = await res.rows[0].muterole;
 					if (cache == true) {
@@ -1009,7 +1009,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT * FROM welcomesystem WHERE guildId = '${guild.id}'`
+							`SELECT * FROM welcomesystem WHERE guildId = '${id}'`
 						);
 
 						const index = res.rows[0];
@@ -1027,7 +1027,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT * FROM welcomesystem WHERE guildId = '${guild.id}'`
+						`SELECT * FROM welcomesystem WHERE guildId = '${id}'`
 					);
 
 					const index = res.rows[0];
@@ -1065,7 +1065,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT * FROM leavesystem WHERE guildId = '${guild.id}'`
+							`SELECT * FROM leavesystem WHERE guildId = '${id}'`
 						);
 
 						const index = res.rows[0];
@@ -1083,7 +1083,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT * FROM welcomesystem WHERE guildId = '${guild.id}'`
+						`SELECT * FROM welcomesystem WHERE guildId = '${id}'`
 					);
 
 					const index = res.rows[0];
