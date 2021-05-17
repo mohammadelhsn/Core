@@ -1,7 +1,7 @@
-import { registerCommands, registerEvents } from './utils/Register';
+import { registerCommands, registerEvents } from './Utils/Register';
 import { Manager } from 'erela.js';
 import * as dotenv from 'dotenv';
-import DiscordClient from './bot/bot';
+import DiscordClient from './Client/Client';
 const client = new DiscordClient();
 
 dotenv.config();
@@ -9,7 +9,7 @@ dotenv.config();
 //client.manager = new Manager({})
 
 (async () => {
-	await registerCommands(client, '../command');
-	await registerEvents(client, '../event');
+	await registerCommands(client, '../Commands');
+	await registerEvents(client, '../Events');
 	await client.login(process.env.DISCORD_TOKEN);
 })();
