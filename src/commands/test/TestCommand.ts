@@ -9,14 +9,5 @@ export default class TestCommand extends BaseCommand {
 
 	async run(client: DiscordClient, message: Message, args: Array<string>) {
 		message.channel.send('Test command works');
-
-		const con = await this.con.connect();
-		try {
-			console.log(con);
-		} catch (error) {
-			console.log(error);
-		} finally {
-			con.release();
-		}
 	}
 }
