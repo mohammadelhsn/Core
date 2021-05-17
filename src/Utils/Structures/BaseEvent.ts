@@ -1,5 +1,5 @@
-import DiscordClient from '../../client/client';
-import StateManager from '../StateManager';
+//import DiscordClient from '../../client/client';
+//import StateManager from '../StateManager';
 
 export default abstract class BaseEvent {
 	con = StateManager.con;

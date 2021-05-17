@@ -1,7 +1,7 @@
-import { registerCommands, registerEvents } from './Utils/Register';
+//import { registerCommands, registerEvents } from './Utils/Register';
 import { Manager } from 'erela.js';
 import * as dotenv from 'dotenv';
-import DiscordClient from './Client/Client';
+//import DiscordClient from './Client/Client';
 const client = new DiscordClient();
 
 dotenv.config();

@@ -1,5 +1,5 @@
-import BaseCommand from '../../Utils/Structures/BaseCommand';
-import DiscordClient from '../../Client/Client';
+//import BaseCommand from '../../Utils/Structures/BaseCommand';
+//import DiscordClient from '../../Client/Client';
 import { Message } from 'discord.js';
 
 export default class PrefixCommand extends BaseCommand {
