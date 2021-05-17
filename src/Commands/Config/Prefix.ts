@@ -6,5 +6,11 @@ export default class PrefixCommand extends BaseCommand {
 	constructor() {
 		super('prefix', 'config', []);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {}
+	async run(client: DiscordClient, message: Message, args: string[]) {
+		const newPrefix = args[0];
+
+		if (!newPrefix) {
+			return message.channel.send('Oops, you must specifiy a new prefix!');
+		}
+	}
 }

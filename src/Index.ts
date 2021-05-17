@@ -6,7 +6,7 @@ const client = new DiscordClient();
 
 dotenv.config();
 
-//client.manager = new Manager({})
+globalThis.client = client as DiscordClient;
 
 (async () => {
 	await registerCommands(client, '../Commands');
