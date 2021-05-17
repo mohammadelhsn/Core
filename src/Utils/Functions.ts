@@ -1015,10 +1015,10 @@ namespace Functions {
 						const index = res.rows[0];
 
 						const obj: Welcome = {
-							isEnabled: index.isEnabled,
+							isEnabled: index.isenabled,
 							media: index.media,
-							welcomeMessage: index.welcomeMessage,
-							channelId: index.welcomeChannel,
+							welcomeMessage: index.welcomemessage,
+							channelId: index.welcomechannel,
 						};
 
 						guild.welcome = obj;
@@ -1033,10 +1033,10 @@ namespace Functions {
 					const index = res.rows[0];
 
 					const obj: Welcome = {
-						isEnabled: index.isEnabled,
+						isEnabled: index.isenabled,
 						media: index.media,
-						welcomeMessage: index.welcomeMessage,
-						channelId: index.welcomeChannel,
+						welcomeMessage: index.welcomemessage,
+						channelId: index.welcomechannel,
 					};
 					if (cache == true) {
 						guild.welcome = obj;
@@ -1071,10 +1071,10 @@ namespace Functions {
 						const index = res.rows[0];
 
 						const obj: Leave = {
-							isEnabled: index.isEnabled,
+							isEnabled: index.isenabled,
 							media: index.media,
-							leaveMessage: index.leaveMessage,
-							channelId: index.leaveChannel,
+							leaveMessage: index.leavemessage,
+							channelId: index.leavechannel,
 						};
 
 						guild.leave = obj;
@@ -1089,10 +1089,10 @@ namespace Functions {
 					const index = res.rows[0];
 
 					const obj: Leave = {
-						isEnabled: index.isEnabled,
+						isEnabled: index.isenabled,
 						media: index.media,
-						leaveMessage: index.leaveMessage,
-						channelId: index.leaveChannel,
+						leaveMessage: index.leavemessage,
+						channelId: index.leavechannel,
 					};
 					if (cache == true) {
 						guild.leave = obj;
