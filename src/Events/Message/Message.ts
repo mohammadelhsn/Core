@@ -1,6 +1,6 @@
-//import BaseEvent from '../../Utils/Structures/BaseEvent';
+import BaseEvent from '../../Utils/Structures/BaseEvent';
 import { Message } from 'discord.js';
-//import DiscordClient from '../../Client/Client';
+import DiscordClient from '../../Client/Client';
 
 export default class MessageEvent extends BaseEvent {
 	constructor() {

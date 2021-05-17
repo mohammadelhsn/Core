@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
-//import DiscordClient from '../../client/client';
-//import StateManager from '../StateManager';
+import DiscordClient from '../../Client/Client';
+import StateManager from '../StateManager';
 
 export default abstract class BaseCommand {
 	con = StateManager.con;

@@ -1,7 +1,7 @@
 import { Client, ClientOptions, Collection } from 'discord.js';
 import { Manager } from 'erela.js';
-//import BaseEvent from '../Utils/Structures/BaseEvent';
-//import BaseCommand from '../Utils/Structures/BaseCommand';
+import BaseEvent from '../Utils/Structures/BaseEvent';
+import BaseCommand from '../Utils/Structures/BaseCommand';
 
 export default class DiscordClient extends Client {
 	private _commands = new Collection<string, BaseCommand>();
