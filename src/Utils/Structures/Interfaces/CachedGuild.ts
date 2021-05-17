@@ -19,6 +19,7 @@ namespace CachedGuildTypes {
 		modrole: Snowflake | null;
 		muterole: Snowflake | null;
 		adminrole: Snowflake | null;
+		warningrole: Snowflake | null;
 	}
 
 	export interface Channels {
