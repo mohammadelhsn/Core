@@ -73,18 +73,18 @@ export default class MessageEvent extends BaseEvent {
 				);
 				console.log(res.rows);
 				console.log(response.rows);
-				//		let total: number = parseInt(res.rows[0].commandsused);
-				//				total++;
+				let total: number = parseInt(res.rows[0].commandsused);
+				total++;
 
-				//	let guildTotal: number = parseInt(response.rows[0].commandsused);
-				//				guildTotal++;
+				let guildTotal: number = parseInt(response.rows[0].commandsused);
+				guildTotal++;
 				try {
-					//				await con.query(`BEGIN`);
-					//				await con.query(`UPDATE botstats SET commandsused = '${total}'`);
-					//				await con.query(
-					//					`UPDATE guildstats SET commandsused = '${guildTotal}'`
-					//				);
-					//				await con.query(`COMMIT`);
+					await con.query(`BEGIN`);
+					await con.query(`UPDATE botstats SET commandsused = '${total}'`);
+					await con.query(
+						`UPDATE guildstats SET commandsused = '${guildTotal}'`
+					);
+					await con.query(`COMMIT`);
 				} catch (error) {
 					console.log(error);
 				} finally {
