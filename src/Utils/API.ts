@@ -6,7 +6,6 @@ import Responses, {
 } from './Structures/Interfaces/Response';
 import moment from 'moment';
 import { Utils } from './Functions';
-import Roblox from 'noblox.js';
 import BaseObj from './Structures/BaseObj';
 
 dotenv.config();
@@ -1746,60 +1745,6 @@ namespace API {
 					file: data.thumbnail.genius,
 					link: data.links.genius,
 					text: data.lyrics,
-				});
-			} catch (error) {
-				console.log(error);
-
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Roblox(username: string) {
-			try {
-				const id = await Roblox.getIdFromUsername(username);
-
-				const thumbnail = `https://www.roblox.com/bust-thumbnail/image?userId=${id}&width=420&height=420&format=png`;
-				const profileURL = `https://roblox.com/users/${id}/profile`;
-
-				const info = await Roblox.getPlayerInfo(id);
-
-				const { FormatNumber } = new Utils();
-
-				if (id) {
-					if (info.isBanned) {
-						return new BaseObj({
-							error: false,
-							title: info.username,
-							file: thumbnail,
-							id: id,
-							text: info.blurb ? info.blurb : 'N/A',
-							misc: {
-								joinDate: info.joinDate,
-							},
-						});
-					}
-				}
-
-				return new BaseObj({
-					error: false,
-					title: info.username,
-					file: thumbnail,
-					id: id,
-					text: info.blurb ? info.blurb : 'N/A',
-					link: profileURL,
-					misc: {
-						status: info.status ? info.status : 'N/A',
-						usernames:
-							info.oldNames.length > 0
-								? `AKA: ${info.oldNames.map((n) => n).join(' ')}`
-								: '',
-						age: info.age ? `${FormatNumber(info.age)} day(s) old` : 'N/A',
-					},
 				});
 			} catch (error) {
 				console.log(error);
