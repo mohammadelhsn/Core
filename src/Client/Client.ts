@@ -9,6 +9,16 @@ export default class DiscordClient extends Client {
 	private _events = new Collection<string, BaseEvent>();
 	private _aliases = new Collection<string, string>();
 	private _database = new Collection<Snowflake, CachedGuild>();
+	private _cooldown = new Collection<
+		Snowflake,
+		{ cmd: string; time: number }
+	>();
+	private _snipes = new Collection<
+		Snowflake,
+		{ msg: string; user: Snowflake; iconURL: string }
+	>();
+	private _version = '0.1';
+	private _updated_at = 'Tuesday May 18, 2021';
 	public manager: Manager;
 
 	constructor(options?: ClientOptions) {
@@ -26,5 +36,20 @@ export default class DiscordClient extends Client {
 	}
 	get database(): Collection<Snowflake, CachedGuild> {
 		return this._database;
+	}
+	get cooldown(): Collection<Snowflake, { cmd: string; time: number }> {
+		return this._cooldown;
+	}
+	get snipes(): Collection<
+		Snowflake,
+		{ msg: string; user: Snowflake; iconURL: string }
+	> {
+		return this._snipes;
+	}
+	get version(): string {
+		return this._version;
+	}
+	get updated_at(): string {
+		return this._updated_at;
 	}
 }

@@ -4,9 +4,18 @@ import StateManager from '../StateManager';
 import Functions from '../Functions';
 import Emojis from '../../../Emojis.json';
 import Colours from '../../../Colours.json';
+import API from '../API';
 
 export default abstract class BaseCommand {
-	con = StateManager.con;
+	// API functions
+	Animals = new API.Animals();
+	Canvas = new API.Canvas();
+	Facts = new API.Facts();
+	Fun = new API.Fun();
+	Memes = new API.Memes();
+	Miscellaneous = new API.Miscellaneous();
+	Reactions = new API.Reactions();
+	// Functions
 	Colour = new Functions.Colour();
 	Translator = new Functions.Translator();
 	Utils = new Functions.Utils();
@@ -21,7 +30,8 @@ export default abstract class BaseCommand {
 	GeneratingEmbed = new Functions.GeneratingEmbed();
 	ImageEmbed = new Functions.ImageEmbed();
 	Moderation = new Functions.Moderation();
-
+	// Misc properties
+	con = StateManager.con;
 	Emojis = Emojis;
 	Colours = Colours;
 	constructor(
