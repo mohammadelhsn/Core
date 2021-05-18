@@ -11,9 +11,9 @@ globalThis.client = client as DiscordClient;
 client.manager = new Manager({
 	nodes: [
 		{
-			port: parseInt(process.env.PORT),
-			host: process.env.HOST,
-			password: process.env.PASSWORD,
+			port: 80,
+			host: 'core-lavalink.herokuapp.com',
+			password: 'youshallnotpass',
 		},
 	],
 	send: (id, payload) => {
