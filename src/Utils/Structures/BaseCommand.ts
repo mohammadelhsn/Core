@@ -2,6 +2,8 @@ import { Message } from 'discord.js';
 import DiscordClient from '../../Client/Client';
 import StateManager from '../StateManager';
 import Functions from '../Functions';
+import Emojis from '../../../Emojis.json';
+import Colours from '../../../Colours.json';
 
 export default abstract class BaseCommand {
 	con = StateManager.con;
@@ -19,6 +21,9 @@ export default abstract class BaseCommand {
 	GeneratingEmbed = new Functions.GeneratingEmbed();
 	ImageEmbed = new Functions.ImageEmbed();
 	Moderation = new Functions.Moderation();
+
+	Emojis = Emojis;
+	Colours = Colours;
 	constructor(
 		private name: string,
 		private category: string,
