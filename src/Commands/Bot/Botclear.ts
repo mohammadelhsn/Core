@@ -1,12 +1,12 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, TextChannel } from 'discord.js';
 
-export default class PrefixCommand extends BaseCommand {
+export default class BotClearCommand extends BaseCommand {
 	constructor() {
 		super(
-			'prefix',
-			'config',
+			'botclear',
+			'bot',
 			[],
 			'',
 			'',
@@ -18,8 +18,8 @@ export default class PrefixCommand extends BaseCommand {
 			true,
 			false,
 			false,
-			3000,
-			'working'
+			10000,
+			'debug'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
@@ -34,23 +34,20 @@ export default class PrefixCommand extends BaseCommand {
 			return msg.delete({ timeout: 10000 });
 		}
 
-		const oldPrefix = await this.Settings.Prefix(message.guild.id);
-
-		const newPrefix = args[0];
-
-		if (!newPrefix) {
-			const embed = await this.ErrorEmbed.Base({
+		if (
+			!message.guild.me.hasPermission(['MANAGE_MESSAGES' || 'ADMINISTRATOR'])
+		) {
+			const embed = await this.ErrorEmbed.ClientPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				id: message.guild.id,
-				error_message: 'Missing a required argument',
 			});
 
 			const msg = await message.channel.send({ embed: embed });
 			return msg.delete({ timeout: 10000 });
 		}
 
-		if (newPrefix.toLowerCase() == 'help') {
+		if (args[0]) {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
@@ -58,43 +55,36 @@ export default class PrefixCommand extends BaseCommand {
 			});
 		}
 
-		if (newPrefix.length > 3) {
-			const embed = await this.ErrorEmbed.Base({
+		const messages = await message.channel.messages.fetch({ limit: 100 });
+		const botmessages: Message[] = [];
+		messages
+			.filter((m) => m.author.id == client.user.id)
+			.forEach((msg) => {
+				botmessages.push(msg);
+			});
+
+		try {
+			await (message.channel as TextChannel).bulkDelete(botmessages);
+
+			const embed = await this.SuccessEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				text: this,
 				id: message.guild.id,
-				error_message: 'Prefix is too long! The max length is 3!',
+				text: this,
+				success_message: `Successfully cleared \`${botmessages.length}\` message(s)`,
 			});
 
 			const msg = await message.channel.send({ embed: embed });
 			return msg.delete({ timeout: 10000 });
-		}
+		} catch (error) {
+			console.log(error);
 
-		const con = await this.con.connect();
-
-		try {
-			await con.query(`BEGIN`);
-			await con.query(
-				`UPDATE guildconfigurable SET prefix = '${newPrefix}' WHERE guildId = '${message.guild.id}'`
-			);
-			await con.query(`COMMIT`);
-
-			const embed = await this.SuccessEmbed.Base({
+			const embed = await this.ErrorEmbed.UnexpectedError({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				id: message.guild.id,
-				success_message: 'Successfully updated the prefix!',
-				fields: [
-					{ name: 'Old prefix', value: `\`${oldPrefix}\`` },
-					{ name: 'New prefix', value: `\`${newPrefix}\`` },
-				],
 			});
 
 			return message.channel.send({ embed: embed });
-		} catch (error) {
-			console.log(error);
-		} finally {
-			con.release();
 		}
 	}
 }

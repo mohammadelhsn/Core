@@ -71,8 +71,7 @@ export default class MessageEvent extends BaseEvent {
 				const response = await con.query(
 					`SELECT commandsused FROM guildstats WHERE guildId = '${message.guild.id}'`
 				);
-				console.log(res.rows);
-				console.log(response.rows);
+
 				let total: number = parseInt(res.rows[0].commandsused);
 				total++;
 
