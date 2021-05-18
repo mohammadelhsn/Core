@@ -24,7 +24,7 @@ client.manager = new Manager({
 });
 
 client.manager.on('nodeConnect', (node) => {
-	console.log(`Node ${node.options.identifier} is online!`);
+	console.log(`✔️ | Node ${node.options.identifier} is online!`);
 });
 
 client.on('raw', (d) => client.manager.updateVoiceState(d));
