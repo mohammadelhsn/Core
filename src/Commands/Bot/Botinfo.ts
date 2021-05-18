@@ -34,6 +34,8 @@ export default class BotinfoCommand extends BaseCommand {
 		);
 		const guildCommands = response.rows[0].commandsused;
 
+		con.release();
+
 		const bot = {
 			commands: `\`${client.commands.size}\``,
 			guilds: `\`${client.guilds.cache.size}\``,
