@@ -9,9 +9,9 @@ export default class ReadyEvent extends BaseEvent {
 	async run(client: DiscordClient) {
 		console.log(`✅ | ${client.user.tag} has logged in!`);
 
-		console.log(client.guilds.cache);
-
 		client.manager.init(client.user.id);
+
+		console.log(client.manager);
 
 		let status = `${client.guilds.cache.size} servers | ${client.users.cache.size} users`;
 		client.user.setPresence({
