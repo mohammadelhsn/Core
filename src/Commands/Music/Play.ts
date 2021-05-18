@@ -6,7 +6,7 @@ export default class PrefixCommand extends BaseCommand {
 	constructor() {
 		super('play', 'music', []);
 	}
-	async run(client, message, args) {
+	async run(client: DiscordClient, message: Message, args: string[]) {
 		const voiceChannel = message.member.voice.channel;
 		if (!voiceChannel) {
 			const errorEmbed = await this.ErrorEmbed.Base({
@@ -62,9 +62,6 @@ export default class PrefixCommand extends BaseCommand {
 			});
 		}
 
-		/**
-		 * @type {Player}
-		 */
 		const player = client.manager.create({
 			guild: message.guild.id,
 			voiceChannel: message.member.voice.channel.id,
@@ -74,6 +71,9 @@ export default class PrefixCommand extends BaseCommand {
 		if (player.state !== 'CONNECTED') player.connect();
 
 		const res = await client.manager.search(search, message.author);
+
+		console.log(res);
+
 		switch (res.loadType) {
 			case 'TRACK_LOADED':
 				const embed = await this.SuccessEmbed.Base({
@@ -122,9 +122,6 @@ export default class PrefixCommand extends BaseCommand {
 				collector.on('collect', async (m) => {
 					if (/cancel/i.test(m.content)) return collector.stop('cancelled');
 
-					/**
-					 * @type {Track}
-					 */
 					const track = tracks[Number(m.content) - 1];
 					player.queue.add(track);
 
@@ -153,14 +150,6 @@ export default class PrefixCommand extends BaseCommand {
 				});
 				break;
 			case 'PLAYLIST_LOADED':
-				res.playlist.tracks.forEach((track) => player.queue.add(track));
-				const playlistEmbed = await this.SuccessEmbed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					id: message.guild.id,
-					text: this,
-					success_message: `Adding \`${res.playlist.tracks.length}\` tracks in playlist \`${res.playlist.info.name}\` to the queue`,
-				});
-				message.channel.send({ embed: playlistEmbed });
 				if (!player.playing) player.play();
 				break;
 		}
