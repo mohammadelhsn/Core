@@ -19,7 +19,7 @@ export default class ReadyEvent extends BaseEvent {
 			status: 'dnd',
 		});
 
-		for (const g of client.guilds.cache) {
+		/* for (const g of client.guilds.cache) {
 			const self = this;
 			const guildId = g[1].id;
 			const Prefix = await this.Settings.Prefix(guildId, true, false);
@@ -132,6 +132,6 @@ export default class ReadyEvent extends BaseEvent {
 				},
 			});
 			client.database.set(guildId, guild);
-		}
+		} */
 	}
 }
