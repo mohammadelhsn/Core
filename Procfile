@@ -1,2 +1,2 @@
 worker: nodemon ./src/Index.ts
-web: python3 ./HLavalink/bootstrap.py
+web: python3 ./bootstrap.py
