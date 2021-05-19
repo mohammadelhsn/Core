@@ -14,17 +14,7 @@ export default class GuildCreateEvent extends BaseEvent {
 			await con.query(
 				`INSERT INTO Guilds(guildid, welcome, leave, roles, logging, blacklisted, disableditems, moderations, protected, ranks, tags) VALUES('${
 					guild.id
-				}', '${JSON.stringify(new Schemas.Welcome())}', '${JSON.stringify(
-					new Schemas.Leave()
-				)}', '${JSON.stringify(new Schemas.Roles())}', '${JSON.stringify(
-					new Schemas.Logging()
-				)}', '${JSON.stringify(new Schemas.Blacklisted())}', '${JSON.stringify(
-					new Schemas.Disabled()
-				)}', '${JSON.stringify(new Schemas.Moderations())}', '${JSON.stringify(
-					new Schemas.Protected()
-				)}', '${JSON.stringify(new Schemas.Ranks())}', '${JSON.stringify(
-					new Schemas.Tags()
-				)}')`
+				}', '${new Schemas.Welcome().toString()}', '${new Schemas.Leave().toString()}', '${new Schemas.Roles().toString()}', '${new Schemas.Logging().toString()}', '${new Schemas.Blacklisted().toString()}', '${new Schemas.Disabled().toString()}', '${new Schemas.Moderations().toString()}', '${new Schemas.Protected().toString()}', '${new Schemas.Ranks().toString()}', '${new Schemas.Tags().toString()}')`
 			);
 			await con.query(`COMMIT`);
 			console.log('New guild added');

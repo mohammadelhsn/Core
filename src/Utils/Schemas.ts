@@ -13,11 +13,8 @@ namespace Constructors {
 				};
 			}
 
-			console.log(this.data);
-
 			if (typeof data == 'string') this.data = JSON.parse(data);
-			else this.data = data;
-			console.log(this.data);
+			if (typeof data == 'object') this.data = data;
 		}
 		toString() {
 			return JSON.stringify(this.data);
@@ -36,7 +33,7 @@ namespace Constructors {
 			}
 
 			if (typeof data == 'string') this.data = JSON.parse(data);
-			else this.data = data;
+			if (typeof data == 'object') this.data = data;
 		}
 		toString() {
 			return JSON.stringify(this.data);
@@ -54,7 +51,7 @@ namespace Constructors {
 				};
 			}
 			if (typeof data == 'string') this.data = JSON.parse(data);
-			else this.data = data;
+			if (typeof data == 'object') this.data = data;
 		}
 		toString() {
 			return JSON.stringify(this.data);
@@ -81,7 +78,7 @@ namespace Constructors {
 				};
 			}
 			if (typeof data == 'string') this.data = JSON.parse(data);
-			else this.data = data;
+			if (typeof data == 'object') this.data = data;
 		}
 		toString() {
 			return JSON.stringify(this.data);
@@ -99,7 +96,7 @@ namespace Constructors {
 			}
 
 			if (typeof data == 'string') this.data = JSON.parse(data);
-			else this.data = data;
+			if (typeof data == 'object') this.data = data;
 		}
 		toString() {
 			return JSON.stringify(this.data);
@@ -115,7 +112,7 @@ namespace Constructors {
 				};
 			}
 			if (typeof data == 'string') this.data = JSON.parse(data);
-			else this.data = data;
+			if (typeof data == 'object') this.data = data;
 		}
 		toString() {
 			return JSON.stringify(this.data);
@@ -126,7 +123,7 @@ namespace Constructors {
 		constructor(data?: Types.Moderations | string) {
 			if (!data || data == undefined) this.data = [];
 			if (typeof data == 'string') this.data = JSON.parse(data);
-			else this.data = data;
+			if (typeof data == 'object') this.data = data;
 		}
 		toString() {
 			return JSON.stringify(this.data);
@@ -142,7 +139,7 @@ namespace Constructors {
 				};
 			}
 			if (typeof data == 'string') this.data = JSON.parse(data);
-			else this.data = data;
+			if (typeof data == 'object') this.data = data;
 		}
 		toString() {
 			return JSON.stringify(this.data);
@@ -153,7 +150,7 @@ namespace Constructors {
 		constructor(data?: Types.Tags | string) {
 			if (!data || data == undefined) this.data = [];
 			if (typeof data == 'string') this.data = JSON.parse(data);
-			else this.data = data;
+			if (typeof data == 'object') this.data = data;
 		}
 		toString() {
 			console.log(this.data);
@@ -165,7 +162,7 @@ namespace Constructors {
 		constructor(data?: Types.Ranks | string) {
 			if (!data) this.data = [];
 			if (typeof data == 'string') this.data = JSON.parse(data);
-			else this.data = data;
+			if (typeof data == 'object') this.data = data;
 		}
 		toString() {
 			return JSON.stringify(this.data);
