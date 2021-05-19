@@ -2,12 +2,7 @@ import { Pool } from 'pg';
 import DiscordClient from '../Client/Client';
 import StateManager from './StateManager';
 import Funcs from './Structures/Interfaces/Funcs';
-import {
-	Snowflake,
-	Message,
-	MessageEmbed,
-	Collection,
-} from 'discord.js';
+import { Snowflake, Message, MessageEmbed, Collection } from 'discord.js';
 import pagination from 'discord.js-pagination';
 import CachedGuild from './Structures/CachedGuild';
 import Colours from '../../Colours.json';
@@ -15,6 +10,7 @@ import Languages from '../../Languages.json';
 import Descriptions from '../../Descriptions.json';
 import { Leave, Welcome } from './Structures/Interfaces/CachedGuild';
 import Emojis from '../../Emojis.json';
+import Schemas from './Schemas';
 
 namespace Functions {
 	export class Colour {
@@ -105,7 +101,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT lang FROM GuildConfigurable WHERE guildId = '${id}'`
+							`SELECT lang FROM Guilds WHERE guildId = '${id}'`
 						);
 						const lang: string = await res.rows[0].lang;
 
@@ -115,7 +111,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT lang FROM GuildConfigurable WHERE guildId = '${id}'`
+						`SELECT lang FROM Guilds WHERE guildId = '${id}'`
 					);
 					const lang: string = await res.rows[0].lang;
 					if (cache == true) {
@@ -272,9 +268,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT memberlog FROM GuildLogging WHERE guildId = '${id}'`
+							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 						);
-						const memberlog: string = await res.rows[0].memberlog;
+						const memberlog: string = await new Schemas.Logging(
+							res.rows[0].logging
+						).data.memberlog;
 
 						guild.Channels.memberlog = memberlog;
 					}
@@ -282,9 +280,12 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT memberlog FROM GuildLogging WHERE guildId = '${id}'`
+						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 					);
-					const memberlog: string = await res.rows[0].memberlog;
+					const memberlog: string = await new Schemas.Logging(
+						res.rows[0].logging
+					).data.memberlog;
+					
 					if (cache == true) {
 						guild.Channels.memberlog = memberlog;
 					}

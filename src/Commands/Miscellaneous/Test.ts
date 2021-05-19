@@ -7,6 +7,6 @@ export default class TesstCommand extends BaseCommand {
 		super('tesst', 'miscellaneous', []);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		console.log(client.database.first());
+		console.log(await this.Channels.Memberlog(message.guild.id, true, false));
 	}
 }
