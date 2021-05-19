@@ -285,7 +285,7 @@ namespace Functions {
 					const memberlog: string = await new Schemas.Logging(
 						res.rows[0].logging
 					).data.memberlog;
-					
+
 					if (cache == true) {
 						guild.Channels.memberlog = memberlog;
 					}
@@ -809,7 +809,7 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT prefix FROM GuildConfigurable WHERE guildId = '${id}'`
+							`SELECT prefix FROM Guilds WHERE guildId = '${id}'`
 						);
 						const prefix: string = await res.rows[0].prefix;
 
@@ -819,7 +819,7 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT prefix FROM GuildConfigurable WHERE guildId = '${id}'`
+						`SELECT prefix FROM Guilds WHERE guildId = '${id}'`
 					);
 					const prefix: string = await res.rows[0].prefix;
 					if (cache == true) {
