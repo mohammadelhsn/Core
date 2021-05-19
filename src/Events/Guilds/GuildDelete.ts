@@ -11,16 +11,7 @@ export default class GuildDeleteEvent extends BaseEvent {
 
 		try {
 			await con.query(`BEGIN`);
-			await con.query(
-				`DELETE FROM GuildConfigurable WHERE guildid = '${guild.id}'`
-			);
-			await con.query(`DELETE FROM GuildLogging WHERE guildid = '${guild.id}'`);
-			await con.query(
-				`DELETE FROM welcomesystem WHERE guildid = '${guild.id}'`
-			);
-			await con.query(`DELETE FROM leavesystem WHERE guildid = '${guild.id}'`);
-			await con.query(`DELETE FROM serverroles WHERE guildid = '${guild.id}'`);
-			await con.query(`DELETE FROM guildstats WHERE guildid = '${guild.id}'`);
+			await con.query(`DELETE FROM Guilds WHERE guildid = '${guild.id}'`);
 			await con.query(`COMMIT`);
 			console.log('Guild removed!');
 		} catch (error) {
