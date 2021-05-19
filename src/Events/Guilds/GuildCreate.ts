@@ -1,6 +1,7 @@
 import DiscordClient from '../../Client/Client';
 import BaseEvent from '../../Utils/Structures/BaseEvent';
 import { Guild } from 'discord.js';
+import Schemas from '../../Utils/Schemas';
 
 export default class GuildCreateEvent extends BaseEvent {
 	constructor() {
@@ -8,9 +9,11 @@ export default class GuildCreateEvent extends BaseEvent {
 	}
 	async run(client: DiscordClient, guild: Guild) {
 		const con = await this.con.connect();
-
 		try {
 			await con.query(`BEGIN`);
+			// await con.query(
+			// 	`INSERT`
+			// )
 			await con.query(
 				`INSERT INTO GuildConfigurable(guildId) VALUES('${guild.id}')`
 			);

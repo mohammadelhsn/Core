@@ -3,7 +3,6 @@ import DiscordClient from '../Client/Client';
 import StateManager from './StateManager';
 import Funcs from './Structures/Interfaces/Funcs';
 import {
-	Client,
 	Snowflake,
 	Message,
 	MessageEmbed,

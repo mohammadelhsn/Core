@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import pg, { Pool, PoolClient } from 'pg';
+import { Pool } from 'pg';
 
 class StateManager extends EventEmitter {
 	con: Pool;

@@ -1,9 +1,6 @@
 import axios from 'axios';
 import * as dotenv from 'dotenv';
-import Responses, {
-	NekoBotCanvas,
-	NekosFun,
-} from './Structures/Interfaces/Response';
+import Responses from './Structures/Interfaces/Response';
 import moment from 'moment';
 import { Utils } from './Functions';
 import BaseObj from './Structures/BaseObj';
@@ -1055,7 +1052,7 @@ namespace API {
 				const res = await axios.get(
 					`https://nekobot.xyz/api/imagegen?type=changemymind&text=${text}`
 				);
-				const data = <NekoBotCanvas>res.data;
+				const data = <Responses.NekoBotCanvas>res.data;
 
 				if (data.status != 200 || data.success == false) {
 					return new BaseObj({
@@ -1139,7 +1136,7 @@ namespace API {
 		async Neko() {
 			try {
 				const res = await axios.get(`http://api.nekos.fun:8080/api/neko`);
-				const data = <NekosFun>res.data;
+				const data = <Responses.NekosFun>res.data;
 
 				return new BaseObj({
 					error: false,

@@ -1,6 +1,5 @@
 import { Snowflake, MessageEmbed, Message, EmbedFieldData } from 'discord.js';
 import BaseCommand from '../BaseCommand';
-import Colours from '../../../../Colours.json';
 
 namespace FunctionOpts {
 	export type colours = {

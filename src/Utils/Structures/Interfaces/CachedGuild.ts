@@ -83,6 +83,44 @@ namespace CachedGuildTypes {
 		Channels: Channels;
 		Strings: Strings;
 	}
+
+	export interface Blacklisted {
+		roles: string[];
+		users: string[];
+		channels: string[];
+	}
+	export interface Disabled {
+		commands: string[];
+		categories: string[];
+	}
+	export interface Protected {
+		users: string[];
+		roles: string[];
+	}
+	export interface tags {
+		name: string;
+		content: string;
+	}
+	export type Tags = tags[];
+	export interface ranks {
+		name: string;
+		id: Snowflake;
+	}
+	export type Ranks = ranks[];
+	export interface moderation {
+		moderation: string;
+		reason: string;
+		caseNumber: string;
+		moderatorId: Snowflake;
+		messageId: Snowflake;
+		publicMessageId: Snowflake;
+		modlog: Snowflake;
+		publicmodlog: Snowflake;
+		moderationdate: string;
+		lastupdated: string;
+		updateby: string;
+	}
+	export type Moderations = moderation[];
 }
 
 export = CachedGuildTypes;
