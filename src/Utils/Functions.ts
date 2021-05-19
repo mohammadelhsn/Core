@@ -11,6 +11,7 @@ import Descriptions from '../../Descriptions.json';
 import { Leave, Welcome } from './Structures/Interfaces/CachedGuild';
 import Emojis from '../../Emojis.json';
 import Schemas from './Schemas';
+import { Resolver } from 'dns';
 
 namespace Functions {
 	export class Colour {
@@ -313,9 +314,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT modlog FROM GuildLogging WHERE guildId = '${id}'`
+							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 						);
-						const modlog: string = await res.rows[0].modlog;
+						const modlog: string = await new Schemas.Logging(
+							res.rows[0].logging
+						).data.modlog;
 
 						guild.Channels.modlog = modlog;
 					}
@@ -323,12 +326,15 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT modlog FROM GuildLogging WHERE guildId = '${id}'`
+						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 					);
-					const modlog: string = await res.rows[0].modlog;
+					const modlog: string = await new Schemas.Logging(res.rows[0].logging)
+						.data.modlog;
+
 					if (cache == true) {
 						guild.Channels.modlog = modlog;
 					}
+
 					return modlog;
 				}
 			} catch (error) {
@@ -353,9 +359,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT rolelog FROM GuildLogging WHERE guildId = '${id}'`
+							`SELECT logging FROM guilds WHERE guildId = '${id}'`
 						);
-						const rolelog: string = await res.rows[0].rolelog;
+						const rolelog: string = await new Schemas.Logging(
+							res.rows[0].logging
+						).data.rolelog;
 
 						guild.Channels.rolelog = rolelog;
 					}
@@ -363,9 +371,10 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT rolelog FROM GuildLogging WHERE guildId = '${id}'`
+						`SELECT logging FROM guilds WHERE guildId = '${id}'`
 					);
-					const rolelog: string = await res.rows[0].rolelog;
+					const rolelog: string = await new Schemas.Logging(res.rows[0].logging)
+						.data.rolelog;
 					if (cache == true) {
 						guild.Channels.rolelog = rolelog;
 					}
@@ -393,9 +402,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT appeals FROM GuildLogging WHERE guildId = '${id}'`
+							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 						);
-						const appeals: string = await res.rows[0].appeals;
+						const appeals: string = await new Schemas.Logging(
+							res.rows[0].logging
+						).data.appeals;
 
 						guild.Channels.appeals = appeals;
 					}
@@ -403,9 +414,10 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT appeals FROM GuildLogging WHERE guildId = '${id}'`
+						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 					);
-					const appeals: string = await res.rows[0].appeals;
+					const appeals: string = await new Schemas.Logging(res.rows[0].logging)
+						.data.appeals;
 					if (cache == true) {
 						guild.Channels.appeals = appeals;
 					}
@@ -433,9 +445,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT reports FROM GuildLogging WHERE guildId = '${id}'`
+							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 						);
-						const reports: string = await res.rows[0].reports;
+						const reports: string = await new Schemas.Logging(
+							res.rows[0].logging
+						).data.reports;
 
 						guild.Channels.reports = reports;
 					}
@@ -443,9 +457,10 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT reports FROM GuildLogging WHERE guildId = '${id}'`
+						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 					);
-					const reports: string = await res.rows[0].reports;
+					const reports: string = await new Schemas.Logging(res.rows[0].logging)
+						.data.reports;
 					if (cache == true) {
 						guild.Channels.reports = reports;
 					}
@@ -473,9 +488,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT actionlog FROM GuildLogging WHERE guildId = '${id}'`
+							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 						);
-						const actionlog: string = await res.rows[0].actionlog;
+						const actionlog: string = await new Schemas.Logging(
+							res.rows[0].logging
+						).data.actionlog;
 
 						guild.Channels.actionlog = actionlog;
 					}
@@ -483,9 +500,11 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT actionlog FROM GuildLogging WHERE guildId = '${id}'`
+						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 					);
-					const actionlog: string = await res.rows[0].actionlog;
+					const actionlog: string = await new Schemas.Logging(
+						res.rows[0].logging
+					).data.actionlog;
 					if (cache == true) {
 						guild.Channels.actionlog = actionlog;
 					}
@@ -513,9 +532,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT suggestions FROM GuildLogging WHERE guildId = '${id}'`
+							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 						);
-						const suggestions: string = await res.rows[0].suggestions;
+						const suggestions: string = await new Schemas.Logging(
+							res.rows[0].logging
+						).data.suggestions;
 
 						guild.Channels.suggestions = suggestions;
 					}
@@ -523,9 +544,11 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT suggestions FROM GuildLogging WHERE guildId = '${id}'`
+						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 					);
-					const suggestions: string = await res.rows[0].suggestions;
+					const suggestions: string = await new Schemas.Logging(
+						res.rows[0].logging
+					).data.suggestions;
 					if (cache == true) {
 						guild.Channels.suggestions = suggestions;
 					}
@@ -553,9 +576,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT messagelog FROM GuildLogging WHERE guildId = '${id}'`
+							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 						);
-						const messagelog: string = await res.rows[0].messagelog;
+						const messagelog: string = await new Schemas.Logging(
+							res.rows[0].logging
+						).data.messagelog;
 
 						guild.Channels.messagelog = messagelog;
 					}
@@ -563,9 +588,11 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT messagelog FROM GuildLogging WHERE guildId = '${id}'`
+						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 					);
-					const messagelog: string = await res.rows[0].messagelog;
+					const messagelog: string = await new Schemas.Logging(
+						res.rows[0].logging
+					).data.messagelog;
 					if (cache == true) {
 						guild.Channels.messagelog = messagelog;
 					}
@@ -593,9 +620,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT serverlog FROM GuildLogging WHERE guildId = '${id}'`
+							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 						);
-						const serverlog: string = await res.rows[0].serverlog;
+						const serverlog: string = await new Schemas.Logging(
+							res.rows[0].logging
+						).data.serverlog;
 
 						guild.Channels.serverlog = serverlog;
 					}
@@ -603,9 +632,11 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT serverlog FROM GuildLogging WHERE guildId = '${id}'`
+						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 					);
-					const serverlog: string = await res.rows[0].serverlog;
+					const serverlog: string = await new Schemas.Logging(
+						res.rows[0].logging
+					).data.serverlog;
 					if (cache == true) {
 						guild.Channels.serverlog = serverlog;
 					}
@@ -635,7 +666,9 @@ namespace Functions {
 						const res = await con.query(
 							`SELECT invitelog FROM GuildLogging WHERE guildId = '${id}'`
 						);
-						const invitelog: string = await res.rows[0].invitelog;
+						const invitelog: string = await new Schemas.Logging(
+							res.rows[0].logging
+						).data.invitelog;
 
 						guild.Channels.invitelog = invitelog;
 					}
@@ -643,9 +676,11 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT invitelog FROM GuildLogging WHERE guildId = '${id}'`
+						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 					);
-					const invitelog: string = await res.rows[0].invitelog;
+					const invitelog: string = await new Schemas.Logging(
+						res.rows[0].logging
+					).data.invitelog;
 					if (cache == true) {
 						guild.Channels.invitelog = invitelog;
 					}
@@ -673,9 +708,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT channellog FROM GuildLogging WHERE guildId = '${id}'`
+							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 						);
-						const channellog: string = await res.rows[0].channellog;
+						const channellog: string = await new Schemas.Logging(
+							res.rows[0].logging
+						).data.channellog;
 
 						guild.Channels.channellog = channellog;
 					}
@@ -683,9 +720,11 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT channellog FROM GuildLogging WHERE guildId = '${id}'`
+						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 					);
-					const channellog: string = await res.rows[0].channellog;
+					const channellog: string = await new Schemas.Logging(
+						res.rows[0].logging
+					).data.channellog;
 					if (cache == true) {
 						guild.Channels.channellog = channellog;
 					}
@@ -713,9 +752,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT emojilog FROM GuildLogging WHERE guildId = '${id}'`
+							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 						);
-						const emojilog: string = await res.rows[0].emojilog;
+						const emojilog: string = await new Schemas.Logging(
+							res.rows[0].logging
+						).data.emojilog;
 
 						guild.Channels.emojilog = emojilog;
 					}
@@ -723,9 +764,11 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT emojilog FROM GuildLogging WHERE guildId = '${id}'`
+						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 					);
-					const emojilog: string = await res.rows[0].emojilog;
+					const emojilog: string = await new Schemas.Logging(
+						res.rows[0].logging
+					).data.emojilog;
 					if (cache == true) {
 						guild.Channels.emojilog = emojilog;
 					}
@@ -753,9 +796,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT publicmodlog FROM GuildLogging WHERE guildId = '${id}'`
+							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 						);
-						const publicmodlog: string = await res.rows[0].publicmodlog;
+						const publicmodlog: string = await new Schemas.Logging(
+							res.rows[0].logging
+						).data.publicmodlog;
 
 						guild.Channels.publicmodlog = publicmodlog;
 					}
@@ -763,9 +808,11 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT publicmodlog FROM GuildLogging WHERE guildId = '${id}'`
+						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
 					);
-					const publicmodlog: string = await res.rows[0].publicmodlog;
+					const publicmodlog: string = await new Schemas.Logging(
+						res.rows[0].logging
+					).data.publicmodlog;
 					if (cache == true) {
 						guild.Channels.publicmodlog = publicmodlog;
 					}
@@ -849,9 +896,10 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT adminrole FROM serverroles WHERE guildId = '${id}'`
+							`SELECT roles FROM Guilds WHERE guildId = '${id}'`
 						);
-						const adminrole: string = await res.rows[0].adminrole;
+						const adminrole: string = await new Schemas.Roles(res.rows[0].roles)
+							.data.adminrole;
 
 						guild.roles.adminrole = adminrole;
 					}
@@ -859,9 +907,10 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT adminrole FROM serverroles WHERE guildId = '${id}'`
+						`SELECT roles FROM Guilds WHERE guildId = '${id}'`
 					);
-					const adminrole: string = await res.rows[0].adminrole;
+					const adminrole: string = await new Schemas.Roles(res.rows[0].roles)
+						.data.adminrole;
 					if (cache == true) {
 						guild.roles.adminrole = adminrole;
 					}
@@ -889,9 +938,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT modrole FROM serverroles WHERE guildId = '${id}'`
+							`SELECT roles FROM Guilds WHERE guildId = '${id}'`
 						);
-						const modrole: string = await res.rows[0].modrole;
+
+						const modrole: string = await new Schemas.Roles(res.rows[0].roles)
+							.data.modrole;
 
 						guild.roles.modrole = modrole;
 					}
@@ -899,9 +950,10 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT modrole FROM serverroles WHERE guildId = '${id}'`
+						`SELECT roles FROM Guilds WHERE guildId = '${id}'`
 					);
-					const modrole: string = await res.rows[0].modrole;
+					const modrole: string = await new Schemas.Roles(res.rows[0].roles)
+						.data.modrole;
 					if (cache == true) {
 						guild.roles.modrole = modrole;
 					}
@@ -929,9 +981,11 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT warningrole FROM serverroles WHERE guildId = '${id}'`
+							`SELECT roles FROM Guilds WHERE guildId = '${id}'`
 						);
-						const warningrole: string = await res.rows[0].warningrole;
+						const warningrole: string = await new Schemas.Roles(
+							res.rows[0].roles
+						).data.warningrole;
 
 						guild.roles.warningrole = warningrole;
 					}
@@ -939,9 +993,10 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT warningrole FROM serverroles WHERE guildId = '${id}'`
+						`SELECT roles FROM Guilds WHERE guildId = '${id}'`
 					);
-					const warningrole: string = await res.rows[0].warningrole;
+					const warningrole: string = await new Schemas.Roles(res.rows[0].roles)
+						.data.warningrole;
 					if (cache == true) {
 						guild.roles.warningrole = warningrole;
 					}
@@ -969,9 +1024,10 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT muterole FROM serverroles WHERE guildId = '${id}'`
+							`SELECT roles FROM Guilds WHERE guildId = '${id}'`
 						);
-						const muterole: string = await res.rows[0].muterole;
+						const muterole: string = await new Schemas.Roles(res.rows[0].roles)
+							.data.muterole;
 
 						guild.roles.muterole = muterole;
 					}
@@ -979,9 +1035,10 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT muterole FROM serverroles WHERE guildId = '${id}'`
+						`SELECT roles FROM Guilds WHERE guildId = '${id}'`
 					);
-					const muterole: string = await res.rows[0].muterole;
+					const muterole: string = await new Schemas.Roles(res.rows[0].roles)
+						.data.muterole;
 					if (cache == true) {
 						guild.roles.muterole = muterole;
 					}
@@ -1009,16 +1066,16 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT * FROM welcomesystem WHERE guildId = '${id}'`
+							`SELECT welcome from Guilds WHERE guildId = '${id}'`
 						);
 
-						const index = res.rows[0];
+						const index = await new Schemas.Welcome(res.rows[0].welcome).data;
 
 						const obj: Welcome = {
-							isEnabled: index.isenabled,
+							isenabled: index.isenabled,
 							media: index.media,
-							welcomeMessage: index.welcomemessage,
-							channelId: index.welcomechannel,
+							message: index.message,
+							channel: index.channel,
 						};
 
 						guild.welcome = obj;
@@ -1027,16 +1084,16 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT * FROM welcomesystem WHERE guildId = '${id}'`
+						`SELECT welcome FROM Guilds WHERE guildId = '${id}'`
 					);
 
 					const index = res.rows[0];
 
 					const obj: Welcome = {
-						isEnabled: index.isenabled,
+						isenabled: index.isenabled,
 						media: index.media,
-						welcomeMessage: index.welcomemessage,
-						channelId: index.welcomechannel,
+						message: index.message,
+						channel: index.channel,
 					};
 					if (cache == true) {
 						guild.welcome = obj;
@@ -1065,16 +1122,16 @@ namespace Functions {
 				if (force == false) {
 					if (cache == true) {
 						const res = await con.query(
-							`SELECT * FROM leavesystem WHERE guildId = '${id}'`
+							`SELECT leave FROM Guilds WHERE guildId = '${id}'`
 						);
 
-						const index = res.rows[0];
+						const index = await new Schemas.Leave(res.rows[0].leave).data;
 
 						const obj: Leave = {
-							isEnabled: index.isenabled,
+							isenabled: index.isenabled,
 							media: index.media,
-							leaveMessage: index.leavemessage,
-							channelId: index.leavechannel,
+							message: index.message,
+							channel: index.channel,
 						};
 
 						guild.leave = obj;
@@ -1083,16 +1140,16 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT * FROM welcomesystem WHERE guildId = '${id}'`
+						`SELECT leave FROM Guilds WHERE guildId = '${id}'`
 					);
 
-					const index = res.rows[0];
+					const index = await new Schemas.Leave(res.rows[0].leave).data;
 
 					const obj: Leave = {
-						isEnabled: index.isenabled,
+						isenabled: index.isenabled,
 						media: index.media,
-						leaveMessage: index.leavemessage,
-						channelId: index.leavechannel,
+						message: index.message,
+						channel: index.channel,
 					};
 					if (cache == true) {
 						guild.leave = obj;

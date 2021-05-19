@@ -6,10 +6,10 @@ namespace Constructors {
 		constructor(data?: Types.Welcome | string) {
 			if (!data || data == undefined) {
 				this.data = {
-					isEnabled: false,
+					isenabled: false,
 					media: null,
-					welcomeMessage: null,
-					channelId: null,
+					message: null,
+					channel: null,
 				};
 			}
 
@@ -25,10 +25,10 @@ namespace Constructors {
 		constructor(data?: Types.Leave | string) {
 			if (!data || data == undefined) {
 				this.data = {
-					isEnabled: false,
+					isenabled: false,
 					media: null,
-					leaveMessage: null,
-					channelId: null,
+					message: null,
+					channel: null,
 				};
 			}
 

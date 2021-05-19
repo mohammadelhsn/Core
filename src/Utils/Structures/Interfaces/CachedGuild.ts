@@ -2,17 +2,17 @@ import { Snowflake } from 'discord.js';
 
 namespace CachedGuildTypes {
 	export interface Welcome {
-		channelId: Snowflake | null | 'null';
-		isEnabled: boolean;
+		channel: Snowflake | null | 'null';
+		isenabled: boolean;
 		media?: string;
-		welcomeMessage?: string;
+		message?: string;
 	}
 
 	export interface Leave {
-		channelId: Snowflake | null | 'null';
-		isEnabled: boolean;
+		channel: Snowflake | null | 'null';
+		isenabled: boolean;
 		media?: string;
-		leaveMessage: string;
+		message: string;
 	}
 
 	export interface Roles {
