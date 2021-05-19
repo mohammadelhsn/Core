@@ -153,6 +153,7 @@ namespace Constructors {
 			else this.data = data;
 		}
 		toString() {
+			console.log(this.data);
 			return JSON.stringify(this.data);
 		}
 	}
