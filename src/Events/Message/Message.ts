@@ -69,27 +69,49 @@ export default class MessageEvent extends BaseEvent {
 
 				command.run(client, message, cmdArgs);
 
-				const res = await con.query(`SELECT commandsused FROM botstats`);
-				const response = await con.query(
-					`SELECT commandsused FROM guildstats WHERE guildId = '${message.guild.id}'`
-				);
-
-				let total: number = parseInt(res.rows[0].commandsused);
-				total++;
-
-				let guildTotal: number = parseInt(response.rows[0].commandsused);
-				guildTotal++;
-				try {
-					await con.query(`BEGIN`);
-					await con.query(`UPDATE botstats SET commandsused = '${total}'`);
-					await con.query(
-						`UPDATE guildstats SET commandsused = '${guildTotal}'`
+				if (message.guild.id == '704034868547289089') {
+					const res = await con.query(
+						`SELECT commandsused FROM guilds WHERE guildId = '704034868547289089'`
 					);
-					await con.query(`COMMIT`);
-				} catch (error) {
-					console.log(error);
-				} finally {
-					con.release();
+					let total: number = parseInt(res.rows[0].commandsused);
+					total++;
+
+					try {
+						await con.query(`BEGIN`);
+						await con.query(`UPDATE botstats SET commandsused = '${total}'`);
+						await con.query(`COMMIT`);
+					} catch (error) {
+						console.log(error);
+					} finally {
+						con.release();
+					}
+				} else {
+					const res = await con.query(
+						`SELECT commandsused FROM guilds WHERE guildId = '704034868547289089'`
+					);
+					const response = await con.query(
+						`SELECT commandsused FROM guilds WHERE guildId = '${message.guild.id}'`
+					);
+
+					let total: number = parseInt(res.rows[0].commandsused);
+					total++;
+
+					let guildTotal: number = parseInt(response.rows[0].commandsused);
+					guildTotal++;
+					try {
+						await con.query(`BEGIN`);
+						await con.query(
+							`UPDATE Guilds SET commandsused = '${total}' WHERE guildId = '704034868547289089'`
+						);
+						await con.query(
+							`UPDATE Guilds SET commandsused = '${guildTotal}' WHERE guildId = '${message.guild.id}'`
+						);
+						await con.query(`COMMIT`);
+					} catch (error) {
+						console.log(error);
+					} finally {
+						con.release();
+					}
 				}
 			}
 		}
