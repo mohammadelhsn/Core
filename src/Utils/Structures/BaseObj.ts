@@ -10,7 +10,7 @@ export default class BaseObj {
 	author?: string | null;
 	title?: string | null;
 	link?: string | null;
-	vars?: {};
+	misc?: any;
 	constructor(options: Responses.opts) {
 		this.error = options.error ? options.error : false;
 		this.error_type = options.error_type ? options.error_type : null;
@@ -21,6 +21,6 @@ export default class BaseObj {
 		this.author = options.author ? options.author : null;
 		this.title = options.title ? options.title : null;
 		this.link = options.link ? options.link : null;
-		this.vars = options.misc ? options.misc : null;
+		this.misc = options.misc ? options.misc : null;
 	}
 }
