@@ -1,15 +1,12 @@
 import BaseEvent from '../../Utils/Structures/BaseEvent';
 import DiscordClient from '../../Client/Client';
 import Guild from '../../Utils/Structures/CachedGuild';
-import Schemas from '../../Utils/Schemas';
 
 export default class ReadyEvent extends BaseEvent {
 	constructor() {
 		super('ready');
 	}
 	async run(client: DiscordClient) {
-		const con = await this.con.connect();
-
 		console.log(`✅ | ${client.user.tag} has logged in!`);
 
 		client.manager.init(client.user.id);
@@ -19,18 +16,6 @@ export default class ReadyEvent extends BaseEvent {
 			activity: { name: status, type: 'WATCHING' },
 			status: 'dnd',
 		});
-
-		try {
-			await con.query(`BEGIN`);
-			await con.query(
-				`INSERT INTO Guilds(guildid, welcome, leave, roles, logging, blacklisted, disableditems, moderations, protected, ranks, tags) VALUES('837853708129009715', '${new Schemas.Welcome().toString()}', '${new Schemas.Leave().toString()}', '${new Schemas.Roles().toString()}', '${new Schemas.Logging().toString()}', '${new Schemas.Blacklisted().toString()}', '${new Schemas.Disabled().toString()}', '${new Schemas.Moderations().toString()}', '${new Schemas.Protected().toString()}', '${new Schemas.Ranks().toString()}', '${new Schemas.Tags().toString()}')`
-			);
-			await con.query(`COMMIT`);
-		} catch (error) {
-			console.log(error);
-		} finally {
-			con.release();
-		}
 
 		for (const g of client.guilds.cache) {
 			const guildId = g[1].id;

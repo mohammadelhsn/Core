@@ -33,7 +33,7 @@ export default class GiphyCommand extends BaseCommand {
 			if (type == 'sticker') {
 				try {
 					const q = args.slice(1).join(' ');
-					const res = await giphy.search({ api: 'stickers', q: q });
+					const res = await (giphy as any).search({ api: 'stickers', q: q });
 					if (res.data.length == 0) {
 						const errorEmbed = await this.ErrorEmbed.NoResult({
 							iconURL: message.author.displayAvatarURL({ dynamic: true }),
