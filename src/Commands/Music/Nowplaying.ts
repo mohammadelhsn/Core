@@ -79,6 +79,7 @@ export default class NowPlayingCommand extends BaseCommand {
 			/**
 			 * This is not mine
 			 * @author HOUND#0078 (430236084744749058) <https://canary.discord.com/channels/416512197590777857/479201157047123969/755313521356439614>
+			 * Can be found by joining menudocs guild (https://discord.gg/menudocs)
 			 */
 			function nowplaying(duration, position) {
 				let dashes = '----------------------------------------';

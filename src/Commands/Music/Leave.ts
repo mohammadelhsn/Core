@@ -85,7 +85,7 @@ export default class LeaveCommand extends BaseCommand {
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),
 			id: message.guild.id,
 			text: this,
-			success_message: 'Successfully stopped playing music!',
+			success_message: '```Successfully stopped playing music!```',
 		});
 		return message.channel.send({ embed: successEmbed });
 	}

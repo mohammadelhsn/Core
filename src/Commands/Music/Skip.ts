@@ -2,10 +2,10 @@ import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
 import { Message } from 'discord.js';
 
-export default class Command extends BaseCommand {
+export default class SkipCommand extends BaseCommand {
 	constructor() {
 		super(
-			'',
+			'skip',
 			'',
 			[],
 			'',

@@ -42,9 +42,7 @@ export default class PauseCommand extends BaseCommand {
 				message: message,
 			});
 		}
-		/**
-		 * @type {Player}
-		 */
+
 		const player = client.manager.players.get(message.guild.id);
 
 		if (!player) {

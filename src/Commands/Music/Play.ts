@@ -1,10 +1,27 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
 import { Message } from 'discord.js';
+import prettyMilliseconds from 'pretty-ms';
 
-export default class PrefixCommand extends BaseCommand {
+export default class PlayCommand extends BaseCommand {
 	constructor() {
-		super('play', 'music', []);
+		super(
+			'play',
+			'music',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			5000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const voiceChannel = message.member.voice.channel;
@@ -78,8 +95,14 @@ export default class PrefixCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					id: message.guild.id,
 					text: this,
-					success_message: `Added [${res.tracks[0].title}](${res.tracks[0].uri}) to the queue. Duration: `,
+					success_message: `Added [${res.tracks[0].title}](${res.tracks[0].uri}) to the queue`,
 					image: res.tracks[0].thumbnail,
+					fields: [
+						{
+							name: 'Duration',
+							value: `\`${prettyMilliseconds(res.tracks[0].duration)}\``,
+						},
+					],
 				});
 
 				player.queue.add(res.tracks[0]);
@@ -95,7 +118,7 @@ export default class PrefixCommand extends BaseCommand {
 					text: this,
 					title: 'There are multiple results',
 					description:
-						'You have `30` seconds to pick from one of those. Say `cancel` if you want to cancel the selection',
+						'You have `30` seconds to pick from one of these songs. Say `cancel` if you want to cancel the selection',
 					fields: [
 						{
 							name: 'Songs',
@@ -126,9 +149,15 @@ export default class PrefixCommand extends BaseCommand {
 					const tEmbed = await this.Embed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
-						description: `Added [${track.title}](${track.uri}) to the queue. | Duration: `,
+						description: `Added [${track.title}](${track.uri}) to the queue`,
 						image: track.thumbnail,
 						link: track.uri,
+						fields: [
+							{
+								name: 'Duration',
+								value: `\`${prettyMilliseconds(track.duration)}\``,
+							},
+						],
 					});
 
 					message.channel.send({ embed: tEmbed });

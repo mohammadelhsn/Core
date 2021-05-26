@@ -17,11 +17,16 @@ export default class TrackStartEvent extends BaseEvent {
 			iconURL: user.displayAvatarURL({ dynamic: true }),
 			text: 'Now playing',
 			title: 'Now playing',
-			description: `**__Song:__** \`${track.title}\`\n**__Requested by:__** \`${
-				requester.tag
-			}\`\n**__Duration:__** \`${prettyMilliseconds(track.duration)}\``,
+			description: `\`${track.title}\``,
 			image: track.thumbnail,
 			link: track.uri,
+			fields: [
+				{ name: 'Requested by:', value: `${requester.tag}` },
+				{
+					name: 'Duration',
+					value: `\`${prettyMilliseconds(track.duration)}\``,
+				},
+			],
 		});
 		return (channel as TextChannel).send({ embed: embed });
 	}

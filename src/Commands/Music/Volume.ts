@@ -8,11 +8,11 @@ export default class VolumeCommand extends BaseCommand {
 			'volume',
 			'music',
 			['vol'],
-			'',
-			'',
+			'<new value>',
+			'Set the music players volume',
 			'',
 			[],
-			[],
+			['volume 75', 'volume 100'],
 			[],
 			[],
 			true,
@@ -93,7 +93,7 @@ export default class VolumeCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				id: message.guild.id,
-				error_message: '```Number must be from 1-100```',
+				error_message: 'Number must be from 1-100',
 			});
 			const msg = await message.channel.send({ embed: errEmbed });
 			return msg.delete({ timeout: 10000 });

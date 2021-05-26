@@ -1,6 +1,7 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, User } from 'discord.js';
+import prettyMilliseconds from 'pretty-ms';
 
 export default class QueueCommand extends BaseCommand {
 	constructor() {
@@ -23,13 +24,16 @@ export default class QueueCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const voiceChannel = message.member.voice.channel;
-		if (!voiceChannel) {
+		const lang = await this.Translator.Getlang(message.guild.id);
+
+		const player = client.manager.get(message.guild.id);
+
+		if (!player) {
 			const errorEmbed = await this.ErrorEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				id: message.guild.id,
 				text: this,
-				error_message: 'You must be in a voice channel',
+				error_message: 'There is nothing playing',
 			});
 			const msg = await message.channel.send({ embed: errorEmbed });
 			return msg.delete({ timeout: 10000 });
@@ -43,52 +47,36 @@ export default class QueueCommand extends BaseCommand {
 			});
 		}
 
-		const player = client.manager.players.get(message.guild.id);
-
-		if (!player) {
-			const errorEmbed = await this.ErrorEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
-				text: this,
-				error_message: 'There are no active players at the moment',
-			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+		let index = 1;
+		let string = '';
+		if (player.queue.current)
+			string += `**__Currently playing__**\n ${
+				player.queue.current.title
+			} - Requested by: \`${
+				(player.queue.current.requester as User).tag
+			}\`. | Duration: \`${prettyMilliseconds(
+				player.queue.current.duration
+			)}\` \n`;
+		if (player.queue[0]) {
+			string += `__**Rest of queue:**__\n ${player.queue
+				.slice(0, 10)
+				.map(
+					(x) =>
+						`**${index++})** ${x.title} - **Requested by ${
+							(x.requester as User).username
+						}**.`
+				)
+				.join('\n')}`;
 		}
 
-		if (voiceChannel.id !== player.options.voiceChannel) {
-			const errorEmbed = await this.ErrorEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
-				text: this,
-				error_message: "You're not in the bots voice channel",
-			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
-		}
-
-		try {
-			player.pause(player.playing);
-
-			const successEmbed = await this.SuccessEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
-				text: this,
-				success_message: `${player.playing ? '▶️' : '⏸️'} | Player is now \`${
-					player.playing ? 'resumed' : 'paused'
-				}\``,
-				image: player.queue.current?.thumbnail,
-			});
-			return message.channel.send({ embed: successEmbed });
-		} catch (e) {
-			console.log(e);
-
-			const errEmbed = await this.ErrorEmbed.UnexpectedError({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
-				text: this,
-			});
-			return message.channel.send({ embed: errEmbed });
-		}
+		const embed = await this.Embed.Base({
+			iconURL: player.queue.current.thumbnail,
+			text: this,
+			title: `Queue for ${message.guild.name}`,
+			description: string,
+			image: player.queue.current.thumbnail,
+			link: player.queue.current.uri,
+		});
+		return message.channel.send({ embed: embed });
 	}
 }
