@@ -87,7 +87,7 @@ export default class MessageEvent extends BaseEvent {
 					}
 				} else {
 					const res = await con.query(
-						`SELECT commandsused FROM guilds WHERE guildId = '704034868547289089'`
+						`SELECT commandsused FROM guilds WHERE guildId = '690975783363280918'`
 					);
 					const response = await con.query(
 						`SELECT commandsused FROM guilds WHERE guildId = '${message.guild.id}'`
@@ -100,13 +100,22 @@ export default class MessageEvent extends BaseEvent {
 					guildTotal++;
 					try {
 						await con.query(`BEGIN`);
+						if (message.guild.id == '690975783363280918') {
+							await con.query(
+								`UPDATE Guilds SET commandsused = '${total}' WHERE guildId = '690975783363280918'`
+							);
+							await con.query(`COMMIT`);
+							return;
+						}
+
 						await con.query(
-							`UPDATE Guilds SET commandsused = '${total}' WHERE guildId = '704034868547289089'`
+							`UPDATE Guilds SET commandsused = '${total}' WHERE guildId = '690975783363280918'`
 						);
 						await con.query(
 							`UPDATE Guilds SET commandsused = '${guildTotal}' WHERE guildId = '${message.guild.id}'`
 						);
 						await con.query(`COMMIT`);
+						return;
 					} catch (error) {
 						console.log(error);
 					} finally {
