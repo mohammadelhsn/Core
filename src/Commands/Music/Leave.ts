@@ -7,7 +7,7 @@ export default class LeaveCommand extends BaseCommand {
 		super(
 			'leave',
 			'music',
-			[],
+			['stop'],
 			'',
 			'',
 			'',

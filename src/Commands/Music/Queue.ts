@@ -77,7 +77,7 @@ export default class QueueCommand extends BaseCommand {
 				success_message: `${player.playing ? '▶️' : '⏸️'} | Player is now \`${
 					player.playing ? 'resumed' : 'paused'
 				}\``,
-				image: player.queue.current.thumbnail,
+				image: player.queue.current?.thumbnail,
 			});
 			return message.channel.send({ embed: successEmbed });
 		} catch (e) {

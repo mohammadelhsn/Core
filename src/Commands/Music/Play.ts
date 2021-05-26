@@ -72,8 +72,6 @@ export default class PrefixCommand extends BaseCommand {
 
 		const res = await client.manager.search(search, message.author);
 
-		console.log(res);
-
 		switch (res.loadType) {
 			case 'TRACK_LOADED':
 				const embed = await this.SuccessEmbed.Base({

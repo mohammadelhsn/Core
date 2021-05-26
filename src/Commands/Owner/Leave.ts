@@ -5,7 +5,7 @@ import { Message } from 'discord.js';
 export default class TesstCommand extends BaseCommand {
 	constructor() {
 		super(
-			'leave',
+			'quit',
 			'owner',
 			[],
 			'',
