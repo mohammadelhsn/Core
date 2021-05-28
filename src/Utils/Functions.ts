@@ -1831,8 +1831,11 @@ namespace Functions {
 
 				await con.query(`BEGIN`);
 				console.log(data);
-				console.log(data.toString());
-				await con.query(`UPDATE Guilds SET moderations = '${data.toString()}'`);
+				await con.query(
+					`UPDATE Guilds SET moderations = '${new Schemas.Moderations(
+						data
+					).toString()}' WHERE guildId = '${id}'`
+				);
 				await con.query(`COMMIT`);
 			} catch (error) {
 				console.log(error);
