@@ -168,6 +168,17 @@ namespace Constructors {
 			return JSON.stringify(this.data);
 		}
 	}
+	export class Notes {
+		public data: Types.Notes;
+		constructor(data?: Types.Notes | string) {
+			if (!data) this.data = [];
+			if (typeof data == 'string') this.data = JSON.parse(data);
+			if (typeof data == 'object') this.data = data;
+		}
+		toString() {
+			return JSON.stringify(this.data)
+		}
+	}
 }
 
 export = Constructors;

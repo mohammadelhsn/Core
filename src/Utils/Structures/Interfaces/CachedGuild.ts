@@ -122,6 +122,11 @@ namespace CachedGuildTypes {
 		updateby: string;
 	}
 	export type Moderations = moderation[];
+	export interface Note {
+		userid: string;
+		content: string;
+	}
+	export type Notes = Note[];
 }
 
 export = CachedGuildTypes;

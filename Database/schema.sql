@@ -1,5 +1,5 @@
-CREATE TABLE IF NOT EXISTS Guild (
-  guildId VARCHAR(100) NOT NULL,
+CREATE TABLE IF NOT EXISTS Guilds (
+  guildId VARCHAR(100) NOT NULL PRIMARY KEY,
   prefix VARCHAR(100) DEFAULT '!',
   lang VARCHAR(100) DEFAULT 'en',
   commandsused VARCHAR(100) DEFAULT '0',
@@ -12,5 +12,6 @@ CREATE TABLE IF NOT EXISTS Guild (
   moderations TEXT NOT NULL, -- JSON array containing objects of moderations 
   protected TEXT NOT NULL,
   ranks TEXT NOT NULL,
-  tags TEXT NOT NULL
+  tags TEXT NOT NULL,
+  notes TEXT NOT NULL
 );
