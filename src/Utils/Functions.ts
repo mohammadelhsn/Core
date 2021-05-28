@@ -1843,6 +1843,7 @@ namespace Functions {
 				con.release();
 			}
 		}
+		async FetchModeration() {}
 	}
 }
 

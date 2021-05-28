@@ -14,17 +14,5 @@ export default class TesstCommand extends BaseCommand {
 			2,
 			message.author.id
 		);
-
-		const con = await this.con.connect();
-
-		try {
-			await con.query(`BEGIN`);
-			await con.query(
-				`UDPATE Guilds SET moderations = '${new Schemas.Moderations()}' WHERE guildId = '837853708129009715'`
-			);
-			await con.query(`COMMIT`);
-		} finally {
-			con.release();
-		}
 	}
 }
