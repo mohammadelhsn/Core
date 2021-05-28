@@ -1,7 +1,6 @@
 import BaseEvent from '../../Utils/Structures/BaseEvent';
 import DiscordClient from '../../Client/Client';
 import Guild from '../../Utils/Structures/CachedGuild';
-import Schemas from '../../Utils/Schemas';
 
 export default class ReadyEvent extends BaseEvent {
 	constructor() {
@@ -11,7 +10,7 @@ export default class ReadyEvent extends BaseEvent {
 		console.log(`✅ | ${client.user.tag} has logged in!`);
 
 		client.manager.init(client.user.id);
-		// /837853708129009715
+
 		let status = `${client.guilds.cache.size} servers | ${client.users.cache.size} users`;
 		client.user.setPresence({
 			activity: { name: status, type: 'WATCHING' },
