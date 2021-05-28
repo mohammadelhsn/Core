@@ -109,15 +109,16 @@ namespace CachedGuildTypes {
 	export type Ranks = ranks[];
 	export interface moderation {
 		moderation: string;
+		user: Snowflake;
 		reason: string;
-		caseNumber: string;
+		caseNumber: number;
 		moderatorId: Snowflake;
 		messageId: Snowflake;
 		publicMessageId: Snowflake;
 		modlog: Snowflake;
 		publicmodlog: Snowflake;
-		moderationdate: string;
-		lastupdated: string;
+		moderationdate: number;
+		lastupdated: number;
 		updateby: string;
 	}
 	export type Moderations = moderation[];

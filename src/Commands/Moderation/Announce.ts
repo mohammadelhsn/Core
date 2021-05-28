@@ -22,5 +22,7 @@ export default class AnnounceCommand extends BaseCommand {
 			'WIP'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {}
+	async run(client: DiscordClient, message: Message, args: string[]) {
+		const channel = message.mentions.channels.first() || message.channel;
+	}
 }

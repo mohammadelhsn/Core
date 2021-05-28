@@ -1,17 +1,19 @@
 import { Pool } from 'pg';
 import DiscordClient from '../Client/Client';
 import StateManager from './StateManager';
-import Funcs from './Structures/Interfaces/Funcs';
+import Funcs, { InsertModerationOpts } from './Structures/Interfaces/Funcs';
 import { Snowflake, Message, MessageEmbed, Collection } from 'discord.js';
 import pagination from 'discord.js-pagination';
 import CachedGuild from './Structures/CachedGuild';
 import Colours from '../../Colours.json';
 import Languages from '../../Languages.json';
 import Descriptions from '../../Descriptions.json';
-import { Leave, Welcome } from './Structures/Interfaces/CachedGuild';
+import CachedGuildTypes, {
+	Leave,
+	Welcome,
+} from './Structures/Interfaces/CachedGuild';
 import Emojis from '../../Emojis.json';
 import Schemas from './Schemas';
-import { Resolver } from 'dns';
 
 namespace Functions {
 	export class Colour {
@@ -1795,6 +1797,48 @@ namespace Functions {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
 			this.cache = this.client.database;
+		}
+		async InsertModeration(
+			id: Snowflake,
+			moderation: string,
+			caseNumber: number,
+			moderatorId: Snowflake,
+			opts?: Funcs.InsertModerationOpts
+		) {
+			const obj: CachedGuildTypes.moderation = {
+				moderation: moderation,
+				caseNumber: caseNumber,
+				moderatorId: moderatorId,
+				reason: opts.reason ? opts.reason : null,
+				user: opts.user ? opts.user : null,
+				modlog: opts.modlog ? opts.modlog : null,
+				publicmodlog: opts.publicmodlog ? opts.publicmodlog : null,
+				messageId: opts.modlogId ? opts.modlogId : null,
+				publicMessageId: opts.publicmodlogId ? opts.publicmodlogId : null,
+				moderationdate: opts.moderationDate ? opts.moderationDate : null,
+				lastupdated: opts.updatedAt ? opts.updatedAt : null,
+				updateby: opts.updatedBy ? opts.updatedBy : null,
+			};
+			const con = await this.con.connect();
+			try {
+				const res = await con.query(
+					`SELECT moderations FROM Guilds WHERE guildid = '${id}'`
+				);
+
+				const { data } = new Schemas.Moderations(res.rows[0].moderations);
+
+				data.push(obj);
+
+				await con.query(`BEGIN`);
+				console.log(data);
+				console.log(data.toString());
+				await con.query(`UPDATE Guilds SET moderations = '${data.toString()}'`);
+				await con.query(`COMMIT`);
+			} catch (error) {
+				console.log(error);
+			} finally {
+				con.release();
+			}
 		}
 	}
 }

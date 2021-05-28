@@ -121,8 +121,8 @@ namespace FunctionOpts {
 		publicmodlog?: Snowflake;
 		modlogId?: Snowflake;
 		publicmodlogId?: Snowflake;
-		moderationDate?: Date;
-		updatedAt?: Date;
+		moderationDate?: number;
+		updatedAt?: number;
 		updatedBy?: Snowflake;
 	}
 	export interface Values {

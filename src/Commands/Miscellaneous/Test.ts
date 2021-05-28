@@ -7,6 +7,11 @@ export default class TesstCommand extends BaseCommand {
 		super('tesst', 'miscellaneous', []);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		console.log(await this.Channels.Memberlog(message.guild.id, true, false));
+		const test = await this.Moderation.InsertModeration(
+			message.guild.id,
+			'ban',
+			1,
+			message.author.id
+		);
 	}
 }

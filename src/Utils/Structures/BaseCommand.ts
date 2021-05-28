@@ -5,6 +5,7 @@ import Functions from '../Functions';
 import Emojis from '../../../Emojis.json';
 import Colours from '../../../Colours.json';
 import API from '../API';
+import Schemas from '../Schemas';
 
 export default abstract class BaseCommand {
 	// API functions
@@ -34,6 +35,7 @@ export default abstract class BaseCommand {
 	con = StateManager.con;
 	Emojis = Emojis;
 	Colours = Colours;
+	Schemas = Schemas;
 	constructor(
 		private name: string,
 		private category: string,
