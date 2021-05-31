@@ -1,12 +1,11 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
 import { Message, MessageAttachment } from 'discord.js';
-import { Ad } from 'discord-image-generation';
 
-export default class AdCommand extends BaseCommand {
+export default class BaguetteCommand extends BaseCommand {
 	constructor() {
 		super(
-			'ad',
+			'baguette',
 			'canvas',
 			[],
 			'',
@@ -39,22 +38,20 @@ export default class AdCommand extends BaseCommand {
 
 			try {
 				const avatar = mention.user.displayAvatarURL({ format: 'png' });
-				const image = await new Ad().getImage(avatar);
-				const file = new MessageAttachment(image, 'ad.png');
+				const image = await this.Canvas.Baguette(avatar);
+				const file = new MessageAttachment(image.file, 'baguette.png');
 
 				const embed = await this.ImageEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
-					title: 'Ad command',
-					description: guild.Strings.DiscordIG,
-					image: 'attachment://ad.png',
+					title: 'Baguette command',
+					description: guild.Strings.NekosBot,
+					image: 'attachment://baguette.png',
 				});
 
 				m.delete();
 				return message.channel.send({ files: [file], embed: embed });
 			} catch (error) {
-				console.log(error);
-
 				m.delete();
 				const embed = await this.ErrorEmbed.UnexpectedError({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -79,15 +76,15 @@ export default class AdCommand extends BaseCommand {
 
 				try {
 					const avatar = message.author.displayAvatarURL({ format: 'png' });
-					const image = await new Ad().getImage(avatar);
-					const file = new MessageAttachment(image, 'ad.png');
+					const image = await this.Canvas.Baguette(avatar);
+					const file = new MessageAttachment(image.file, 'baguette.png');
 
 					const embed = await this.ImageEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
-						title: 'Ad command',
-						description: guild.Strings.DiscordIG,
-						image: 'attachment://ad.png',
+						title: 'Baguette command',
+						description: guild.Strings.NekosBot,
+						image: 'attachment://baguette.png',
 					});
 
 					m.delete();
@@ -111,15 +108,15 @@ export default class AdCommand extends BaseCommand {
 
 			try {
 				const avatar = message.attachments.first().url;
-				const image = await new Ad().getImage(avatar);
-				const file = new MessageAttachment(image, 'ad.png');
+				const image = await this.Canvas.Baguette(avatar);
+				const file = new MessageAttachment(image.file, 'baguette.png');
 
 				const embed = await this.ImageEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
-					title: 'Ad command',
-					description: guild.Strings.DiscordIG,
-					image: 'attachment://ad.png',
+					title: 'Baguette command',
+					description: guild.Strings.NekosBot,
+					image: 'attachment://baguette.png',
 				});
 
 				m.delete();
@@ -148,7 +145,7 @@ export default class AdCommand extends BaseCommand {
 		const tEmbed = await this.Embed.Base({
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),
 			text: this,
-			title: 'Ad command',
+			title: 'Baguette command',
 			description: `Please send the first image you want.`,
 		});
 		await message.channel.send({ embed: tEmbed });
@@ -175,15 +172,15 @@ export default class AdCommand extends BaseCommand {
 
 				try {
 					const avatar = firstColl.first().attachments.first().url;
-					const image = await new Ad().getImage(avatar);
-					const file = new MessageAttachment(image, 'ad.png');
+					const image = await this.Canvas.Baguette(avatar);
+					const file = new MessageAttachment(image.file, 'baguette.png');
 
 					const embed = await this.ImageEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
-						title: 'Ad command',
-						description: guild.Strings.DiscordIG,
-						image: 'attachment://ad.png',
+						title: 'Baguette command',
+						description: guild.Strings.NekosBot,
+						image: 'attachment://baguette.png',
 					});
 
 					m.delete();
