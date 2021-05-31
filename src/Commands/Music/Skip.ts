@@ -16,8 +16,8 @@ export default class SkipCommand extends BaseCommand {
 			[],
 			[],
 			true,
-			true,
-			true,
+			false,
+			false,
 			3000,
 			'working'
 		);
@@ -83,7 +83,7 @@ export default class SkipCommand extends BaseCommand {
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),
 			id: message.guild.id,
 			text: this,
-			success_message: 'Successfully skipped the song!',
+			success_message: '```Successfully skipped the song! ⏩```',
 		});
 		return message.channel.send({ embed: successEmbed });
 	}

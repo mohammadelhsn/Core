@@ -4,7 +4,23 @@ import { Message } from 'discord.js';
 
 export default class AvatarCommand extends BaseCommand {
 	constructor() {
-		super('avatar', '', []);
+		super(
+			'avatar',
+			'server utilities',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const user =

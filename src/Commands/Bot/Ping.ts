@@ -4,7 +4,23 @@ import { Message } from 'discord.js';
 
 export default class PingCommand extends BaseCommand {
 	constructor() {
-		super('ping', 'bot', []);
+		super(
+			'ping',
+			'bot',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		if (args[0]) {

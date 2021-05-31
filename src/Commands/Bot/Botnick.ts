@@ -4,7 +4,23 @@ import { Message } from 'discord.js';
 
 export default class BotnickCommand extends BaseCommand {
 	constructor() {
-		super('botnick', '', []);
+		super(
+			'botnick',
+			'',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		if (

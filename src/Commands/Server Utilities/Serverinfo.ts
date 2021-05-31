@@ -4,7 +4,23 @@ import { Message, UserFlags } from 'discord.js';
 
 export default class ServerinfoCommand extends BaseCommand {
 	constructor() {
-		super('serverinfo', 'bot', []);
+		super(
+			'serverinfo',
+			'server utilities',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const serverinfo = {
@@ -55,19 +71,35 @@ export default class ServerinfoCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				title: `Serverinfo command`,
-				description: `${serverinfo.name}`,
+				description: `${serverinfo.name} serverinfo`,
 				fields: [
 					{ name: 'ID', value: `${serverinfo.id}` },
 					{ name: 'Server owner:', value: `${serverinfo.owner}` },
 					{ name: 'Server owner ID:', value: `${serverinfo.ownerid}` },
 					{ name: 'Server region:', value: `${serverinfo.region}` },
 					{ name: 'Created at:', value: `${serverinfo.createdAt}` },
-					{ name: 'Total channels', value: `${serverinfo.totalChannels}` },
-					{ name: 'Text channels', value: `${serverinfo.textChannels}` },
-					{ name: 'Voice channels', value: `${serverinfo.voiceChannels}` },
-					{ name: 'Membercount', value: `${serverinfo.membercount}` },
-					{ name: 'Human count', value: `${serverinfo.humans}` },
-					{ name: 'Bot count', value: `${serverinfo.bots}` },
+					{
+						name: 'Total channels',
+						value: `${serverinfo.totalChannels}`,
+						inline: true,
+					},
+					{
+						name: 'Text channels',
+						value: `${serverinfo.textChannels}`,
+						inline: true,
+					},
+					{
+						name: 'Voice channels',
+						value: `${serverinfo.voiceChannels}`,
+						inline: true,
+					},
+					{
+						name: 'Membercount',
+						value: `${serverinfo.membercount}`,
+						inline: true,
+					},
+					{ name: 'Human count', value: `${serverinfo.humans}`, inline: true },
+					{ name: 'Bot count', value: `${serverinfo.bots}`, inline: true },
 				],
 			});
 			return message.channel.send({ embed: serverinfoEmbed });

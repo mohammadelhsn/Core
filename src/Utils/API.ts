@@ -1254,7 +1254,13 @@ namespace API {
 					.filter((post) => post.data.over_18 == false)
 					.filter((post) => post.data.is_video == false);
 
-				if (posts.length == 0) return posts;
+				if (posts.length == 0) {
+					return new BaseObj({
+						error: true,
+						error_message: 'No memes found',
+						error_type: 'N/A',
+					});
+				}
 
 				const ranNum = Math.floor(Math.random() * posts.length);
 
@@ -1288,7 +1294,7 @@ namespace API {
 				});
 			}
 		}
-		async Equelmeme() {
+		async Equelmeme(): Promise<BaseObj> {
 			try {
 				const res = await axios.get(
 					`https://www.reddit.com/r/equelMemes.json?sort=top&t=week`
@@ -1299,7 +1305,13 @@ namespace API {
 					.filter((post) => post.data.over_18 == false)
 					.filter((post) => post.data.is_video == false);
 
-				if (posts.length == 0) return posts;
+				if (posts.length == 0) {
+					return new BaseObj({
+						error: true,
+						error_message: 'No memes found!',
+						error_type: 'N/A',
+					});
+				}
 
 				const ranNum = Math.floor(Math.random() * posts.length);
 
@@ -1344,7 +1356,13 @@ namespace API {
 					.filter((post) => post.data.over_18 == false)
 					.filter((post) => post.data.is_video == false);
 
-				if (posts.length == 0) return posts;
+				if (posts.length == 0) {
+					return new BaseObj({
+						error: true,
+						error_message: 'No memes found!',
+						error_type: 'N/A',
+					});
+				}
 
 				const ranNum = Math.floor(Math.random() * posts.length);
 
@@ -1389,7 +1407,13 @@ namespace API {
 					.filter((post) => post.data.over_18 == false)
 					.filter((post) => post.data.is_video == false);
 
-				if (posts.length == 0) return posts;
+				if (posts.length == 0) {
+					return new BaseObj({
+						error: true,
+						error_message: 'No memes found!',
+						error_type: 'N/A',
+					});
+				}
 
 				const ranNum = Math.floor(Math.random() * posts.length);
 

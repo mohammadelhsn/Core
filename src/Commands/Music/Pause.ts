@@ -7,7 +7,7 @@ export default class PauseCommand extends BaseCommand {
 		super(
 			'pause',
 			'music',
-			[],
+			['resume'],
 			'',
 			'',
 			'',

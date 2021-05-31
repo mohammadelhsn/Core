@@ -1,17 +1,14 @@
 import { Pool } from 'pg';
 import DiscordClient from '../Client/Client';
 import StateManager from './StateManager';
-import Funcs, { InsertModerationOpts } from './Structures/Interfaces/Funcs';
+import Funcs from './Structures/Interfaces/Funcs';
 import { Snowflake, Message, MessageEmbed, Collection } from 'discord.js';
 import pagination from 'discord.js-pagination';
 import CachedGuild from './Structures/CachedGuild';
 import Colours from '../../Colours.json';
 import Languages from '../../Languages.json';
 import Descriptions from '../../Descriptions.json';
-import CachedGuildTypes, {
-	Leave,
-	Welcome,
-} from './Structures/Interfaces/CachedGuild';
+import CachedGuildTypes from './Structures/Interfaces/CachedGuild';
 import Emojis from '../../Emojis.json';
 import Schemas from './Schemas';
 
@@ -44,7 +41,6 @@ namespace Functions {
 				Colours.cyan,
 				Colours.cream,
 				Colours.khaki,
-				Colours.white,
 				Colours.gold,
 			];
 
@@ -241,64 +237,12 @@ namespace Functions {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
 			this.cache = this.client.database;
-			this.Memberlog = this.Memberlog.bind(this);
 			this.Modlog = this.Modlog.bind(this);
-			this.Rolelog = this.Rolelog.bind(this);
 			this.Appeals = this.Appeals.bind(this);
 			this.Reports = this.Reports.bind(this);
 			this.Actionlog = this.Actionlog.bind(this);
 			this.Suggestions = this.Suggestions.bind(this);
-			this.Messagelog = this.Messagelog.bind(this);
-			this.Serverlog = this.Serverlog.bind(this);
-			this.Invitelog = this.Invitelog.bind(this);
-			this.Channellog = this.Channellog.bind(this);
-			this.Emojilog = this.Emojilog.bind(this);
 			this.Publicmodlog = this.Publicmodlog.bind(this);
-		}
-		async Memberlog(id: Snowflake, force?: boolean, cache?: boolean) {
-			const con = await this.con.connect();
-			try {
-				if (!force) force = false;
-				if (!cache) cache = true;
-
-				const guild = this.cache.get(id);
-
-				if (this.cache.size == 0 || !guild) {
-					force = true;
-					cache = false;
-				}
-
-				if (force == false) {
-					if (cache == true) {
-						const res = await con.query(
-							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
-						);
-						const memberlog: string = await new Schemas.Logging(
-							res.rows[0].logging
-						).data.memberlog;
-
-						guild.Channels.memberlog = memberlog;
-					}
-					return guild.Channels.memberlog;
-				}
-				if (force == true) {
-					const res = await con.query(
-						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
-					);
-					const memberlog: string = await new Schemas.Logging(
-						res.rows[0].logging
-					).data.memberlog;
-
-					if (cache == true) {
-						guild.Channels.memberlog = memberlog;
-					}
-					return memberlog;
-				}
-			} catch (error) {
-				console.log(error);
-			} finally {
-				con.release();
-			}
 		}
 		async Modlog(id: Snowflake, force?: boolean, cache?: boolean) {
 			const con = await this.con.connect();
@@ -338,49 +282,6 @@ namespace Functions {
 					}
 
 					return modlog;
-				}
-			} catch (error) {
-				console.log(error);
-			} finally {
-				con.release();
-			}
-		}
-		async Rolelog(id: Snowflake, force?: boolean, cache?: boolean) {
-			const con = await this.con.connect();
-			try {
-				if (!force) force = false;
-				if (!cache) cache = true;
-
-				const guild = this.cache.get(id);
-
-				if (this.cache.size == 0 || !guild) {
-					force = true;
-					cache = false;
-				}
-
-				if (force == false) {
-					if (cache == true) {
-						const res = await con.query(
-							`SELECT logging FROM guilds WHERE guildId = '${id}'`
-						);
-						const rolelog: string = await new Schemas.Logging(
-							res.rows[0].logging
-						).data.rolelog;
-
-						guild.Channels.rolelog = rolelog;
-					}
-					return guild.Channels.rolelog;
-				}
-				if (force == true) {
-					const res = await con.query(
-						`SELECT logging FROM guilds WHERE guildId = '${id}'`
-					);
-					const rolelog: string = await new Schemas.Logging(res.rows[0].logging)
-						.data.rolelog;
-					if (cache == true) {
-						guild.Channels.rolelog = rolelog;
-					}
-					return rolelog;
 				}
 			} catch (error) {
 				console.log(error);
@@ -555,226 +456,6 @@ namespace Functions {
 						guild.Channels.suggestions = suggestions;
 					}
 					return suggestions;
-				}
-			} catch (error) {
-				console.log(error);
-			} finally {
-				con.release();
-			}
-		}
-		async Messagelog(id: Snowflake, force?: boolean, cache?: boolean) {
-			const con = await this.con.connect();
-			try {
-				if (!force) force = false;
-				if (!cache) cache = true;
-
-				const guild = this.cache.get(id);
-
-				if (this.cache.size == 0 || !guild) {
-					force = true;
-					cache = false;
-				}
-
-				if (force == false) {
-					if (cache == true) {
-						const res = await con.query(
-							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
-						);
-						const messagelog: string = await new Schemas.Logging(
-							res.rows[0].logging
-						).data.messagelog;
-
-						guild.Channels.messagelog = messagelog;
-					}
-					return guild.Channels.messagelog;
-				}
-				if (force == true) {
-					const res = await con.query(
-						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
-					);
-					const messagelog: string = await new Schemas.Logging(
-						res.rows[0].logging
-					).data.messagelog;
-					if (cache == true) {
-						guild.Channels.messagelog = messagelog;
-					}
-					return messagelog;
-				}
-			} catch (error) {
-				console.log(error);
-			} finally {
-				con.release();
-			}
-		}
-		async Serverlog(id: Snowflake, force?: boolean, cache?: boolean) {
-			const con = await this.con.connect();
-			try {
-				if (!force) force = false;
-				if (!cache) cache = true;
-
-				const guild = this.cache.get(id);
-
-				if (this.cache.size == 0 || !guild) {
-					force = true;
-					cache = false;
-				}
-
-				if (force == false) {
-					if (cache == true) {
-						const res = await con.query(
-							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
-						);
-						const serverlog: string = await new Schemas.Logging(
-							res.rows[0].logging
-						).data.serverlog;
-
-						guild.Channels.serverlog = serverlog;
-					}
-					return guild.Channels.serverlog;
-				}
-				if (force == true) {
-					const res = await con.query(
-						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
-					);
-					const serverlog: string = await new Schemas.Logging(
-						res.rows[0].logging
-					).data.serverlog;
-					if (cache == true) {
-						guild.Channels.serverlog = serverlog;
-					}
-					return serverlog;
-				}
-			} catch (error) {
-				console.log(error);
-			} finally {
-				con.release();
-			}
-		}
-		async Invitelog(id: Snowflake, force?: boolean, cache?: boolean) {
-			const con = await this.con.connect();
-			try {
-				if (!force) force = false;
-				if (!cache) cache = true;
-
-				const guild = this.cache.get(id);
-
-				if (this.cache.size == 0 || !guild) {
-					force = true;
-					cache = false;
-				}
-
-				if (force == false) {
-					if (cache == true) {
-						const res = await con.query(
-							`SELECT invitelog FROM GuildLogging WHERE guildId = '${id}'`
-						);
-						const invitelog: string = await new Schemas.Logging(
-							res.rows[0].logging
-						).data.invitelog;
-
-						guild.Channels.invitelog = invitelog;
-					}
-					return guild.Channels.invitelog;
-				}
-				if (force == true) {
-					const res = await con.query(
-						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
-					);
-					const invitelog: string = await new Schemas.Logging(
-						res.rows[0].logging
-					).data.invitelog;
-					if (cache == true) {
-						guild.Channels.invitelog = invitelog;
-					}
-					return invitelog;
-				}
-			} catch (error) {
-				console.log(error);
-			} finally {
-				con.release();
-			}
-		}
-		async Channellog(id: Snowflake, force?: boolean, cache?: boolean) {
-			const con = await this.con.connect();
-			try {
-				if (!force) force = false;
-				if (!cache) cache = true;
-
-				const guild = this.cache.get(id);
-
-				if (this.cache.size == 0 || !guild) {
-					force = true;
-					cache = false;
-				}
-
-				if (force == false) {
-					if (cache == true) {
-						const res = await con.query(
-							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
-						);
-						const channellog: string = await new Schemas.Logging(
-							res.rows[0].logging
-						).data.channellog;
-
-						guild.Channels.channellog = channellog;
-					}
-					return guild.Channels.channellog;
-				}
-				if (force == true) {
-					const res = await con.query(
-						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
-					);
-					const channellog: string = await new Schemas.Logging(
-						res.rows[0].logging
-					).data.channellog;
-					if (cache == true) {
-						guild.Channels.channellog = channellog;
-					}
-					return channellog;
-				}
-			} catch (error) {
-				console.log(error);
-			} finally {
-				con.release();
-			}
-		}
-		async Emojilog(id: Snowflake, force?: boolean, cache?: boolean) {
-			const con = await this.con.connect();
-			try {
-				if (!force) force = false;
-				if (!cache) cache = true;
-
-				const guild = this.cache.get(id);
-
-				if (this.cache.size == 0 || !guild) {
-					force = true;
-					cache = false;
-				}
-
-				if (force == false) {
-					if (cache == true) {
-						const res = await con.query(
-							`SELECT logging FROM Guilds WHERE guildId = '${id}'`
-						);
-						const emojilog: string = await new Schemas.Logging(
-							res.rows[0].logging
-						).data.emojilog;
-
-						guild.Channels.emojilog = emojilog;
-					}
-					return guild.Channels.emojilog;
-				}
-				if (force == true) {
-					const res = await con.query(
-						`SELECT logging FROM Guilds WHERE guildId = '${id}'`
-					);
-					const emojilog: string = await new Schemas.Logging(
-						res.rows[0].logging
-					).data.emojilog;
-					if (cache == true) {
-						guild.Channels.emojilog = emojilog;
-					}
-					return emojilog;
 				}
 			} catch (error) {
 				console.log(error);
@@ -1073,7 +754,7 @@ namespace Functions {
 
 						const index = await new Schemas.Welcome(res.rows[0].welcome).data;
 
-						const obj: Welcome = {
+						const obj: CachedGuildTypes.Welcome = {
 							isenabled: index.isenabled,
 							media: index.media,
 							message: index.message,
@@ -1091,7 +772,7 @@ namespace Functions {
 
 					const index = res.rows[0];
 
-					const obj: Welcome = {
+					const obj: CachedGuildTypes.Welcome = {
 						isenabled: index.isenabled,
 						media: index.media,
 						message: index.message,
@@ -1129,7 +810,7 @@ namespace Functions {
 
 						const index = await new Schemas.Leave(res.rows[0].leave).data;
 
-						const obj: Leave = {
+						const obj: CachedGuildTypes.Leave = {
 							isenabled: index.isenabled,
 							media: index.media,
 							message: index.message,
@@ -1147,7 +828,7 @@ namespace Functions {
 
 					const index = await new Schemas.Leave(res.rows[0].leave).data;
 
-					const obj: Leave = {
+					const obj: CachedGuildTypes.Leave = {
 						isenabled: index.isenabled,
 						media: index.media,
 						message: index.message,
@@ -1157,6 +838,49 @@ namespace Functions {
 						guild.leave = obj;
 					}
 					return obj;
+				}
+			} catch (error) {
+				console.log(error);
+			} finally {
+				con.release();
+			}
+		}
+		async Events(id: Snowflake, force?: boolean, cache?: boolean) {
+			const con = await this.con.connect();
+			try {
+				if (!force) force = false;
+				if (!cache) cache = true;
+
+				const guild = this.cache.get(id);
+
+				if (this.cache.size == 0 || !guild) {
+					force = true;
+					cache = false;
+				}
+
+				if (force == false) {
+					if (cache == true) {
+						const res = await con.query(
+							`SELECT events FROM Guilds WHERE guildId = '${id}'`
+						);
+
+						const index = await new Schemas.Events(res.rows[0].leave).data;
+
+						guild.Events = index;
+					}
+					return guild.Events;
+				}
+				if (force == true) {
+					const res = await con.query(
+						`SELECT leave FROM Guilds WHERE guildId = '${id}'`
+					);
+
+					const index = await new Schemas.Events(res.rows[0].leave).data;
+
+					if (cache == true) {
+						guild.Events = index;
+					}
+					return index;
 				}
 			} catch (error) {
 				console.log(error);
@@ -1196,7 +920,7 @@ namespace Functions {
 
 			const embed = new MessageEmbed()
 				.setAuthor(this.client.user.username, opts.iconURL)
-				.setTitle(this.Capitalize(opts.text))
+				.setTitle(this.Capitalize(opts.title == null ? opts.text : opts.title))
 				.setDescription(opts.description)
 				.setTimestamp()
 				.setThumbnail(opts.iconURL)
@@ -1581,19 +1305,19 @@ namespace Functions {
 				fields: [
 					{
 						name: `${this.Capitalize(strings.titles.guild_only)}?`,
-						value: `${
+						value: `\`${
 							command.getGuildonly() == true
 								? this.Capitalize(strings.values.yes)
 								: this.Capitalize(strings.values.no)
-						}`,
+						}\``,
 					},
 					{
 						name: `NSFW?`,
-						value: `${
+						value: `\`${
 							command.getNsfw() == true
 								? this.Capitalize(strings.values.yes)
 								: this.Capitalize(strings.values.no)
-						}`,
+						}\``,
 					},
 					{
 						name: `${this.Capitalize(strings.titles.owner_only)}?`,
@@ -1623,6 +1347,7 @@ namespace Functions {
 						name: this.Capitalize(strings.titles.subCommands),
 						value: subcommands,
 					},
+					{ name: this.Capitalize(strings.titles.example), value: examples },
 				],
 			});
 
@@ -1830,7 +1555,6 @@ namespace Functions {
 				data.push(obj);
 
 				await con.query(`BEGIN`);
-				console.log(data);
 				await con.query(
 					`UPDATE Guilds SET moderations = '${new Schemas.Moderations(
 						data
@@ -1843,7 +1567,23 @@ namespace Functions {
 				con.release();
 			}
 		}
-		async FetchModeration() {}
+		async FetchModeration(id: Snowflake, caseNumber: number) {
+			const con = await this.con.connect();
+			try {
+				const res = await con.query(
+					`SELECT moderations FROM Guilds WHERE guildid = '${id}'`
+				);
+				const { data } = new Schemas.Moderations(res.rows[0].moderations);
+				const moderation = data.filter((m) => m.caseNumber == caseNumber);
+
+				if (moderation.length == 0) return null;
+				return moderation[0];
+			} catch (error) {
+				console.log(error);
+			} finally {
+				con.release();
+			}
+		}
 	}
 }
 

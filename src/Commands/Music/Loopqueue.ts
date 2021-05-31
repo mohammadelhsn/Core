@@ -76,7 +76,7 @@ export default class LoopQueueCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					id: message.guild.id,
 					text: this,
-					success_message: 'Successfully `enabled` queue loop! 🔁',
+					success_message: '```Successfully enabled queue loop! 🔁```',
 				});
 				return message.channel.send({ embed: successEmbed });
 			} catch (e) {
@@ -97,7 +97,7 @@ export default class LoopQueueCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					id: message.guild.id,
 					text: this,
-					success_message: 'Successfully `disabled` queue loop! 🔁',
+					success_message: '```Successfully disabled queue loop! 🔁```',
 				});
 				return message.channel.send({ embed: successEmbed });
 			} catch (e) {

@@ -4,7 +4,23 @@ import { Message } from 'discord.js';
 
 export default class SealCommand extends BaseCommand {
 	constructor() {
-		super('seal', 'aww', []);
+		super(
+			'seal',
+			'aww',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		if (args[0]) {

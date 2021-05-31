@@ -4,7 +4,23 @@ import { Message } from 'discord.js';
 
 export default class UptimeCommand extends BaseCommand {
 	constructor() {
-		super('uptime', 'bot', []);
+		super(
+			'uptime',
+			'bot',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		if (args[0]) {

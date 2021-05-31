@@ -87,7 +87,7 @@ export default class ShuffleCommand extends BaseCommand {
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),
 			id: message.guild.id,
 			text: this,
-			success_message: '🔀 | Successfully shuffled the queue!',
+			success_message: '```Successfully shuffled the queue! 🔀```',
 		});
 
 		return message.channel.send({ embed: successEmbed });

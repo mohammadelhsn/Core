@@ -75,7 +75,7 @@ export default class LoopCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					id: message.guild.id,
 					text: this,
-					success_message: 'Successfully `enabled` loop! 🔁',
+					success_message: '```Successfully enabled loop! 🔁```',
 				});
 				return message.channel.send({ embed: successEmbed });
 			} catch (e) {
@@ -96,7 +96,7 @@ export default class LoopCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					id: message.guild.id,
 					text: this,
-					success_message: 'Successfully `disabled` loop! 🔁',
+					success_message: '```Successfully disabled loop! 🔁```',
 				});
 				return message.channel.send({ embed: successEmbed });
 			} catch (e) {

@@ -43,18 +43,18 @@ export default class RobloxCommand extends BaseCommand {
 
 			if (data.isBanned == true) {
 				const embed = this.Embed.Base({
-					iconURL: data.profile_url,
+					iconURL: data.thumbnail,
 					title: `${data.username} | Account status: Banned`,
 					description: data.bio,
 					text: this,
-					fields: [{ name: 'Join date', value: data.pastNames }],
+					fields: [{ name: 'Join date', value: data.joinDate }],
 				});
 
 				return message.channel.send({ embed: embed });
 			}
 
 			const embed = this.Embed.Base({
-				iconURL: data.profile_url,
+				iconURL: data.thumbnail,
 				title: `${data.username} | Status: Not banned`,
 				description: data.bio,
 				text: this,

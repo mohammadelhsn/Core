@@ -4,7 +4,23 @@ import { Message } from 'discord.js';
 
 export default class PandaCommand extends BaseCommand {
 	constructor() {
-		super('panda', 'category', []);
+		super(
+			'panda',
+			'category',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		if (args[0]) {

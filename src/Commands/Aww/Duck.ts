@@ -4,7 +4,23 @@ import { Message } from 'discord.js';
 
 export default class DuckCommand extends BaseCommand {
 	constructor() {
-		super('duck', 'aww', []);
+		super(
+			'duck',
+			'aww',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		if (args[0]) {

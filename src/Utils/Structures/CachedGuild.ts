@@ -6,6 +6,7 @@ import {
 	Leave,
 	Channels,
 	Strings,
+	events,
 } from './Interfaces/CachedGuild';
 
 export default class CachedGuild {
@@ -17,6 +18,7 @@ export default class CachedGuild {
 	leave: Leave;
 	Channels: Channels;
 	Strings: Strings;
+	Events: events;
 	constructor(items: Cached_Guild) {
 		this.id = items.id;
 		this.prefix = items.prefix;
@@ -25,6 +27,7 @@ export default class CachedGuild {
 		this.roles = items.roles;
 		this.leave = items.leave;
 		this.Channels = items.Channels;
+		this.Events = items.Events;
 		this.Strings = items.Strings;
 	}
 }

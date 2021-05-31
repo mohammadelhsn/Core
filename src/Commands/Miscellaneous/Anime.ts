@@ -1,7 +1,7 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
 import { Message } from 'discord.js';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 export default class AnimeCommand extends BaseCommand {
 	constructor() {
@@ -22,10 +22,7 @@ export default class AnimeCommand extends BaseCommand {
 		}
 
 		try {
-			/**
-			 * @type {axios.AxiosResponse}
-			 */
-			const res = await axios.get(
+			const res: AxiosResponse = await axios.get(
 				`https://kitsu.io/api/edge/anime?filter[text]=${query}`
 			);
 			const data = res.data.data;

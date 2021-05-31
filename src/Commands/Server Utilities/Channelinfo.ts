@@ -4,7 +4,23 @@ import { Message, TextChannel } from 'discord.js';
 
 export default class ChannelinfoCommand extends BaseCommand {
 	constructor() {
-		super('channelinfo', '', []);
+		super(
+			'channelinfo',
+			'server utilities',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const channel =
@@ -32,7 +48,10 @@ export default class ChannelinfoCommand extends BaseCommand {
 				description: `<#${channelinfo.id}>`,
 				fields: [
 					{ name: 'Channel name:', value: `\`${channelinfo.name}\`` },
-					{ name: 'Channel type', value: `\`${channelinfo.type}\`` },
+					{
+						name: 'Channel type',
+						value: `\`${this.Utils.Capitalize(channelinfo.type)}\``,
+					},
 					{ name: 'Deleted?', value: `\`${channelinfo.deleted}\`` },
 					{ name: 'NSFW?', value: `\`${channelinfo.nsfw}\`` },
 					{ name: 'Channel created at', value: `\`${channelinfo.createdAt}\`` },
@@ -63,7 +82,10 @@ export default class ChannelinfoCommand extends BaseCommand {
 				description: `<#${channel.id}>`,
 				fields: [
 					{ name: 'Channel name:', value: `\`${channelinfo.name}\`` },
-					{ name: 'Channel type', value: `\`${channelinfo.type}\`` },
+					{
+						name: 'Channel type',
+						value: `\`${this.Utils.Capitalize(channelinfo.type)}\``,
+					},
 					{ name: 'Deleted?', value: `\`${channelinfo.deleted}\`` },
 					{ name: 'NSFW?', value: `\`${channelinfo.nsfw}\`` },
 					{ name: 'Channel created at', value: `\`${channelinfo.createdAt}\`` },

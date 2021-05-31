@@ -62,19 +62,12 @@ namespace Constructors {
 		constructor(data?: Types.Channels | string) {
 			if (!data || data == undefined) {
 				this.data = {
-					memberlog: null,
 					modlog: null,
-					rolelog: null,
 					actionlog: null,
 					appeals: null,
 					reports: null,
-					messagelog: null,
-					emojilog: null,
-					invitelog: null,
 					publicmodlog: null,
-					serverlog: null,
 					suggestions: null,
-					channellog: null,
 				};
 			}
 			if (typeof data == 'string') this.data = JSON.parse(data);
@@ -176,7 +169,101 @@ namespace Constructors {
 			if (typeof data == 'object') this.data = data;
 		}
 		toString() {
-			return JSON.stringify(this.data)
+			return JSON.stringify(this.data);
+		}
+	}
+	export class Events {
+		public data: Types.events;
+		constructor(data?: Types.events | string) {
+			if (!data) {
+				this.data = {
+					channelCreate: {
+						enabled: false,
+						channel: null,
+					},
+					channelDelete: {
+						enabled: false,
+						channel: null,
+					},
+					channelUpdate: {
+						enabled: false,
+						channel: null,
+					},
+					emojiCreate: {
+						enabled: false,
+						channel: null,
+					},
+					emojiDelete: {
+						enabled: false,
+						channel: null,
+					},
+					emojiUpdate: {
+						enabled: false,
+						channel: null,
+					},
+					guildUpdate: {
+						enabled: false,
+						channel: null,
+					},
+					inviteCreate: {
+						enabled: false,
+						channel: null,
+					},
+					inviteDelete: {
+						enabled: false,
+						channel: null,
+					},
+					guildBanAdd: {
+						enabled: false,
+						channel: null,
+					},
+					guildBanRemove: {
+						enabled: false,
+						channel: null,
+					},
+					guildMemberAdd: {
+						enabled: false,
+						channel: null,
+					},
+					guildMemberRemove: {
+						enabled: false,
+						channel: null,
+					},
+					guildMemberUpdate: {
+						enabled: false,
+						channel: null,
+					},
+					messageDelete: {
+						enabled: false,
+						channel: null,
+					},
+					messageDeleteBulk: {
+						enabled: false,
+						channel: null,
+					},
+					messageUpdate: {
+						enabled: false,
+						channel: null,
+					},
+					voiceMemberJoin: {
+						enabled: false,
+						channel: null,
+					},
+					voiceMemberLeave: {
+						enabled: false,
+						channel: null,
+					},
+					voiceMemberMoved: {
+						enabled: false,
+						channel: null,
+					},
+				};
+			}
+			if (typeof data == 'string') this.data = JSON.parse(data);
+			if (typeof data == 'object') this.data = data;
+		}
+		toString() {
+			return JSON.stringify(this.data);
 		}
 	}
 }

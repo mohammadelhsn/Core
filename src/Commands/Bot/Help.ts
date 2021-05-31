@@ -4,7 +4,23 @@ import { Message, MessageEmbed } from 'discord.js';
 
 export default class HelpCommand extends BaseCommand {
 	constructor() {
-		super('help', 'bot', []);
+		super(
+			'help',
+			'bot',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const cmd = args[0];

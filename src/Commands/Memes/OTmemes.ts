@@ -2,11 +2,11 @@ import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
 import { Message } from 'discord.js';
 
-export default class KoalaCommand extends BaseCommand {
+export default class OTMemeCommand extends BaseCommand {
 	constructor() {
 		super(
-			'koala',
-			'category',
+			'otmeme',
+			'memes',
 			[],
 			'',
 			'',
@@ -22,7 +22,11 @@ export default class KoalaCommand extends BaseCommand {
 			'working'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {
+	async run(
+		client: DiscordClient,
+		message: Message,
+		args: string[]
+	): Promise<Message | void> {
 		if (args[0]) {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -31,47 +35,57 @@ export default class KoalaCommand extends BaseCommand {
 			});
 		}
 
-		const generatingEmbed = await this.GeneratingEmbed.SomeRandomApi({
+		const gEmbed = await this.GeneratingEmbed.Base({
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),
 			id: message.guild.id,
 			text: this,
+			provider: 'r/OTMemes',
 		});
-		const m = await message.channel.send({ embed: generatingEmbed });
+
+		const m = await message.channel.send({ embed: gEmbed });
 
 		try {
-			const res = await this.Animals.Koala();
+			const res = await this.Memes.OTmeme();
 
 			if (res.error == true) {
 				m.delete();
 
-				const errEmbed = await this.ErrorEmbed.ApiError({
+				const embed = await this.ErrorEmbed.ApiError({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					id: message.guild.id,
 					text: this,
 				});
-				const msg = await message.channel.send({ embed: errEmbed });
+
+				const msg = await message.channel.send({ embed: embed });
 				return msg.delete({ timeout: 10000 });
 			}
 
 			const embed = await this.ImageEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
-				title: 'Koala command',
-				description: client.database.get(message.guild.id).Strings
-					.SomeRandomAPI,
+				title: res.title,
+				description: res.text,
 				image: res.file,
+				link: res.link,
+				fields: [
+					{ name: 'Upvotes:', value: res.misc.upvotes, inline: true },
+					{ name: 'Downvotes:', value: res.misc.downvotes, inline: true },
+					{ name: 'Posted at:', value: res.misc.postedAt },
+				],
 			});
+
 			m.delete();
 			return message.channel.send({ embed: embed });
-		} catch (e) {
+		} catch (error) {
 			m.delete();
 
-			const errEmbed = await this.ErrorEmbed.UnexpectedError({
-				id: message.guild.id,
+			const embed = await this.ErrorEmbed.UnexpectedError({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				id: message.guild.id,
 				text: this,
 			});
-			return message.channel.send({ embed: errEmbed });
+
+			return message.channel.send({ embed: embed });
 		}
 	}
 }

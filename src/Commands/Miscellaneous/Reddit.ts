@@ -47,7 +47,6 @@ export default class RedditCommand extends BaseCommand {
 		if (type.toLowerCase() === 'user') {
 			try {
 				const data = await this.Miscellaneous.RedditUser(query);
-
 				const embed = await this.Embed.Base({
 					iconURL: data.file,
 					text: this,
@@ -58,7 +57,7 @@ export default class RedditCommand extends BaseCommand {
 						{
 							name: 'Total karma',
 							value: `\`${this.Utils.FormatNumber(
-								Number(data.misc.totalKarma)
+								parseInt(data.misc.totalKarma)
 							)}\``,
 						},
 						{
@@ -115,17 +114,15 @@ export default class RedditCommand extends BaseCommand {
 						},
 						{
 							name: 'Subscribers',
-							value: `\`${this.Utils.FormatNumber(
-								Number(data.misc.subscribers)
-							)}\``,
+							value: `\`${data.misc.subscribers}\``,
 						},
 						{
 							name: 'Accounts active:',
-							value: `\`${this.Utils.FormatNumber(Number(data.misc.active))}\``,
+							value: `\`${data.misc.active}\``,
 						},
 						{
 							name: 'Quarantined?',
-							value: `\`${data.misc.quarantine}\``,
+							value: `\`${data.misc.quarantined}\``,
 						},
 						{
 							name: 'NSFW?',

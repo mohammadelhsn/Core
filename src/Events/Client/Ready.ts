@@ -12,6 +12,7 @@ export default class ReadyEvent extends BaseEvent {
 		client.manager.init(client.user.id);
 
 		let status = `${client.guilds.cache.size} servers | ${client.users.cache.size} users`;
+
 		client.user.setPresence({
 			activity: { name: status, type: 'WATCHING' },
 			status: 'dnd',
@@ -21,18 +22,11 @@ export default class ReadyEvent extends BaseEvent {
 			const guildId = g[1].id;
 			const Prefix = await this.Settings.Prefix(guildId, true, false);
 			const Lang = await this.Translator.Getlang(guildId, true, false);
-			const Memberlog = await this.Channels.Memberlog(guildId, true, false);
 			const Modlog = await this.Channels.Modlog(guildId, true, false);
-			const Rolelog = await this.Channels.Rolelog(guildId, true, false);
 			const Appeals = await this.Channels.Appeals(guildId, true, false);
 			const Reports = await this.Channels.Reports(guildId, true, false);
 			const Actionlog = await this.Channels.Actionlog(guildId, true, false);
 			const Suggestions = await this.Channels.Suggestions(guildId, true, false);
-			const Messagelog = await this.Channels.Messagelog(guildId, true, false);
-			const Serverlog = await this.Channels.Serverlog(guildId, true, false);
-			const Invitelog = await this.Channels.Invitelog(guildId, true, false);
-			const Channellog = await this.Channels.Channellog(guildId, true, false);
-			const Emojilog = await this.Channels.Emojilog(guildId, true, false);
 			const Publicmodlog = await this.Channels.Publicmodlog(
 				guildId,
 				true,
@@ -44,6 +38,7 @@ export default class ReadyEvent extends BaseEvent {
 			const Warningrole = await this.Settings.Warningrole(guildId, true, false);
 			const Welcome = await this.Settings.WelcomeSystem(guildId, true, false);
 			const Leave = await this.Settings.LeaveSystem(guildId, true, false);
+			const Events = await this.Settings.Events(guildId, true, false);
 			const guild = new Guild({
 				id: guildId,
 				prefix: Prefix,
@@ -57,19 +52,34 @@ export default class ReadyEvent extends BaseEvent {
 					warningrole: Warningrole,
 				},
 				Channels: {
-					memberlog: Memberlog,
 					modlog: Modlog,
-					rolelog: Rolelog,
 					appeals: Appeals,
 					reports: Reports,
 					actionlog: Actionlog,
 					suggestions: Suggestions,
-					messagelog: Messagelog,
-					serverlog: Serverlog,
-					invitelog: Invitelog,
-					channellog: Channellog,
-					emojilog: Emojilog,
 					publicmodlog: Publicmodlog,
+				},
+				Events: {
+					channelCreate: Events.channelCreate,
+					channelDelete: Events.channelDelete,
+					channelUpdate: Events.channelUpdate,
+					emojiCreate: Events.emojiCreate,
+					emojiDelete: Events.emojiDelete,
+					emojiUpdate: Events.emojiUpdate,
+					guildBanAdd: Events.guildBanAdd,
+					guildBanRemove: Events.guildBanRemove,
+					guildMemberAdd: Events.guildBanAdd,
+					guildMemberRemove: Events.guildMemberRemove,
+					guildMemberUpdate: Events.guildMemberUpdate,
+					inviteCreate: Events.inviteCreate,
+					inviteDelete: Events.inviteDelete,
+					voiceMemberJoin: Events.voiceMemberJoin,
+					voiceMemberLeave: Events.voiceMemberLeave,
+					voiceMemberMoved: Events.voiceMemberMoved,
+					guildUpdate: Events.guildUpdate,
+					messageDelete: Events.messageDelete,
+					messageDeleteBulk: Events.messageDeleteBulk,
+					messageUpdate: Events.messageUpdate,
 				},
 				Strings: {
 					error_message: this.Utils.Capitalize(

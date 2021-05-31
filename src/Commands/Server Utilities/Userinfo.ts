@@ -4,7 +4,23 @@ import { Message, UserFlags } from 'discord.js';
 
 export default class UserinfoCommand extends BaseCommand {
 	constructor() {
-		super('userinfo', 'bot', []);
+		super(
+			'userinfo',
+			'server utilities',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const userflag = {

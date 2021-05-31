@@ -7,6 +7,32 @@ namespace CachedGuildTypes {
 		media?: string;
 		message?: string;
 	}
+	export interface event {
+		enabled: boolean;
+		channel: string;
+	}
+	export interface events {
+		channelCreate: event;
+		channelDelete: event;
+		channelUpdate: event;
+		emojiCreate: event;
+		emojiDelete: event;
+		emojiUpdate: event;
+		guildUpdate: event;
+		inviteCreate: event;
+		inviteDelete: event;
+		guildBanAdd: event;
+		guildBanRemove: event;
+		guildMemberAdd: event;
+		guildMemberRemove: event;
+		guildMemberUpdate: event;
+		messageDelete: event;
+		messageDeleteBulk: event;
+		messageUpdate: event;
+		voiceMemberJoin: event;
+		voiceMemberLeave: event;
+		voiceMemberMoved: event;
+	}
 
 	export interface Leave {
 		channel: Snowflake | null | 'null';
@@ -23,18 +49,11 @@ namespace CachedGuildTypes {
 	}
 
 	export interface Channels {
-		memberlog: Snowflake | null;
 		modlog: Snowflake | null;
-		rolelog: Snowflake | null;
 		appeals: Snowflake | null;
 		reports: Snowflake | null;
 		actionlog: Snowflake | null;
 		suggestions: Snowflake | null;
-		messagelog: Snowflake | null;
-		serverlog: Snowflake | null;
-		invitelog: Snowflake | null;
-		channellog: Snowflake | null;
-		emojilog: Snowflake | null;
 		publicmodlog: Snowflake | null;
 	}
 
@@ -82,6 +101,7 @@ namespace CachedGuildTypes {
 		roles: Roles;
 		Channels: Channels;
 		Strings: Strings;
+		Events: events;
 	}
 
 	export interface Blacklisted {

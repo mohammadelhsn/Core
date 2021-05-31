@@ -4,7 +4,23 @@ import { Message } from 'discord.js';
 
 export default class WoofCommand extends BaseCommand {
 	constructor() {
-		super('woof', 'category', []);
+		super(
+			'woof',
+			'category',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		if (args[0]) {

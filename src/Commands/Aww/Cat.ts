@@ -4,7 +4,23 @@ import { Message } from 'discord.js';
 
 export default class CatCommand extends BaseCommand {
 	constructor() {
-		super('cat', 'aww', []);
+		super(
+			'cat',
+			'aww',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		if (args[0]) {

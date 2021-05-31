@@ -8,7 +8,7 @@
 	"green": "#1BFF00",
 	"green_light": "#97FF00",
 	"blue_dark": "#00008b",
-	"blue": "0000ff",
+	"blue": "#0000ff",
 	"blue_light": "#add8e6",
 	"blurple": "#7289DA",
 	"purple_dark": "#6a006a",
@@ -21,6 +21,5 @@
 	"gold": "#daa520",
 	"cyan": "#00ffff",
 	"cream": "#fffdd0",
-	"khaki": "#F0E68C",
-	"white": "#ffffff"
+	"khaki": "#F0E68C"
 }

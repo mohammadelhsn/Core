@@ -60,14 +60,13 @@ export default class GoogleCommand extends BaseCommand {
 			return msg.delete({ timeout: 10000 });
 		}
 
-		const embed = await this.ImageEmbed.Base({
-			iconURL: message.author.displayAvatarURL({ dynamic: true }),
+		const embed = await this.Embed.Base({
+			iconURL: href.pagemap.cse_thumbnail
+				? href.pagemap.cse_thumbnail[0].src
+				: message.author.displayAvatarURL({ dynamic: true }),
 			text: this,
 			title: href.title,
 			description: href.snippet,
-			image: href.pagemap.cse_thumbnail
-				? href.pagemap.cse_thumbnail[0].src
-				: null,
 			link: href.link,
 		});
 		return message.channel.send({ embed: embed });

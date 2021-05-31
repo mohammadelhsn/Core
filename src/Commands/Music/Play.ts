@@ -79,6 +79,8 @@ export default class PlayCommand extends BaseCommand {
 			});
 		}
 
+		console.log(client.manager.nodes);
+
 		const player = client.manager.create({
 			guild: message.guild.id,
 			voiceChannel: message.member.voice.channel.id,

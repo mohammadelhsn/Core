@@ -4,7 +4,23 @@ import { Message } from 'discord.js';
 
 export default class MembercountCommand extends BaseCommand {
 	constructor() {
-		super('membercount', 'bot', []);
+		super(
+			'membercount',
+			'server utilities',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const membercount = {

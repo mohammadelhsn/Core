@@ -20,7 +20,7 @@ export default class UrbanCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'working'
+			'WIP'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {

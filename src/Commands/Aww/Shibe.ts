@@ -4,7 +4,23 @@ import { Message } from 'discord.js';
 
 export default class ShibeCommand extends BaseCommand {
 	constructor() {
-		super('shibe', 'aww', []);
+		super(
+			'shibe',
+			'aww',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const lang = await this.Translator.Getlang(message.guild.id);
