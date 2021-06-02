@@ -2,10 +2,10 @@ import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
 import { Message, MessageAttachment } from 'discord.js';
 
-export default class CaptchaCommand extends BaseCommand {
+export default class PrideCommand extends BaseCommand {
 	constructor() {
 		super(
-			'captcha',
+			'pride',
 			'canvas',
 			[],
 			'',
@@ -31,25 +31,21 @@ export default class CaptchaCommand extends BaseCommand {
 			text: this,
 		});
 
-		let text = args.slice(1).join(' ');
-
 		if (message.mentions.members.size == 1) {
 			const m = await message.channel.send({ embed: gEmbed });
 
 			const user = message.mentions.members.first();
 
-			if (!text) text = user.user.username;
-
 			const avatar = user.user.displayAvatarURL({ format: 'png' });
-			const image = await this.Canvas.Captcha(avatar, text);
-			const file = new MessageAttachment(image.file, 'captcha.png');
+			const image = this.Canvas.Pride(avatar);
+			const file = new MessageAttachment(image.file, 'pride.png');
 
 			const embed = await this.ImageEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
-				title: 'Captcha command',
+				title: 'Pride command',
 				description: guild.Strings.NekosBot,
-				image: 'attachment://captcha.png',
+				image: 'attachment://pride.png',
 			});
 
 			m.delete();
@@ -61,18 +57,16 @@ export default class CaptchaCommand extends BaseCommand {
 
 			const user = message.author;
 
-			if (!text) text = user.username;
-
 			const avatar = user.displayAvatarURL({ format: 'png' });
-			const image = await this.Canvas.Captcha(avatar, text);
-			const file = new MessageAttachment(image.file, 'captcha.png');
+			const image = await this.Canvas.Pride(avatar);
+			const file = new MessageAttachment(image.file, 'pride.png');
 
 			const embed = await this.ImageEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
-				title: 'Captcha command',
+				title: 'Pride command',
 				description: guild.Strings.NekosBot,
-				image: 'attachment://captcha.png',
+				image: 'attachment://pride.png',
 			});
 
 			m.delete();
@@ -117,51 +111,21 @@ export default class CaptchaCommand extends BaseCommand {
 					.mentions.members.first()
 					?.user?.displayAvatarURL({ format: 'png' });
 
-			const dEmbed = this.Embed.Base({
+			const m = await message.channel.send({ embed: gEmbed });
+
+			const image = this.Canvas.Pride(attach);
+			const file = new MessageAttachment(image.file, 'pride.png');
+
+			const embed = await this.ImageEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
-				description: 'Please reply with some text',
+				title: 'Pride command',
+				description: guild.Strings.NekosBot,
+				image: 'attachment://pride.png',
 			});
 
-			await message.channel.send({ embed: dEmbed });
-
-			const secondColl = await message.channel.awaitMessages(
-				isFromAuthor,
-				options
-			);
-
-			if (secondColl.size > 0) {
-				const attach2 = secondColl.first().content;
-
-				const m = await message.channel.send(gEmbed);
-
-				try {
-					const image = await this.Canvas.Captcha(attach, attach2);
-					const file = new MessageAttachment(image.file, 'captcha.png');
-
-					const embed = await this.ImageEmbed.Base({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						text: this,
-						title: 'Captcha command',
-						description: guild.Strings.NekosBot,
-						image: 'attachment://captcha.png',
-					});
-
-					m.delete();
-					return message.channel.send({ files: [file], embed: embed });
-				} catch (e) {
-					console.log(e);
-
-					m.delete();
-					const embed = await this.ErrorEmbed.UnexpectedError({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						id: message.guild.id,
-						text: this,
-					});
-
-					return message.channel.send({ embed: embed });
-				}
-			} else timedOut = true;
+			m.delete();
+			return message.channel.send({ files: [file], embed: embed });
 		} else timedOut = true;
 
 		if (timedOut === true) {

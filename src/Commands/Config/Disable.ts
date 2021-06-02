@@ -19,7 +19,7 @@ export default class DisableCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
@@ -43,11 +43,17 @@ export default class DisableCommand extends BaseCommand {
 		};
 		//["music", "owner", "reaction images", "server utilities"]
 
-		const toDisable = args[0];
+		const toDisable = args.join(' ');
 
 		const value: BaseCommand | string =
 			client.commands.get(toDisable) ||
 			client.commands.get(client.aliases.get(toDisable)) ||
-			categories[toDisable];
+			categories[`${toDisable}`];
+
+		if (!value) {
+			console.log("Specified thing doesn't exist!");
+		}
+
+		console.log(value);
 	}
 }

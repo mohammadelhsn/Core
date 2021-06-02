@@ -2,10 +2,10 @@ import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
 import { Message, MessageAttachment } from 'discord.js';
 
-export default class BaguetteCommand extends BaseCommand {
+export default class WastedCommand extends BaseCommand {
 	constructor() {
 		super(
-			'baguette',
+			'wasted',
 			'canvas',
 			[],
 			'',
@@ -38,20 +38,22 @@ export default class BaguetteCommand extends BaseCommand {
 
 			try {
 				const avatar = mention.user.displayAvatarURL({ format: 'png' });
-				const image = await this.Canvas.Baguette(avatar);
-				const file = new MessageAttachment(image.file, 'baguette.png');
+				const image = await this.Canvas.Wasted(avatar);
+				const file = new MessageAttachment(image.file, 'wasted.png');
 
 				const embed = await this.ImageEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
-					title: 'Baguette command',
-					description: guild.Strings.NekosBot,
-					image: 'attachment://baguette.png',
+					title: 'Wasted command',
+					description: guild.Strings.DiscordIG,
+					image: 'attachment://wasted.png',
 				});
 
 				m.delete();
 				return message.channel.send({ files: [file], embed: embed });
 			} catch (error) {
+				console.log(error);
+
 				m.delete();
 				const embed = await this.ErrorEmbed.UnexpectedError({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -63,41 +65,43 @@ export default class BaguetteCommand extends BaseCommand {
 			}
 		}
 
-		if (args[0] && args[0].toLowerCase().includes('help')) {
-			return await this.HelpEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				command: this,
-				message: message,
-			});
-		}
-		if (args[0] && args[0].toLowerCase().includes('me')) {
-			const m = await message.channel.send({ embed: gEmbed });
-
-			try {
-				const avatar = message.author.displayAvatarURL({ format: 'png' });
-				const image = await this.Canvas.Baguette(avatar);
-				const file = new MessageAttachment(image.file, 'baguette.png');
-
-				const embed = await this.ImageEmbed.Base({
+		if (args[0]) {
+			if (args[0].toLowerCase().includes('help')) {
+				return await this.HelpEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					text: this,
-					title: 'Baguette command',
-					description: guild.Strings.NekosBot,
-					image: 'attachment://baguette.png',
+					command: this,
+					message: message,
 				});
+			}
+			if (args[0].toLowerCase().includes('me')) {
+				const m = await message.channel.send({ embed: gEmbed });
 
-				m.delete();
-				return message.channel.send({ files: [file], embed: embed });
-			} catch (error) {
-				m.delete();
+				try {
+					const avatar = message.author.displayAvatarURL({ format: 'png' });
+					const image = await this.Canvas.Wasted(avatar);
+					const file = new MessageAttachment(image.file, 'wasted.png');
 
-				const embed = await this.ErrorEmbed.UnexpectedError({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					id: message.guild.id,
-					text: this,
-				});
+					const embed = await this.ImageEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: this,
+						title: 'Wasted command',
+						description: guild.Strings.DiscordIG,
+						image: 'attachment://wasted.png',
+					});
 
-				return message.channel.send({ embed: embed });
+					m.delete();
+					return message.channel.send({ files: [file], embed: embed });
+				} catch (error) {
+					m.delete();
+
+					const embed = await this.ErrorEmbed.UnexpectedError({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						id: message.guild.id,
+						text: this,
+					});
+
+					return message.channel.send({ embed: embed });
+				}
 			}
 		}
 
@@ -106,15 +110,15 @@ export default class BaguetteCommand extends BaseCommand {
 
 			try {
 				const avatar = message.attachments.first().url;
-				const image = await this.Canvas.Baguette(avatar);
-				const file = new MessageAttachment(image.file, 'baguette.png');
+				const image = await this.Canvas.Wasted(avatar);
+				const file = new MessageAttachment(image.file, 'wasted.png');
 
 				const embed = await this.ImageEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
-					title: 'Baguette command',
-					description: guild.Strings.NekosBot,
-					image: 'attachment://baguette.png',
+					title: 'Wasted command',
+					description: guild.Strings.DiscordIG,
+					image: 'attachment://wasted.png',
 				});
 
 				m.delete();
@@ -143,7 +147,7 @@ export default class BaguetteCommand extends BaseCommand {
 		const tEmbed = await this.Embed.Base({
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),
 			text: this,
-			title: 'Baguette command',
+			title: 'Wasted command',
 			description: `Please send the first image you want.`,
 		});
 		await message.channel.send({ embed: tEmbed });
@@ -170,15 +174,15 @@ export default class BaguetteCommand extends BaseCommand {
 
 				try {
 					const avatar = firstColl.first().attachments.first().url;
-					const image = await this.Canvas.Baguette(avatar);
-					const file = new MessageAttachment(image.file, 'baguette.png');
+					const image = await this.Canvas.Wasted(avatar);
+					const file = new MessageAttachment(image.file, 'wasted.png');
 
 					const embed = await this.ImageEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
-						title: 'Baguette command',
-						description: guild.Strings.NekosBot,
-						image: 'attachment://baguette.png',
+						title: 'Wasted command',
+						description: guild.Strings.DiscordIG,
+						image: 'attachment://wasted.png',
 					});
 
 					m.delete();

@@ -5,8 +5,6 @@ import moment from 'moment';
 import { Utils } from './Functions';
 import BaseObj from './Structures/BaseObj';
 
-dotenv.config();
-
 namespace API {
 	export class Animals {
 		async Alpaca(): Promise<BaseObj> {
@@ -587,7 +585,7 @@ namespace API {
 				});
 			}
 		}
-		Gay(image: string) {
+		Pride(image: string) {
 			try {
 				const link = `https://some-random-api.ml/canvas/gay/?avatar=${image}`;
 				return new BaseObj({
@@ -604,7 +602,7 @@ namespace API {
 				});
 			}
 		}
-		async iPhoneX(image: string) {
+		async Phone(image: string) {
 			try {
 				const res = await axios.get(
 					`https://nekobot.xyz/api/imagegen?type=iphonex&url=${image}`

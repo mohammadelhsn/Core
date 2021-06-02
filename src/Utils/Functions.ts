@@ -888,6 +888,72 @@ namespace Functions {
 				con.release();
 			}
 		}
+		async Disabled(id: Snowflake) {
+			const con = await this.con.connect();
+
+			try {
+				const res = await con.query(`SELECT disableditems FROM Guilds WHERE guildid = '${id}'`)
+				const data = res.rows.length > 0 ? new Schemas.Disabled(res.rows[0].disableditems) : null;
+				return data;
+			} finally {
+				con.release();
+			}
+		}
+		async Logging(id: Snowflake) {
+			const con = await this.con.connect();
+
+			try {
+				const res = await con.query(`SELECT logging FROM Guilds WHERE guildid = '${id}'`);
+				const data = res.rows.length > 0 ? new Schemas.Logging(res.rows[0].logging) : null;
+				return data;
+			} finally {
+				con.release();
+			}
+		}
+		async Protected(id: Snowflake) {
+			const con = await this.con.connect();
+
+			try {
+				const res = await con.query(`SELECT protected FROM Guilds WHERE guildid = '${id}'`);
+				const data = res.rows.length > 0 ? new Schemas.Protected(res.rows[0].protected) : null;
+				return data;
+			} finally {
+				con.release();
+			}
+		}
+		async Tags(id: Snowflake) {
+			const con = await this.con.connect();
+
+			try {
+				const res = await con.query(`SELECT tags FROM Guilds WHERE guildid = '${id}'`);
+				const data = res.rows.length > 0 ? new Schemas.Tags(res.rows[0].tags) : null;
+				return data;
+			} finally {
+				con.release();
+			}
+		}
+		async Ranks(id: Snowflake) {
+			const con = await this.con.connect();
+
+			try {
+				const res = await con.query(`SELECT ranks FROM Guilds WHERE guildid = '${id}'`);
+				const data = res.rows.length > 0 ? new Schemas.Ranks(res.rows[0].ranks) :  null;
+				return data;
+			} finally {
+				con.release();
+			}
+		}
+		async Notes(id: Snowflake) {
+			const con = await this.con.connect();
+
+			try {
+				const res = await con.query(`SELECT notes FROM Guilds WHERE guildid = '${id}'`);
+				const data = res.rows.length > 0 ? new Schemas.Notes(res.rows[0].notes) : null;
+				return data;
+			} finally {
+				con.release();
+			}
+		}
 	}
 	export class Economy {}
 	export class Xp {}

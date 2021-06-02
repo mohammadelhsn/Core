@@ -66,43 +66,41 @@ export default class AdCommand extends BaseCommand {
 			}
 		}
 
-		if (args[0]) {
-			if (args[0].toLowerCase().includes('help')) {
-				return await this.HelpEmbed.Base({
+		if (args[0] && args[0].toLowerCase().includes('help')) {
+			return await this.HelpEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				command: this,
+				message: message,
+			});
+		}
+		if (args[0] && args[0].toLowerCase().includes('me')) {
+			const m = await message.channel.send({ embed: gEmbed });
+
+			try {
+				const avatar = message.author.displayAvatarURL({ format: 'png' });
+				const image = await new Ad().getImage(avatar);
+				const file = new MessageAttachment(image, 'ad.png');
+
+				const embed = await this.ImageEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					command: this,
-					message: message,
+					text: this,
+					title: 'Ad command',
+					description: guild.Strings.DiscordIG,
+					image: 'attachment://ad.png',
 				});
-			}
-			if (args[0].toLowerCase().includes('me')) {
-				const m = await message.channel.send({ embed: gEmbed });
 
-				try {
-					const avatar = message.author.displayAvatarURL({ format: 'png' });
-					const image = await new Ad().getImage(avatar);
-					const file = new MessageAttachment(image, 'ad.png');
+				m.delete();
+				return message.channel.send({ files: [file], embed: embed });
+			} catch (error) {
+				m.delete();
 
-					const embed = await this.ImageEmbed.Base({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						text: this,
-						title: 'Ad command',
-						description: guild.Strings.DiscordIG,
-						image: 'attachment://ad.png',
-					});
+				const embed = await this.ErrorEmbed.UnexpectedError({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					id: message.guild.id,
+					text: this,
+				});
 
-					m.delete();
-					return message.channel.send({ files: [file], embed: embed });
-				} catch (error) {
-					m.delete();
-
-					const embed = await this.ErrorEmbed.UnexpectedError({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						id: message.guild.id,
-						text: this,
-					});
-
-					return message.channel.send({ embed: embed });
-				}
+				return message.channel.send({ embed: embed });
 			}
 		}
 
@@ -151,6 +149,7 @@ export default class AdCommand extends BaseCommand {
 			title: 'Ad command',
 			description: `Please send the first image you want.`,
 		});
+
 		await message.channel.send({ embed: tEmbed });
 
 		const firstColl = await message.channel.awaitMessages(
@@ -158,46 +157,49 @@ export default class AdCommand extends BaseCommand {
 			options
 		);
 
-		if (firstColl.size > 0) {
-			if (firstColl.first()?.content == 'cancel') {
-				const embed = await this.SuccessEmbed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					id: message.guild.id,
-					text: this,
-					success_message: 'Successfully cancelled selection',
-				});
+		if (firstColl.size == 0) timedOut = true;
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
-			}
-			if (firstColl.first().attachments.size > 0) {
-				const m = await message.channel.send({ embed: gEmbed });
-
-				try {
-					const avatar = firstColl.first().attachments.first().url;
-					const image = await new Ad().getImage(avatar);
-					const file = new MessageAttachment(image, 'ad.png');
-
-					const embed = await this.ImageEmbed.Base({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						text: this,
-						title: 'Ad command',
-						description: guild.Strings.DiscordIG,
-						image: 'attachment://ad.png',
-					});
-
-					m.delete();
-					return message.channel.send({ files: [file], embed: embed });
-				} catch (error) {}
-			} else timedOut = true;
-		} else timedOut = true;
-
-		if (timedOut == true) {
-			const embed = await this.ErrorEmbed.Base({
+		if (timedOut == false && firstColl.first()?.content == 'cancel') {
+			const embed = await this.SuccessEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				id: message.guild.id,
 				text: this,
-				error_message: 'Command timed out',
+				success_message: 'Successfully cancelled selection',
+			});
+
+			const msg = await message.channel.send({ embed: embed });
+			return msg.delete({ timeout: 10000 });
+		}
+
+		if (firstColl.first().attachments.size == 0) timedOut = true;
+
+		if (timedOut == false && firstColl.first().attachments.size > 0) {
+			const m = await message.channel.send({ embed: gEmbed });
+
+			try {
+				const avatar = firstColl.first().attachments.first().url;
+				const image = await new Ad().getImage(avatar);
+				const file = new MessageAttachment(image, 'ad.png');
+
+				const embed = await this.ImageEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					title: 'Ad command',
+					description: guild.Strings.DiscordIG,
+					image: 'attachment://ad.png',
+				});
+
+				m.delete();
+				return message.channel.send({ files: [file], embed: embed });
+			} catch (error) {}
+		}
+
+		if (timedOut == true) {
+			const embed = await this.SuccessEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				id: message.guild.id,
+				text: this,
+				success_message: 'Successfully cancelled selection',
 			});
 
 			const msg = await message.channel.send({ embed: embed });
