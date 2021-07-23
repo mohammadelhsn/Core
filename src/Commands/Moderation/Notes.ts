@@ -19,8 +19,141 @@ export default class NotesCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {}
+	async run(
+		client: DiscordClient,
+		message: Message,
+		args: string[]
+	): Promise<Message | void> {
+		if (!message.member.hasPermission('MANAGE_GUILD' || 'ADMINISTRATOR')) {
+			const embed = await this.ErrorEmbed.UserPermissions({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				id: message.guild.id,
+				perms: ['MANAGE_GUILD', 'ADMINISTRATOR'],
+			});
+
+			const msg = await message.channel.send({ embed: embed });
+			return msg.delete({ timeout: 10000 });
+		}
+
+		if (!args[0]) {
+			const embed = await this.ErrorEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				id: message.guild.id,
+				error_message: 'You must specify a user!',
+			});
+
+			const msg = await message.channel.send({ embed: embed });
+			return msg.delete({ timeout: 10000 });
+		}
+
+		const user =
+			message.mentions.members.first() ||
+			message.guild.members.cache.find((u) => u.id == args[0]) ||
+			message.guild.members.cache.find((u) => u.user.username == args[0]) ||
+			message.guild.members.cache.find((u) => u.nickname == args[0]);
+
+		if (!user) {
+			const embed = await this.ErrorEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				id: message.guild.id,
+				error_message: "I couldn't find this user!",
+			});
+
+			const msg = await message.channel.send({ embed: embed });
+			return msg.delete({ timeout: 10000 });
+		}
+
+		const identifier = args[1];
+
+		const notes = await this.Settings.Notes(message.guild.id);
+
+		if (identifier) {
+			const filtered = notes.data.filter(
+				(note) =>
+					note.identifier.toLowerCase() == identifier.toLowerCase() &&
+					note.userid == user.id
+			);
+
+			if (filtered.length > 0) {
+				const index = filtered[0];
+
+				const noted = message.guild.members.cache.get(index.userid);
+
+				const embed = this.Embed.Base({
+					iconURL: noted.user.displayAvatarURL({ dynamic: true }),
+					text: this,
+					title: `Notes command | ${identifier}`,
+					description: `Content: ${index.content}`,
+				});
+
+				return message.channel.send({ embed: embed });
+			}
+
+			if (filtered.length == 0) {
+				const embed = await this.ErrorEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					id: message.guild.id,
+					error_message:
+						"I couldn't find this note for this user with this identifier",
+				});
+
+				const msg = await message.channel.send({ embed: embed });
+				return msg.delete({ timeout: 10000 });
+			}
+		}
+
+		const filtered = notes.data.filter((note) => note.userid == user.id);
+
+		const embeds = [];
+
+		const noted = message.guild.members.cache.get(user.id);
+
+		if (filtered.length == 1) {
+			const note = filtered[0];
+
+			const embed = this.Embed.Base({
+				iconURL: noted.user.displayAvatarURL({ dynamic: true }),
+				text: this,
+				title: `Notes command | ${note.identifier}`,
+				description: `Content: ${note.content}`,
+			});
+
+			return message.channel.send({ embed: embed });
+		}
+
+		if (filtered.length == 0) {
+			const embed = await this.ErrorEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				id: message.guild.id,
+				error_message: "I couldn't find any notes for this user!",
+			});
+
+			const msg = await message.channel.send({ embed: embed });
+			return msg.delete({ timeout: 10000 });
+		}
+
+		for (let note of filtered) {
+			const embed = this.Embed.Base({
+				iconURL: noted.user.displayAvatarURL({ dynamic: true }),
+				text: this,
+				title: `Notes command | ${note.identifier}`,
+				description: `Content: ${note.content}`,
+			});
+
+			embeds.push(embed);
+		}
+
+		return await this.Utils.Paginate(message, {
+			embeds: embeds,
+			timeout: 600000,
+		});
+	}
 }

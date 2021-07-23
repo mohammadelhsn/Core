@@ -19,8 +19,125 @@ export default class EnableCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {}
+	async run(
+		client: DiscordClient,
+		message: Message,
+		args: string[]
+	): Promise<Message> {
+		if (!message.member.hasPermission(['MANAGE_GUILD' || 'ADMINISTRATOR'])) {
+			const embed = await this.ErrorEmbed.UserPermissions({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				id: message.guild.id,
+				perms: ['MANAGE_GUILD', 'ADMINISTRATOR'],
+			});
+
+			const msg = await message.channel.send({ embed: embed });
+			return msg.delete({ timeout: 10000 });
+		}
+
+		const toEnable = args.join(' ');
+
+		const categories = {
+			aww: 'aww',
+			bot: 'bot',
+			config: 'config',
+			canvas: 'canvas',
+			facts: 'facts',
+			fun: 'fun',
+			logging: 'logging',
+			manager: 'manager',
+			memes: 'memes',
+			owner: 'owner',
+			miscellaneous: 'miscellaneous',
+			moderation: 'moderation',
+			music: 'music',
+			'reaction images': 'reaction images',
+			'server utilities': 'server utilities',
+		};
+
+		const value: BaseCommand | string =
+			client.commands.get(toEnable) ||
+			client.commands.get(client.aliases.get(toEnable)) ||
+			categories[`${toEnable}`];
+
+		const con = await this.con.connect();
+
+		try {
+			const disabled = await this.Settings.Disabled(message.guild.id);
+
+			if (typeof value == 'string') {
+				if (disabled.data.categories.includes(value)) {
+					const newValue = disabled.data.categories.filter((c) => c != value);
+
+					disabled.data.categories = newValue;
+
+					await con.query(`BEGIN`);
+					await con.query(
+						`UPDATE Guilds SET disableditems = '${disabled.toString()}' WHERE guildid = '${
+							message.guild.id
+						}'`
+					);
+					await con.query(`COMMIT`);
+
+					const embed = await this.SuccessEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: this,
+						id: message.guild.id,
+						success_message: `Successfully enabled \`${value}\``,
+					});
+
+					return message.channel.send({ embed: embed });
+				}
+
+				const embed = await this.ErrorEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					id: message.guild.id,
+					error_message: 'This category is already enabled.',
+				});
+
+				const msg = await message.channel.send({ embed: embed });
+				return msg.delete({ timeout: 10000 });
+			}
+			if (disabled.data.commands.includes(value.getName())) {
+				const newValue = disabled.data.commands.filter(
+					(c) => c != value.getName()
+				);
+
+				disabled.data.commands = newValue;
+
+				await con.query(`BEGIN`);
+				await con.query(
+					`UPDATE Guilds SET disableditems = '${disabled.toString()}' WHERE guildid = '${
+						message.guild.id
+					}'`
+				);
+				await con.query(`COMMIT`);
+
+				const embed = await this.SuccessEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					id: message.guild.id,
+					success_message: `Successfully enabled \`${value.getName()}\``,
+				});
+
+				return message.channel.send({ embed: embed });
+			}
+			const embed = await this.ErrorEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				id: message.guild.id,
+				error_message: 'This command is already enabled.',
+			});
+
+			const msg = await message.channel.send({ embed: embed });
+			return msg.delete({ timeout: 10000 });
+		} finally {
+			con.release();
+		}
+	}
 }

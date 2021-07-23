@@ -32,6 +32,7 @@ export default class AnnounceCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				id: message.guild.id,
+				perms: ['MANAGE_GUILD', 'ADMINISTRATOR'],
 			});
 
 			const msg = await message.channel.send({ embed: errorEmbed });

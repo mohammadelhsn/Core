@@ -25,6 +25,33 @@ export default class MessageEvent extends BaseEvent {
 				client.commands.get(client.aliases.get(cmdName.toLowerCase()));
 
 			if (command) {
+				const { data } = await this.Settings.Disabled(message.guild.id);
+				const { commands, categories } = data;
+
+				if (commands.includes(command.getName())) {
+					const embed = await this.ErrorEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: 'Message event',
+						id: message.guild.id,
+						error_message: 'This command is disabled in this guild!',
+					});
+
+					const msg = await message.channel.send({ embed: embed });
+					return msg.delete({ timeout: 10000 });
+				}
+
+				if (categories.includes(command.getCategory())) {
+					const embed = await this.ErrorEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: 'Message event',
+						id: message.guild.id,
+						error_message: 'This category is disabled in this guild!',
+					});
+
+					const msg = await message.channel.send({ embed: embed });
+					return msg.delete({ timeout: 10000 });
+				}
+
 				if (
 					command.getOwneronly() == true &&
 					message.author.id != '398264990567628812'

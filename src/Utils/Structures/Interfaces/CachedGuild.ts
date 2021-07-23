@@ -144,6 +144,7 @@ namespace CachedGuildTypes {
 	export type Moderations = moderation[];
 	export interface Note {
 		userid: string;
+		identifier: string;
 		content: string;
 	}
 	export type Notes = Note[];

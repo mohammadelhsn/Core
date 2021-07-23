@@ -770,7 +770,7 @@ namespace Functions {
 						`SELECT welcome FROM Guilds WHERE guildId = '${id}'`
 					);
 
-					const index = res.rows[0];
+					const index = new Schemas.Welcome(res.rows[0].welcome).data;
 
 					const obj: CachedGuildTypes.Welcome = {
 						isenabled: index.isenabled,
@@ -864,7 +864,7 @@ namespace Functions {
 							`SELECT events FROM Guilds WHERE guildId = '${id}'`
 						);
 
-						const index = await new Schemas.Events(res.rows[0].leave).data;
+						const index = await new Schemas.Events(res.rows[0].events).data;
 
 						guild.Events = index;
 					}
@@ -872,10 +872,10 @@ namespace Functions {
 				}
 				if (force == true) {
 					const res = await con.query(
-						`SELECT leave FROM Guilds WHERE guildId = '${id}'`
+						`SELECT events FROM Guilds WHERE guildId = '${id}'`
 					);
 
-					const index = await new Schemas.Events(res.rows[0].leave).data;
+					const index = await new Schemas.Events(res.rows[0].events).data;
 
 					if (cache == true) {
 						guild.Events = index;
@@ -892,8 +892,13 @@ namespace Functions {
 			const con = await this.con.connect();
 
 			try {
-				const res = await con.query(`SELECT disableditems FROM Guilds WHERE guildid = '${id}'`)
-				const data = res.rows.length > 0 ? new Schemas.Disabled(res.rows[0].disableditems) : null;
+				const res = await con.query(
+					`SELECT disableditems FROM Guilds WHERE guildid = '${id}'`
+				);
+				const data =
+					res.rows.length > 0
+						? new Schemas.Disabled(res.rows[0].disableditems)
+						: null;
 				return data;
 			} finally {
 				con.release();
@@ -903,8 +908,11 @@ namespace Functions {
 			const con = await this.con.connect();
 
 			try {
-				const res = await con.query(`SELECT logging FROM Guilds WHERE guildid = '${id}'`);
-				const data = res.rows.length > 0 ? new Schemas.Logging(res.rows[0].logging) : null;
+				const res = await con.query(
+					`SELECT logging FROM Guilds WHERE guildid = '${id}'`
+				);
+				const data =
+					res.rows.length > 0 ? new Schemas.Logging(res.rows[0].logging) : null;
 				return data;
 			} finally {
 				con.release();
@@ -914,8 +922,13 @@ namespace Functions {
 			const con = await this.con.connect();
 
 			try {
-				const res = await con.query(`SELECT protected FROM Guilds WHERE guildid = '${id}'`);
-				const data = res.rows.length > 0 ? new Schemas.Protected(res.rows[0].protected) : null;
+				const res = await con.query(
+					`SELECT protected FROM Guilds WHERE guildid = '${id}'`
+				);
+				const data =
+					res.rows.length > 0
+						? new Schemas.Protected(res.rows[0].protected)
+						: null;
 				return data;
 			} finally {
 				con.release();
@@ -925,8 +938,11 @@ namespace Functions {
 			const con = await this.con.connect();
 
 			try {
-				const res = await con.query(`SELECT tags FROM Guilds WHERE guildid = '${id}'`);
-				const data = res.rows.length > 0 ? new Schemas.Tags(res.rows[0].tags) : null;
+				const res = await con.query(
+					`SELECT tags FROM Guilds WHERE guildid = '${id}'`
+				);
+				const data =
+					res.rows.length > 0 ? new Schemas.Tags(res.rows[0].tags) : null;
 				return data;
 			} finally {
 				con.release();
@@ -936,8 +952,11 @@ namespace Functions {
 			const con = await this.con.connect();
 
 			try {
-				const res = await con.query(`SELECT ranks FROM Guilds WHERE guildid = '${id}'`);
-				const data = res.rows.length > 0 ? new Schemas.Ranks(res.rows[0].ranks) :  null;
+				const res = await con.query(
+					`SELECT ranks FROM Guilds WHERE guildid = '${id}'`
+				);
+				const data =
+					res.rows.length > 0 ? new Schemas.Ranks(res.rows[0].ranks) : null;
 				return data;
 			} finally {
 				con.release();
@@ -947,8 +966,11 @@ namespace Functions {
 			const con = await this.con.connect();
 
 			try {
-				const res = await con.query(`SELECT notes FROM Guilds WHERE guildid = '${id}'`);
-				const data = res.rows.length > 0 ? new Schemas.Notes(res.rows[0].notes) : null;
+				const res = await con.query(
+					`SELECT notes FROM Guilds WHERE guildid = '${id}'`
+				);
+				const data =
+					res.rows.length > 0 ? new Schemas.Notes(res.rows[0].notes) : null;
 				return data;
 			} finally {
 				con.release();
@@ -1178,24 +1200,35 @@ namespace Functions {
 				image: opts.image,
 			});
 		}
-		async ClientPermissions(opts: Funcs.ErrorEmbedOpts) {
+		async ClientPermissions(opts: Funcs.PermissionsErrorOpts) {
 			return await this.Base({
 				iconURL: opts.iconURL,
 				id: opts.id,
 				text: opts.text,
-				error_message: 'I am missing the required permissions for this command',
+				error_message: `I need ${
+					opts.perms.length > 1
+						? `one of the following permissions ${opts.perms
+								.map((p) => `${p}`)
+								.join(', ')}`
+						: `the following permission ${opts.perms[0]}`
+				}`,
 				fields: opts.fields,
 				link: opts.link,
 				image: opts.image,
 			});
 		}
-		async UserPermissions(opts: Funcs.ErrorEmbedOpts) {
+		async UserPermissions(opts: Funcs.PermissionsErrorOpts) {
 			return await this.Base({
 				iconURL: opts.iconURL,
 				id: opts.id,
 				text: opts.text,
-				error_message:
-					'You are missing the required permissions for this command',
+				error_message: `You need ${
+					opts.perms.length > 1
+						? `one of the following permissions ${opts.perms
+								.map((p) => `${p}`)
+								.join(', ')}`
+						: `the following permission ${opts.perms[0]}`
+				}`,
 				fields: opts.fields,
 				link: opts.link,
 				image: opts.image,
@@ -1231,34 +1264,33 @@ namespace Functions {
 		async Base(opts: Funcs.HelpEmbedOpts) {
 			const { message, iconURL, command } = opts;
 
-			const lang = await this.Getlang(message.guild.id);
-			const prefix = await this.Prefix(message.guild.id);
+			const { lang, prefix, Strings } = this.cache.get(message.guild.id)
 
 			const strings = {
 				titles: {
-					status: this.Getstring(lang, 'status'),
-					working: this.Getstring(lang, 'working'),
-					name: this.Getstring(lang, 'name'),
-					category: this.Getstring(lang, 'category'),
-					aliases: this.Getstring(lang, 'aliases'),
-					usage: this.Getstring(lang, 'usage'),
-					description: this.Getstring(lang, 'description'),
-					accessible_by: this.Getstring(lang, 'accessible_by'),
-					permissions: this.Getstring(lang, 'permissions'),
-					subCommands: this.Getstring(lang, 'sub_commands'),
-					example: this.Getstring(lang, 'example'),
-					guild_only: this.Getstring(lang, 'guildonly'),
-					owner_only: this.Getstring(lang, 'owner_only'),
-					cooldown: this.Getstring(lang, 'cooldown'),
-					user_permissions: this.Getstring(lang, 'user_permissions'),
+					status: Strings.status,
+					working: Strings.working,
+					name: Strings.name,
+					category: Strings.category,
+					aliases: Strings.aliases,
+					usage: Strings.usage,
+					description: Strings.description,
+					accessible_by: Strings.accessible_by,
+					permissions: Strings.permissions,
+					subCommands: Strings.subCommands,
+					example: Strings.example,
+					guild_only: Strings.guild_only,
+					owner_only: Strings.owner_only,
+					cooldown: Strings.cooldown,
+					user_permissions: Strings.user_permissions,
 				},
 				values: {
-					yes: this.Getstring(lang, 'yes'),
-					no: this.Getstring(lang, 'no'),
-					none: this.Getstring(lang, 'none'),
-					is_required: this.Getstring(lang, 'is_required'),
-					is_optional: this.Getstring(lang, 'is_optional'),
-					seconds: this.Getstring(lang, 'seconds'),
+					yes: Strings.yes,
+					no: Strings.no,
+					none: Strings.none,
+					is_required: Strings.is_required,
+					is_optional: Strings.is_optional,
+					seconds: Strings.seconds,
 				},
 			};
 
@@ -1300,7 +1332,7 @@ namespace Functions {
 			} else {
 				examples = command
 					.getExamples()
-					.map((e) => `\`${e}\``)
+					.map((e) => `\`${prefix}${e}\``)
 					.join(', ');
 			}
 
@@ -1360,7 +1392,7 @@ namespace Functions {
 						name: this.Capitalize(strings.titles.description),
 						value: `\`${command.getDescription()}\``,
 					},
-					{ name: 'Usage', value: `\`${command.getUsage()}\`` },
+					{ name: 'Usage', value: `\`${prefix}${command.getUsage()}\`` },
 				],
 			});
 			const embed3 = this.Embed({
@@ -1646,6 +1678,21 @@ namespace Functions {
 				return moderation[0];
 			} catch (error) {
 				console.log(error);
+			} finally {
+				con.release();
+			}
+		}
+		async GetCaseNumber(id: Snowflake): Promise<number> {
+			const con = await this.con.connect();
+
+			try {
+				const res = await con.query(
+					`SELECT moderations FROM Guilds WHERE guildid = '${id}'`
+				);
+				const { data } = new Schemas.Moderations(res.rows[0].moderations);
+				let caseNumber = data.length;
+				caseNumber++;
+				return caseNumber;
 			} finally {
 				con.release();
 			}

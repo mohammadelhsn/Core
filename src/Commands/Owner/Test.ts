@@ -2,11 +2,11 @@ import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
 import { Message } from 'discord.js';
 
-export default class SetupCommand extends BaseCommand {
+export default class TestCommand extends BaseCommand {
 	constructor() {
 		super(
-			'setup',
-			'config',
+			'test',
+			'owner',
 			[],
 			'',
 			'',
@@ -19,7 +19,7 @@ export default class SetupCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {}

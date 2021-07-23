@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { Message, PermissionResolvable } from 'discord.js';
 import DiscordClient from '../../Client/Client';
 import StateManager from '../StateManager';
 import Functions from '../Functions';
@@ -45,8 +45,8 @@ export default abstract class BaseCommand {
 		private accessibleby?: string,
 		private Subcommands?: string[],
 		private example?: string[],
-		private botpermissions?: string[],
-		private userpermissions?: string[],
+		private botpermissions?: PermissionResolvable[],
+		private userpermissions?: PermissionResolvable[],
 		private guildOnly?: boolean | string,
 		private ownerOnly?: boolean | string,
 		private nsfw?: boolean | string,
@@ -63,9 +63,8 @@ export default abstract class BaseCommand {
 	getAliases(): Array<string> {
 		return this.aliases;
 	}
-
 	getUsage(): string {
-		return this.usage ? this.usage : 'N/A';
+		return this.usage ? this.usage : this.name;
 	}
 	getDescription(): string {
 		return this.description ? this.description : 'N/A';
@@ -79,10 +78,10 @@ export default abstract class BaseCommand {
 	getExamples(): string[] {
 		return this.example ? this.example : [];
 	}
-	getBotpermissions(): string[] {
+	getBotpermissions(): PermissionResolvable[] {
 		return this.botpermissions ? this.botpermissions : [];
 	}
-	getUserpermissions(): string[] {
+	getUserpermissions(): PermissionResolvable[] {
 		return this.userpermissions ? this.userpermissions : [];
 	}
 	getGuildonly(): string | boolean {

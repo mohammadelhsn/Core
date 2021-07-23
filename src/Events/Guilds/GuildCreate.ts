@@ -1,6 +1,6 @@
 import DiscordClient from '../../Client/Client';
 import BaseEvent from '../../Utils/Structures/BaseEvent';
-import { Guild } from 'discord.js';
+import { Guild, TextChannel } from 'discord.js';
 import Schemas from '../../Utils/Schemas';
 
 export default class GuildCreateEvent extends BaseEvent {
@@ -20,5 +20,23 @@ export default class GuildCreateEvent extends BaseEvent {
 		} finally {
 			con.release();
 		}
+
+		const logs = client.channels.cache.get('774251956184416258') as TextChannel;
+
+		const embed = await this.Embed.Base({
+			iconURL: guild.iconURL({ dynamic: true }),
+			text: 'Core guilds',
+			title: 'Core guilds',
+			description: `New guild added`,
+			fields: [
+				{ name: 'Guild name', value: `\`${guild.name}\`` },
+				{ name: 'Guild ID', value: `\`${guild.id}\`` },
+				{ name: 'Guild owner', value: `\`${guild.owner.user.tag}\`` },
+				{ name: 'Guild owner ID', value: `\`${guild.ownerID}\`` },
+				{ name: 'Guild membercount', value: `\`${guild.memberCount}\`` },
+			],
+		});
+
+		return logs.send({ embed: embed });
 	}
 }

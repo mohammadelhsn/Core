@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { GuildMember, Message, User } from 'discord.js';
+import { Message, TextChannel } from 'discord.js';
 
 export default class BanCommand extends BaseCommand {
 	constructor() {
@@ -19,7 +19,7 @@ export default class BanCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
 	async run(
@@ -34,6 +34,7 @@ export default class BanCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				id: message.guild.id,
+				perms: ['BAN_MEMBERS', 'ADMINISTRATOR'],
 			});
 
 			const msg = await message.channel.send({ embed: embed });
@@ -45,6 +46,7 @@ export default class BanCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				id: message.guild.id,
+				perms: ['ADMINISTRATOR', 'BAN_MEMBERS'],
 			});
 
 			const msg = await message.channel.send({ embed: embed });
@@ -57,6 +59,7 @@ export default class BanCommand extends BaseCommand {
 			message.guild.members.cache.find((u) => u.user.username === args[0])
 				.user ||
 			(await client.users.fetch(args[0]));
+
 		const reason = args.slice(1).join(' ') || 'No reason given';
 
 		if (!user) {
@@ -108,9 +111,9 @@ export default class BanCommand extends BaseCommand {
 
 		const bans = await message.guild.fetchBans();
 
-		const bannedUser = bans.filter((usr) => usr.user.id == user.id);
+		const bannedUser = bans.filter((u) => u.user.id == user.id);
 
-		if (bannedUser) {
+		if (bannedUser.size > 0) {
 			const embed = await this.ErrorEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -122,6 +125,94 @@ export default class BanCommand extends BaseCommand {
 			return msg.delete({ timeout: 10000 });
 		}
 
-		message.delete();
+		try {
+			message.delete();
+
+			const embed = await this.Embed.Base({
+				iconURL: user.displayAvatarURL({ dynamic: true }),
+				text: this,
+				title: 'Ban notification',
+				description: `You have been banned from ${message.guild.name}`,
+				fields: [
+					{
+						name: 'Banned by:',
+						value: `${message.author.tag} (${message.author.id})`,
+					},
+					{ name: 'Reason', value: reason },
+				],
+			});
+
+			await user.send({ embed: embed });
+		} finally {
+			await message.guild.members.ban(user, { reason: reason });
+		}
+
+		const successEmbed = await this.SuccessEmbed.Base({
+			iconURL: user.displayAvatarURL({ dynamic: true }),
+			text: this,
+			id: message.guild.id,
+			success_message: `${this.Utils.Mentionuser(
+				user.id
+			)} was successfully banned!`,
+		});
+
+		const msg = await message.channel.send({ embed: successEmbed });
+		msg.delete({ timeout: 10000 });
+
+		const caseNumber = await this.Moderation.GetCaseNumber(message.guild.id);
+
+		const modlogEmbed = await this.Embed.Base({
+			iconURL: user.displayAvatarURL({ dynamic: true }),
+			text: this,
+			title: 'New moderation',
+			description: 'Moderation: `Ban`',
+			fields: [
+				{ name: 'User', value: `${this.Utils.Mentionuser(user.id)}` },
+				{
+					name: 'Moderator',
+					value: `${this.Utils.Mentionuser(message.author.id)}`,
+				},
+				{ name: 'Reason', value: `${reason}` },
+				{ name: 'Case #', value: `\`${caseNumber}\`` },
+				{ name: 'Date', value: message.createdAt.toLocaleString() },
+			],
+		});
+
+		const modlog = await this.Channels.Modlog(message.guild.id);
+		const publicmodlog = await this.Channels.Publicmodlog(message.guild.id);
+
+		let mmsg = null;
+		let pmsg = null;
+		if (modlog != null) {
+			const msg = await (
+				(await client.channels.fetch(modlog)) as TextChannel
+			).send({ embed: modlogEmbed });
+			mmsg = msg.id;
+		}
+		if (publicmodlog != null) {
+			const msg = await (
+				(await client.channels.fetch(publicmodlog)) as TextChannel
+			).send({ embed: modlogEmbed });
+			pmsg = msg.id;
+		}
+
+		await this.Moderation.InsertModeration(
+			message.guild.id,
+			'ban',
+			caseNumber,
+			message.author.id,
+			{
+				user: user.id,
+				modlog: modlog,
+				publicmodlog: publicmodlog,
+				reason: reason,
+				modlogId: mmsg,
+				publicmodlogId: pmsg,
+				moderationDate: Date.now(),
+				updatedAt: Date.now(),
+				updatedBy: message.author.id,
+			}
+		);
+		return;
 	}
 }

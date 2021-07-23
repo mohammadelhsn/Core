@@ -5,7 +5,7 @@ import { Message } from 'discord.js';
 export default class TesstCommand extends BaseCommand {
 	constructor() {
 		super(
-			'quit',
+			'botleave',
 			'owner',
 			[],
 			'',
@@ -19,8 +19,23 @@ export default class TesstCommand extends BaseCommand {
 			true,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {}
+	async run(client: DiscordClient, message: Message, args: string[]) {
+		let guild = client.guilds.cache.get(args[0]);
+
+		if (!guild) guild = message.guild;
+
+		guild.leave();
+
+		const embed = await this.SuccessEmbed.Base({
+			iconURL: message.author.displayAvatarURL({ dynamic: true }),
+			text: this,
+			id: message.guild.id,
+			success_message: `Successfully left ${guild.name}`,
+		});
+
+		return message.channel.send({ embed: embed });
+	}
 }

@@ -32,6 +32,7 @@ export default class ActionlogCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				id: message.guild.id,
 				text: this,
+				perms: ['MANAGE_GUILD', 'ADMINISTRATOR'],
 			});
 
 			const msg = await message.channel.send({ embed: embed });

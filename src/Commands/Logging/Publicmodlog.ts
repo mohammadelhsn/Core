@@ -19,7 +19,7 @@ export default class PublicModlogCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
@@ -28,6 +28,7 @@ export default class PublicModlogCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				id: message.guild.id,
 				text: this,
+				perms: ['MANAGE_GUILD', 'ADMINISTRATOR'],
 			});
 
 			const msg = await message.channel.send({ embed: embed });

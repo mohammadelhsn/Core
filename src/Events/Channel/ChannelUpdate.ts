@@ -12,5 +12,13 @@ export default class ChannelUpdateEvent extends BaseEvent {
 		newChannel: DMChannel | GuildChannel
 	) {
 		if (oldChannel.type == 'dm' || newChannel.type == 'dm') return;
+
+		const { guild } = newChannel;
+
+		const lang = await this.Translator.Getlang(guild.id);
+
+		const { channelUpdate } = await this.Settings.Events(guild.id);
+
+		if (channelUpdate.enabled == false) return;
 	}
 }

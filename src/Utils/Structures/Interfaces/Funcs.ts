@@ -1,4 +1,10 @@
-import { Snowflake, MessageEmbed, Message, EmbedFieldData } from 'discord.js';
+import {
+	Snowflake,
+	MessageEmbed,
+	Message,
+	EmbedFieldData,
+	PermissionResolvable,
+} from 'discord.js';
 import BaseCommand from '../BaseCommand';
 
 namespace FunctionOpts {
@@ -73,6 +79,15 @@ namespace FunctionOpts {
 		fields?: EmbedFieldData[];
 		image?: string;
 		link?: string;
+	}
+	export interface PermissionsErrorOpts {
+		iconURL: string;
+		id: Snowflake;
+		text: string | BaseCommand;
+		perms: PermissionResolvable[];
+		image?: string;
+		link?: string;
+		fields?: EmbedFieldData[];
 	}
 	export interface SuccessEmbedOpts {
 		iconURL: string;

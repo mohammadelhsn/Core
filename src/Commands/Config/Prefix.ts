@@ -28,6 +28,7 @@ export default class PrefixCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				id: message.guild.id,
+				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
 			});
 
 			const msg = await message.channel.send({ embed: embed });
@@ -75,7 +76,7 @@ export default class PrefixCommand extends BaseCommand {
 		try {
 			await con.query(`BEGIN`);
 			await con.query(
-				`UPDATE guildconfigurable SET prefix = '${newPrefix}' WHERE guildId = '${message.guild.id}'`
+				`UPDATE Guilds SET prefix = '${newPrefix}' WHERE guildId = '${message.guild.id}'`
 			);
 			await con.query(`COMMIT`);
 

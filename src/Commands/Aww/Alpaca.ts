@@ -2,18 +2,18 @@ import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
 import { Message } from 'discord.js';
 
-export default class Name extends BaseCommand {
+export default class AlpacaCommand extends BaseCommand {
 	constructor() {
 		super(
 			'alpaca',
 			'aww',
 			[],
 			'',
+			'Send a picture of an alpaca!',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,

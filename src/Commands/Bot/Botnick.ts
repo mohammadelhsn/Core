@@ -30,6 +30,7 @@ export default class BotnickCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				id: message.guild.id,
+				perms: ['MANAGE_NICKNAMES', 'ADMINISTRATOR'],
 			});
 
 			const msg = await message.channel.send({ embed: embed });
@@ -41,6 +42,7 @@ export default class BotnickCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				id: message.guild.id,
+				perms: ['MANAGE_NICKNAMES', 'ADMINISTRATOR'],
 			});
 
 			const msg = await message.channel.send({ embed: embed });
@@ -68,7 +70,11 @@ export default class BotnickCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				id: message.guild.id,
 				text: this,
-				success_message: `Successfully set my name to \`${name}\``,
+				success_message: `Successfully my nickname!`,
+				fields: [
+					{ name: 'Old nickname', value: `${oldNickname}` },
+					{ name: 'New nickname', value: `${name}` },
+				],
 			});
 
 			return message.channel.send({ embed: embed });

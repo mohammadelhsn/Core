@@ -28,6 +28,7 @@ export default class BotClearCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				id: message.guild.id,
+				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
 			});
 
 			const msg = await message.channel.send({ embed: embed });
@@ -41,6 +42,7 @@ export default class BotClearCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				id: message.guild.id,
+				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
 			});
 
 			const msg = await message.channel.send({ embed: embed });

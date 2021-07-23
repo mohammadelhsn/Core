@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, TextChannel } from 'discord.js';
 
 export default class ClearCommand extends BaseCommand {
 	constructor() {
@@ -19,8 +19,107 @@ export default class ClearCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {}
+	async run(client: DiscordClient, message: Message, args: string[]) {
+		if (!message.member.hasPermission(['MANAGE_MESSAGES' || 'ADMINISTRATOR'])) {
+			const embed = await this.ErrorEmbed.UserPermissions({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				id: message.guild.id,
+				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
+			});
+
+			const msg = await message.channel.send({ embed: embed });
+			return msg.delete({ timeout: 10000 });
+		}
+
+		if (
+			!message.guild.me.hasPermission(['MANAGE_MESSAGES' || 'ADMINISTRATOR'])
+		) {
+			const embed = await this.ErrorEmbed.ClientPermissions({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				id: message.guild.id,
+				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
+			});
+
+			const msg = await message.channel.send({ embed: embed });
+			return msg.delete({ timeout: 10000 });
+		}
+
+		if (!args[0] || isNaN(parseInt(args[0]))) {
+			const embed = await this.ErrorEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				id: message.guild.id,
+				error_message: 'You must provide a number!',
+			});
+
+			const msg = await message.channel.send({ embed: embed });
+			return msg.delete({ timeout: 10000 });
+		}
+
+		const toClear = parseInt(args[0]);
+		const mention = message.mentions.members.first();
+		let reason = mention ? args.slice(2).join(' ') : args.slice(1).join(' ');
+
+		if (!reason) reason = 'No reason given';
+
+		if (toClear > 100) {
+			const embed = await this.ErrorEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				id: message.guild.id,
+				error_message: 'The max amount of messages is 100',
+			});
+
+			const msg = await message.channel.send({ embed: embed });
+			return msg.delete({ timeout: 10000 });
+		}
+
+		if (mention) {
+			const messages = await message.channel.messages.fetch({ limit: 100 });
+			const toDelete: Message[] = [];
+
+			const filtered = messages.filter((m) => m.author.id == mention.user.id);
+			filtered.forEach((msg) => toDelete.push(msg));
+			const deleting = toDelete.slice(0, toClear);
+
+			try {
+				await (message.channel as TextChannel).bulkDelete(deleting, true);
+			} finally {
+				const embed = await this.SuccessEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					id: message.guild.id,
+					success_message: `Successfully deleted ${toDelete.length} message(s)`,
+				});
+
+				const msg = await message.channel.send({ embed: embed });
+				return msg.delete({ timeout: 10000 });
+			}
+		}
+		const messages = await message.channel.messages.fetch({ limit: 100 });
+		const toDelete: Message[] = [];
+
+		messages.forEach((m) => toDelete.push(m));
+
+		const deleting = toDelete.slice(0, toClear);
+
+		try {
+			await (message.channel as TextChannel).bulkDelete(deleting, true);
+		} finally {
+			const embed = await this.SuccessEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				id: message.guild.id,
+				success_message: `Successfully deleted ${toDelete.length} message(s)`,
+			});
+
+			const msg = await message.channel.send({ embed: embed });
+			return msg.delete({ timeout: 10000 });
+		}
+	}
 }

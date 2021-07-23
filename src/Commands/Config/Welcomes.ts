@@ -1,0 +1,614 @@
+import BaseCommand from '../../Utils/Structures/BaseCommand';
+import DiscordClient from '../../Client/Client';
+import { Message } from 'discord.js';
+
+export default class WelcomeCommand extends BaseCommand {
+	constructor() {
+		super(
+			'welcome',
+			'config',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
+	}
+	async run(
+		client: DiscordClient,
+		message: Message,
+		args: string[]
+	): Promise<Message> {
+		const todo = args[0];
+
+		const welcome = await this.Settings.WelcomeSystem(message.guild.id, true);
+		const data = new this.Schemas.Welcome(welcome);
+
+		if (!todo) {
+			const embed = await this.Embed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				description: `Current settings for ${message.guild.name}`,
+				fields: [
+					{
+						name: 'Enabled?',
+						value:
+							welcome.isenabled == true
+								? this.Emojis.on_switch
+								: this.Emojis.off_switch,
+					},
+					{
+						name: 'Media?',
+						value:
+							welcome.media == null
+								? 'N/A'
+								: this.Utils.Capitalize(welcome.media),
+					},
+					{
+						name: 'Channel',
+						value:
+							welcome.channel == null
+								? 'N/A'
+								: this.Utils.Mentionchannel(welcome.channel),
+					},
+					{
+						name: 'Message',
+						value: welcome.message == null ? 'N/A' : welcome.message,
+					},
+				],
+			});
+
+			return message.channel.send({ embed: embed });
+		}
+
+		if (todo.toLowerCase() == 'enable') {
+			if (data.data.isenabled == true) {
+				const embed = await this.ErrorEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					id: message.guild.id,
+					error_message: 'Welcome system is already enabled!',
+				});
+
+				const msg = await message.channel.send({ embed: embed });
+				return msg.delete({ timeout: 10000 });
+			}
+
+			let timedOut = false;
+
+			const isFromAuthor = (m) => m.author.id == message.author.id;
+
+			const options = {
+				max: 1,
+				time: 60000,
+			};
+
+			const tEmbed = await this.Embed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				description:
+					'What type of media would you like to use? `image` or `text`?',
+			});
+
+			await message.channel.send({ embed: tEmbed });
+
+			const firstColl = await message.channel.awaitMessages(
+				isFromAuthor,
+				options
+			);
+
+			if (firstColl.size == 0 || !firstColl.first().content) timedOut = true;
+
+			const media = firstColl.first().content;
+
+			if (timedOut == false && media.toLowerCase() == 'cancel') {
+				const embed = await this.ErrorEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					id: message.guild.id,
+					error_message: 'Successfully cancelled selection',
+				});
+
+				const msg = await message.channel.send({ embed: embed });
+				return msg.delete({ timeout: 10000 });
+			}
+
+			if (
+				timedOut == false &&
+				media.toLowerCase() !== 'image' &&
+				media.toLowerCase() !== 'text'
+			) {
+				const embed = await this.ErrorEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					id: message.guild.id,
+					error_message:
+						'Only "image" and "text" are the supported medias as of now',
+				});
+
+				const msg = await message.channel.send({ embed: embed });
+				return msg.delete({ timeout: 10000 });
+			}
+
+			if (timedOut == false) data.data.media = media.toLowerCase();
+
+			const mEmbed = this.Embed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				description:
+					"Send the message you'd like the bot to send. See variables below",
+				fields: [
+					{ name: '{user}', value: `Replaced with username or mention` },
+					{ name: '{server}', value: `Replaced with guild name` },
+				],
+			});
+
+			await message.channel.send({ embed: mEmbed });
+
+			const secondColl = await message.channel.awaitMessages(
+				isFromAuthor,
+				options
+			);
+
+			if (secondColl.size == 0 || !secondColl.first().content) timedOut = true;
+
+			const wmessage = secondColl.first().content;
+
+			if (timedOut == false && wmessage.toLowerCase() == 'cancel') {
+				const embed = await this.ErrorEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					id: message.guild.id,
+					error_message: 'Successfully cancelled selection',
+				});
+
+				const msg = await message.channel.send({ embed: embed });
+				return msg.delete({ timeout: 10000 });
+			}
+
+			if (timedOut == false) {
+				data.data.message = wmessage.replace(/'/g, '{single}');
+			}
+
+			const cEmbed = await this.Embed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				description:
+					"Mention the channel where you'd like the message to be sent!",
+			});
+
+			await message.channel.send({ embed: cEmbed });
+
+			const thirdColl = await message.channel.awaitMessages(
+				isFromAuthor,
+				options
+			);
+
+			if (thirdColl.size == 0 || !thirdColl.first().content) timedOut = true;
+
+			const content = thirdColl.first().content;
+
+			if (content.toLowerCase() == 'cancel') {
+				const embed = await this.ErrorEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					id: message.guild.id,
+					error_message: 'Successfully cancelled selection',
+				});
+
+				const msg = await message.channel.send({ embed: embed });
+				return msg.delete({ timeout: 10000 });
+			}
+
+			if (timedOut == false) {
+				const mention =
+					thirdColl.first().mentions.channels.first() ||
+					message.guild.channels.cache.find(
+						(ch) => ch.name.toLowerCase() == content.toLowerCase()
+					) ||
+					message.guild.channels.cache.find((ch) => ch.id == content);
+
+				data.data.channel = mention.id;
+
+				data.data.isenabled = true;
+			}
+
+			const con = await this.con.connect();
+
+			try {
+				await con.query(`BEGIN`);
+				await con.query(
+					`UPDATE Guilds SET welcome = '${data.toString()}' WHERE guildid = '${
+						message.guild.id
+					}'`
+				);
+				await con.query(`COMMIT`);
+			} finally {
+				con.release();
+			}
+
+			if (timedOut == true) {
+				const embed = await this.ErrorEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					error_message: 'Command timed out or is cancelled',
+					id: message.guild.id,
+				});
+
+				const msg = await message.channel.send({ embed: embed });
+				return msg.delete({ timeout: 10000 });
+			}
+
+			const embed = await this.SuccessEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				id: message.guild.id,
+				text: this,
+				success_message: 'Successfully enabled welcome system',
+			});
+
+			return message.channel.send({ embed: embed });
+		}
+		if (todo.toLowerCase() == 'disable') {
+			if (data.data.isenabled == false) {
+				const embed = await this.ErrorEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					id: message.guild.id,
+					error_message: 'Welcome system is already disabled!',
+				});
+
+				const msg = await message.channel.send({ embed: embed });
+				return msg.delete({ timeout: 10000 });
+			}
+
+			const con = await this.con.connect();
+
+			data.data.channel = null;
+			data.data.isenabled = false;
+			data.data.media = null;
+			data.data.message = null;
+
+			try {
+				await con.query(`BEGIN`);
+				await con.query(
+					`UPDATE Guilds SET welcome = '${data.toString()}' WHERE guildid = '${
+						message.guild.id
+					}'`
+				);
+				await con.query(`COMMIT`);
+			} finally {
+				con.release();
+			}
+
+			const embed = await this.SuccessEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				id: message.guild.id,
+				text: this,
+				success_message: 'Successfully disabled welcome system',
+			});
+
+			return message.channel.send({ embed: embed });
+		}
+		if (todo.toLowerCase() == 'update') {
+			const toUpdate = args[1];
+
+			if (toUpdate == 'media') {
+				if (data.data.isenabled == false) {
+					const embed = await this.ErrorEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: this,
+						id: message.guild.id,
+						error_message:
+							'Welcome system is disabled, to enable use "welcome enable"',
+					});
+
+					const msg = await message.channel.send({ embed: embed });
+					return msg.delete({ timeout: 10000 });
+				}
+
+				let timedOut = false;
+
+				const isFromAuthor = (m) => m.author.id == message.author.id;
+
+				const options = {
+					max: 1,
+					time: 60000,
+				};
+
+				const tEmbed = await this.Embed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					description:
+						'What type of media would you like to use? `image` or `text`?',
+				});
+
+				await message.channel.send({ embed: tEmbed });
+
+				const firstColl = await message.channel.awaitMessages(
+					isFromAuthor,
+					options
+				);
+
+				if (firstColl.size == 0 || !firstColl.first().content) timedOut = true;
+
+				const media = firstColl.first().content;
+
+				if (timedOut == false && media.toLowerCase() == 'cancel') {
+					const embed = await this.ErrorEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: this,
+						id: message.guild.id,
+						error_message: 'Successfully cancelled selection',
+					});
+
+					const msg = await message.channel.send({ embed: embed });
+					return msg.delete({ timeout: 10000 });
+				}
+
+				if (
+					timedOut == false &&
+					media.toLowerCase() !== 'image' &&
+					media.toLowerCase() !== 'text'
+				) {
+					const embed = await this.ErrorEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: this,
+						id: message.guild.id,
+						error_message:
+							'Only "image" and "text" are the supported medias as of now',
+					});
+
+					const msg = await message.channel.send({ embed: embed });
+					return msg.delete({ timeout: 10000 });
+				}
+
+				if (timedOut == false) data.data.media = media;
+
+				if (timedOut == true) {
+					const embed = await this.ErrorEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: this,
+						error_message: 'Command timed out or is cancelled',
+						id: message.guild.id,
+					});
+
+					const msg = await message.channel.send({ embed: embed });
+					return msg.delete({ timeout: 10000 });
+				}
+
+				const con = await this.con.connect();
+
+				try {
+					await con.query(`BEGIN`);
+					await con.query(
+						`UPDATE Guilds SET welcome = '${data.toString()}' WHERE guildid = '${
+							message.guild.id
+						}'`
+					);
+					await con.query(`COMMIT`);
+				} finally {
+					con.release();
+				}
+
+				const embed = await this.SuccessEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					id: message.guild.id,
+					success_message: `Successfully set media to \`${media}\``,
+				});
+
+				return message.channel.send({ embed: embed });
+			}
+			if (toUpdate == 'channel') {
+				if (data.data.isenabled == false) {
+					const embed = await this.ErrorEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: this,
+						id: message.guild.id,
+						error_message:
+							'Welcome system is disabled, to enable use "welcome enable"',
+					});
+
+					const msg = await message.channel.send({ embed: embed });
+					return msg.delete({ timeout: 10000 });
+				}
+
+				let timedOut = false;
+
+				const isFromAuthor = (m) => m.author.id == message.author.id;
+
+				const options = {
+					max: 1,
+					time: 60000,
+				};
+
+				const cEmbed = await this.Embed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					description:
+						"Mention the channel where you'd like the message to be sent!",
+				});
+
+				await message.channel.send({ embed: cEmbed });
+
+				const firstColl = await message.channel.awaitMessages(
+					isFromAuthor,
+					options
+				);
+
+				if (firstColl.size == 0 || !firstColl.first().content) timedOut = true;
+
+				const content = firstColl.first().content;
+
+				if (content.toLowerCase() == 'cancel') {
+					const embed = await this.ErrorEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: this,
+						id: message.guild.id,
+						error_message: 'Successfully cancelled selection',
+					});
+
+					const msg = await message.channel.send({ embed: embed });
+					return msg.delete({ timeout: 10000 });
+				}
+
+				if (timedOut == false) {
+					const mention =
+						firstColl.first().mentions.channels.first() ||
+						message.guild.channels.cache.find(
+							(ch) => ch.name.toLowerCase() == content.toLowerCase()
+						) ||
+						message.guild.channels.cache.find((ch) => ch.id == content);
+
+					data.data.channel = mention.id;
+				}
+
+				const con = await this.con.connect();
+
+				try {
+					await con.query(`BEGIN`);
+					await con.query(
+						`UPDATE Guilds SET welcome = '${data.toString()}' WHERE guildid = '${
+							message.guild.id
+						}'`
+					);
+					await con.query(`COMMIT`);
+				} finally {
+					con.release();
+				}
+
+				if (timedOut == true) {
+					const embed = await this.ErrorEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: this,
+						error_message: 'Command timed out or is cancelled',
+						id: message.guild.id,
+					});
+
+					const msg = await message.channel.send({ embed: embed });
+					return msg.delete({ timeout: 10000 });
+				}
+				const embed = await this.SuccessEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					id: message.guild.id,
+					success_message: 'Successfully updated welcome system channel!',
+				});
+
+				return message.channel.send({ embed: embed });
+			}
+			if (toUpdate == 'message') {
+				if (data.data.isenabled == false) {
+					const embed = await this.ErrorEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: this,
+						id: message.guild.id,
+						error_message:
+							'Welcome system is disabled, to enable use "welcome enable"',
+					});
+
+					const msg = await message.channel.send({ embed: embed });
+					return msg.delete({ timeout: 10000 });
+				}
+
+				let timedOut = false;
+
+				const isFromAuthor = (m) => m.author.id == message.author.id;
+
+				const options = {
+					max: 1,
+					time: 60000,
+				};
+
+				const mEmbed = this.Embed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					description:
+						"Send the message you'd like the bot to send. See variables below",
+					fields: [
+						{ name: '{user}', value: `Replaced with username or mention` },
+						{ name: '{server}', value: `Replaced with guild name` },
+					],
+				});
+
+				await message.channel.send({ embed: mEmbed });
+
+				const firstColl = await message.channel.awaitMessages(
+					isFromAuthor,
+					options
+				);
+
+				if (firstColl.size == 0 || !firstColl.first().content) timedOut = true;
+
+				const wmessage = firstColl.first().content;
+
+				if (timedOut == false && wmessage.toLowerCase() == 'cancel') {
+					const embed = await this.ErrorEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: this,
+						id: message.guild.id,
+						error_message: 'Successfully cancelled selection',
+					});
+
+					const msg = await message.channel.send({ embed: embed });
+					return msg.delete({ timeout: 10000 });
+				}
+
+				if (timedOut == false) {
+					data.data.message = wmessage.replace(/'/g, '{single}');
+				}
+
+				const con = await this.con.connect();
+
+				try {
+					await con.query(`BEGIN`);
+					await con.query(
+						`UPDATE Guilds SET welcome = '${data.toString()}' WHERE guildid = '${
+							message.guild.id
+						}'`
+					);
+					await con.query(`COMMIT`);
+				} finally {
+					con.release();
+				}
+
+				if (timedOut == true) {
+					const embed = await this.ErrorEmbed.Base({
+						iconURL: message.author.displayAvatarURL({ dynamic: true }),
+						text: this,
+						error_message: 'Command timed out or is cancelled',
+						id: message.guild.id,
+					});
+
+					const msg = await message.channel.send({ embed: embed });
+					return msg.delete({ timeout: 10000 });
+				}
+
+				const embed = await this.SuccessEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: this,
+					id: message.guild.id,
+					success_message: 'Successfully updated welcome system message!',
+				});
+
+				return message.channel.send({ embed: embed });
+			}
+			const embed = await this.ErrorEmbed.InvalidChoice({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				id: message.guild.id,
+			});
+
+			const msg = await message.channel.send({ embed: embed });
+			return msg.delete({ timeout: 10000 });
+		}
+	}
+}
