@@ -7,6 +7,6 @@ export default class NodeConnectEvent extends BaseEvent {
 		super('nodeConnect');
 	}
 	async run(client: DiscordClient, node: Node) {
-		console.log(`Node ${node.options.identifier} connected`);
+		return console.log(`Node ${node.options.identifier} connected`);
 	}
 }
