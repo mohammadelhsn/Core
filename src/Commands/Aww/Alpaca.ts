@@ -9,7 +9,7 @@ export default class AlpacaCommand extends BaseCommand {
 			'aww',
 			[],
 			'',
-			'Send a picture of an alpaca!',
+			'Send a picture of an alpaca',
 			'',
 			[],
 			[],
@@ -19,7 +19,7 @@ export default class AlpacaCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'working'
+			'debug'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {

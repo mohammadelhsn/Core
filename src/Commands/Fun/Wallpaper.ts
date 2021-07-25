@@ -9,15 +9,15 @@ export default class WallpaperCommand extends BaseCommand {
 			'fun',
 			[],
 			'',
+			'Sends a picture of a wallpaper for you to use! (Mobile and PC wallpapers)',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
-			false,
+			true,
 			3000,
 			'working'
 		);

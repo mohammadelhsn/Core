@@ -9,17 +9,17 @@ export default class SupportCommand extends BaseCommand {
 			'bot',
 			[],
 			'',
+			'Sends an invite to the support server',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
 			false,
 			3000,
-			'working'
+			'WIP'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {

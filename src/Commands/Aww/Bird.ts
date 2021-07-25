@@ -9,17 +9,17 @@ export default class BirdCommand extends BaseCommand {
 			'aww',
 			[],
 			'',
+			'Send a picture of a bird',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
 			false,
 			3000,
-			'working'
+			'debug'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {

@@ -14,7 +14,7 @@ export default class ToastCommand extends BaseCommand {
 			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,

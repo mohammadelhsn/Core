@@ -9,17 +9,17 @@ export default class WolfCommand extends BaseCommand {
 			'aww',
 			[],
 			'',
+			'Sends a picture of a wolf',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
 			false,
 			3000,
-			'working'
+			'debug'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {

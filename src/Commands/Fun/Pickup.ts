@@ -10,7 +10,7 @@ export default class PickupCommand extends BaseCommand {
 			'fun',
 			[],
 			'',
-			'',
+			'Sends a pickup line 😏',
 			'',
 			[],
 			[],

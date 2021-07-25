@@ -9,11 +9,11 @@ export default class NekoCommand extends BaseCommand {
 			'fun',
 			[],
 			'',
+			'Sends a picture of a neko',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
@@ -23,7 +23,7 @@ export default class NekoCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id)
+		const lang = await this.Translator.Getlang(message.guild.id);
 		const guild = client.database.get(message.guild.id);
 
 		if (args[0]) {

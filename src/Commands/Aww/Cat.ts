@@ -9,17 +9,17 @@ export default class CatCommand extends BaseCommand {
 			'aww',
 			[],
 			'',
+			'Send a picture of a cat',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
 			false,
 			3000,
-			'working'
+			'debug'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
@@ -30,6 +30,8 @@ export default class CatCommand extends BaseCommand {
 				message: message,
 			});
 		}
+
+		// SWITCH TO SOME RANDOM API (https://some-random-api.ml/img/cat)
 
 		const generatingEmbed = await this.GeneratingEmbed.Duncte123({
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),

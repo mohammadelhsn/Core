@@ -9,17 +9,17 @@ export default class CamelCommand extends BaseCommand {
 			'aww',
 			[],
 			'',
+			'Send a picture of a camel',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'ADMINISTRATOR'],
 			[],
 			true,
 			false,
 			false,
 			3000,
-			'working'
+			'debug'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {

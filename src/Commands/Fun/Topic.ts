@@ -14,7 +14,7 @@ export default class TopicCommand extends BaseCommand {
 			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,

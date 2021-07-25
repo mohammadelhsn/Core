@@ -13,7 +13,7 @@ export default class TruthCommand extends BaseCommand {
 			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
