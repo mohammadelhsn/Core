@@ -5,7 +5,23 @@ import axios from 'axios';
 
 export default class CollectionCommand extends BaseCommand {
 	constructor() {
-		super('collection', 'miscellaneous', []);
+		super(
+			'collection',
+			'miscellaneous',
+			[],
+			'<query>',
+			'Search the Discord JS collection docs',
+			'',
+			[],
+			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const query = args[0];

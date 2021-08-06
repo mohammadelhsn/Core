@@ -8,12 +8,12 @@ export default class FeedCommand extends BaseCommand {
 			'feed',
 			'reaction images',
 			[],
-			'',
-			'',
+			'<mention>',
+			'Feed the mentioned user',
 			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
@@ -23,79 +23,73 @@ export default class FeedCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id);
-		const self = this;
-		// Colour function
-
-		let user;
 		const mention = message.mentions.users.first();
 
-		if (mention) {
-			user = mention;
-		} else {
-			user = args[0];
-		}
-
-		// Checking for a mention
-		if (!user) {
+		if (!mention) {
 			const errorEmbed = await this.ErrorEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				id: message.guild.id,
 				text: this,
 				error_message: 'You are missing the mention',
 			});
+
 			const msg = await message.channel.send({ embed: errorEmbed });
 			return msg.delete({ timeout: 10000 });
-		} else if (user == args[0] && user.toLowerCase().includes('help')) {
+		}
+
+		if (args[0] && args[0]?.toLowerCase().includes('help')) {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				message: message,
 				command: this,
 			});
-		} else {
-			const generatingEmbed = await this.GeneratingEmbed.NekosFun({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
-				text: this,
-			});
+		}
 
-			const m = await message.channel.send(generatingEmbed);
-			try {
-				const res = await this.Reactions.Feed();
+		const generatingEmbed = await this.GeneratingEmbed.NekosFun({
+			iconURL: message.author.displayAvatarURL({ dynamic: true }),
+			id: message.guild.id,
+			text: this,
+		});
 
-				if (res.error == true) {
-					m.delete();
+		const m = await message.channel.send({ embed: generatingEmbed });
 
-					const errEmbed = await this.ErrorEmbed.ApiError({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						id: message.guild.id,
-						text: this,
-					});
+		try {
+			const res = await this.Reactions.Feed();
 
-					const msg = await message.channel.send({ embed: errEmbed });
-					return msg.delete({ timeout: 10000 });
-				}
-
-				const feedEmbed = await this.ImageEmbed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					text: this,
-					title: 'Feed command',
-					description: `<@${message.author.id}> has fed ${user}`,
-					image: res.file,
-				});
-
-				m.delete();
-				return message.channel.send({ embed: feedEmbed });
-			} catch (e) {
+			if (res.error == true) {
 				m.delete();
 
-				const errEmbed = await this.ErrorEmbed.UnexpectedError({
+				const errEmbed = await this.ErrorEmbed.ApiError({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errEmbed });
+
+				const msg = await message.channel.send({ embed: errEmbed });
+				return msg.delete({ timeout: 10000 });
 			}
+
+			const feedEmbed = await this.ImageEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				title: 'Feed command',
+				description: `<@${message.author.id}> has fed ${this.Utils.Mentionuser(
+					mention.id
+				)}`,
+				image: res.file,
+			});
+
+			m.delete();
+			return message.channel.send({ embed: feedEmbed });
+		} catch (e) {
+			m.delete();
+
+			const errEmbed = await this.ErrorEmbed.UnexpectedError({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				id: message.guild.id,
+				text: this,
+			});
+			return message.channel.send({ embed: errEmbed });
 		}
 	}
 }

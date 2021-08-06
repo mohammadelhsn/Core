@@ -9,17 +9,17 @@ export default class FoxfactCommand extends BaseCommand {
 			'facts',
 			[],
 			'',
+			'Sends a fox fact',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {

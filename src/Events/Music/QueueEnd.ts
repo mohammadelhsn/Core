@@ -21,6 +21,6 @@ export default class QueueEndEvent extends BaseEvent {
 			)}: \`Lavalink\``,
 		});
 		channel.send({ embed: embed });
-		return player.destroy();
+		player.destroy();
 	}
 }

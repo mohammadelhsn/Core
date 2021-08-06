@@ -5,7 +5,23 @@ import axios from 'axios';
 
 export default class CommandoCommand extends BaseCommand {
 	constructor() {
-		super('commando', 'miscellaneous', []);
+		super(
+			'commando',
+			'miscellaneous',
+			[],
+			'<query>',
+			'Search the Discord JS commando docs',
+			'',
+			[],
+			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const query = args[0];

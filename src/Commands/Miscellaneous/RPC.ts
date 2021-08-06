@@ -5,7 +5,23 @@ import axios from 'axios';
 
 export default class RPCCommand extends BaseCommand {
 	constructor() {
-		super('rpc', 'miscellaneous', []);
+		super(
+			'rpc',
+			'miscellaneous',
+			[],
+			'<query>',
+			'Search the Discord JS RPC client',
+			'',
+			[],
+			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const query = args[0];

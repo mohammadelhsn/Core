@@ -2,7 +2,7 @@ import Types from './Structures/Interfaces/CachedGuild';
 
 namespace Constructors {
 	export class Welcome {
-		data: Types.Welcome;
+		public data: Types.Welcome;
 		constructor(data?: Types.Welcome | string) {
 			if (!data || data == undefined) {
 				this.data = {
@@ -16,12 +16,12 @@ namespace Constructors {
 			if (typeof data == 'string') this.data = JSON.parse(data);
 			if (typeof data == 'object') this.data = data;
 		}
-		toString() {
+		toString(): string {
 			return JSON.stringify(this.data);
 		}
 	}
 	export class Leave {
-		data: Types.Leave;
+		public data: Types.Leave;
 		constructor(data?: Types.Leave | string) {
 			if (!data || data == undefined) {
 				this.data = {
@@ -35,12 +35,12 @@ namespace Constructors {
 			if (typeof data == 'string') this.data = JSON.parse(data);
 			if (typeof data == 'object') this.data = data;
 		}
-		toString() {
+		toString(): string {
 			return JSON.stringify(this.data);
 		}
 	}
 	export class Roles {
-		data: Types.Roles;
+		public data: Types.Roles;
 		constructor(data?: Types.Roles | string) {
 			if (!data || data == undefined) {
 				this.data = {
@@ -53,12 +53,12 @@ namespace Constructors {
 			if (typeof data == 'string') this.data = JSON.parse(data);
 			if (typeof data == 'object') this.data = data;
 		}
-		toString() {
+		toString(): string {
 			return JSON.stringify(this.data);
 		}
 	}
 	export class Logging {
-		data: Types.Channels;
+		public data: Types.Channels;
 		constructor(data?: Types.Channels | string) {
 			if (!data || data == undefined) {
 				this.data = {
@@ -73,12 +73,12 @@ namespace Constructors {
 			if (typeof data == 'string') this.data = JSON.parse(data);
 			if (typeof data == 'object') this.data = data;
 		}
-		toString() {
+		toString(): string {
 			return JSON.stringify(this.data);
 		}
 	}
 	export class Blacklisted {
-		data: Types.Blacklisted;
+		public data: Types.Blacklisted;
 		constructor(data?: Types.Blacklisted | string) {
 			if (!data || data == undefined) {
 				this.data = {
@@ -91,12 +91,12 @@ namespace Constructors {
 			if (typeof data == 'string') this.data = JSON.parse(data);
 			if (typeof data == 'object') this.data = data;
 		}
-		toString() {
+		toString(): string {
 			return JSON.stringify(this.data);
 		}
 	}
 	export class Disabled {
-		data: Types.Disabled;
+		public data: Types.Disabled;
 		constructor(data?: Types.Disabled | string) {
 			if (!data || data == undefined) {
 				this.data = {
@@ -107,23 +107,23 @@ namespace Constructors {
 			if (typeof data == 'string') this.data = JSON.parse(data);
 			if (typeof data == 'object') this.data = data;
 		}
-		toString() {
+		toString(): string {
 			return JSON.stringify(this.data);
 		}
 	}
 	export class Moderations {
-		data: Types.Moderations;
+		public data: Types.Moderations;
 		constructor(data?: Types.Moderations | string) {
 			if (!data || data == undefined) this.data = [];
 			if (typeof data == 'string') this.data = JSON.parse(data);
 			if (typeof data == 'object') this.data = data;
 		}
-		toString() {
+		toString(): string {
 			return JSON.stringify(this.data);
 		}
 	}
 	export class Protected {
-		data: Types.Protected;
+		public data: Types.Protected;
 		constructor(data?: Types.Protected | string) {
 			if (!data || data == undefined) {
 				this.data = {
@@ -134,19 +134,18 @@ namespace Constructors {
 			if (typeof data == 'string') this.data = JSON.parse(data);
 			if (typeof data == 'object') this.data = data;
 		}
-		toString() {
+		toString(): string {
 			return JSON.stringify(this.data);
 		}
 	}
 	export class Tags {
-		data: Types.Tags;
+		public data: Types.Tags;
 		constructor(data?: Types.Tags | string) {
 			if (!data || data == undefined) this.data = [];
 			if (typeof data == 'string') this.data = JSON.parse(data);
 			if (typeof data == 'object') this.data = data;
 		}
-		toString() {
-			console.log(this.data);
+		toString(): string {
 			return JSON.stringify(this.data);
 		}
 	}
@@ -157,7 +156,7 @@ namespace Constructors {
 			if (typeof data == 'string') this.data = JSON.parse(data);
 			if (typeof data == 'object') this.data = data;
 		}
-		toString() {
+		toString(): string {
 			return JSON.stringify(this.data);
 		}
 	}
@@ -168,7 +167,7 @@ namespace Constructors {
 			if (typeof data == 'string') this.data = JSON.parse(data);
 			if (typeof data == 'object') this.data = data;
 		}
-		toString() {
+		toString(): string {
 			return JSON.stringify(this.data);
 		}
 	}
@@ -262,7 +261,7 @@ namespace Constructors {
 			if (typeof data == 'string') this.data = JSON.parse(data);
 			if (typeof data == 'object') this.data = data;
 		}
-		toString() {
+		toString(): string {
 			return JSON.stringify(this.data);
 		}
 	}

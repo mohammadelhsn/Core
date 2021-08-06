@@ -9,7 +9,7 @@ export default class TickleCommand extends BaseCommand {
 			'reaction images',
 			[],
 			'',
-			'',
+			'Tickle the mentioned user',
 			'',
 			[],
 			[],

@@ -5,7 +5,23 @@ import axios from 'axios';
 
 export default class EmojisCommand extends BaseCommand {
 	constructor() {
-		super('emoji', 'miscellaneous', []);
+		super(
+			'emoji',
+			'miscellaneous',
+			[],
+			'',
+			'Search emojis on emoji.gg to add to your server!',
+			'',
+			[],
+			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const flags = {

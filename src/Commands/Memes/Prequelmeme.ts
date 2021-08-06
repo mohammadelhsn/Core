@@ -9,17 +9,17 @@ export default class PrequelmemeCommand extends BaseCommand {
 			'memes',
 			[],
 			'',
+			'Sends a meme from r/Prequelmemes',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
 	async run(

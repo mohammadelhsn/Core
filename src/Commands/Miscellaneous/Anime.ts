@@ -5,7 +5,23 @@ import axios, { AxiosResponse } from 'axios';
 
 export default class AnimeCommand extends BaseCommand {
 	constructor() {
-		super('anime', 'miscellaneous', []);
+		super(
+			'anime',
+			'miscellaneous',
+			[],
+			'<anime name>',
+			'Search an anime by name',
+			'',
+			[],
+			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const query = args.join(' ');

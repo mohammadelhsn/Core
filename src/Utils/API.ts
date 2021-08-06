@@ -145,25 +145,6 @@ namespace API {
 				});
 			}
 		}
-		async Goose(): Promise<BaseObj> {
-			try {
-				const res = await axios.get(`https://nekos.life/api/v2/img/goose`);
-				const body = <Responses.NekosLifeAnimal>res.data;
-
-				return new BaseObj({
-					error: false,
-					file: body.url,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
 		async Kangaroo() {
 			try {
 				const res = await axios.get(
@@ -235,25 +216,6 @@ namespace API {
 					error: true,
 					id: body.data.id,
 					file: body.data.file,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Meow() {
-			try {
-				const res = await axios.get(`https://nekos.life/api/v2/img/meow`);
-				const body = <Responses.NekosLifeAnimal>res.data;
-
-				return new BaseObj({
-					error: false,
-					file: body.url,
 				});
 			} catch (error) {
 				return new BaseObj({
@@ -399,25 +361,6 @@ namespace API {
 					error: false,
 					file: body.data.file,
 					id: body.data.id,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Woof() {
-			try {
-				const res = await axios.get(`https://nekos.life/api/v2/img/woof`);
-				const body = <Responses.NekosLifeAnimal>res.data;
-
-				return new BaseObj({
-					error: false,
-					file: body.url,
 				});
 			} catch (error) {
 				return new BaseObj({
@@ -832,25 +775,6 @@ namespace API {
 				});
 			}
 		}
-		async Fact() {
-			try {
-				const res = await axios.get(`https://nekos.life/api/v2/fact`);
-				const data = <Responses.FactsResponse>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.fact,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
 		async Foxfact() {
 			try {
 				const res = await axios.get(`https://some-random-api.ml/facts/fox`);
@@ -1029,22 +953,6 @@ namespace API {
 				});
 			}
 		}
-		async Cattext() {
-			try {
-				const res = await axios.get(`https://nekos.life/api/v2/cat`);
-				const data = <Responses.NekosLifeCat>res.data;
-
-				return new BaseObj({ error: false, text: data.cat });
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
 		async Changemymind(text: string) {
 			try {
 				const res = await axios.get(
@@ -1112,25 +1020,6 @@ namespace API {
 				});
 			}
 		}
-		async Name() {
-			try {
-				const res = await axios.get(`https://nekos.life/api/v2/name`);
-				const data = <Responses.NekosLifeName>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.name,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
 		async Neko() {
 			try {
 				const res = await axios.get(`http://api.nekos.fun:8080/api/neko`);
@@ -1141,45 +1030,6 @@ namespace API {
 					file: data.image,
 				});
 			} catch (error) {}
-		}
-		async OwO(text: string) {
-			try {
-				const res = await axios.get(
-					`https://nekos.life/api/v2/owoify?text=${text}`
-				);
-				const data = <Responses.OwO_Response>res.data;
-
-				return new BaseObj({ error: false, text: data.owo });
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Spoiler(text: string) {
-			try {
-				const res = await axios.get(
-					`https://nekos.life/api/v2/spoiler?text=${text}`
-				);
-				const data = <Responses.NekosLifeSpoiler>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.text,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
 		}
 		async Truth(text: string) {}
 		async Waifu() {
@@ -1209,25 +1059,6 @@ namespace API {
 				return new BaseObj({
 					error: false,
 					file: data.image,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Why() {
-			try {
-				const res = await axios.get(`https://nekos.life/api/v2/why`);
-				const data = <Responses.NekosLifeWhy>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.why,
 				});
 			} catch (error) {
 				return new BaseObj({

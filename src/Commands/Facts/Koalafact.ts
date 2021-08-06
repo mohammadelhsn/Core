@@ -9,17 +9,17 @@ export default class KoalafactCommand extends BaseCommand {
 			'facts',
 			[],
 			'',
+			'Sends a koala fact',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {

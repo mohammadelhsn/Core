@@ -9,13 +9,13 @@ export default class PlayCommand extends BaseCommand {
 			'play',
 			'music',
 			[],
+			'<song name or URL>',
+			'Play a song / playlist',
 			'',
-			'',
-			'',
 			[],
 			[],
-			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
+			['CONNECT'],
 			true,
 			false,
 			false,
@@ -78,8 +78,6 @@ export default class PlayCommand extends BaseCommand {
 				message: message,
 			});
 		}
-
-		console.log(client.manager.nodes);
 
 		const player = client.manager.create({
 			guild: message.guild.id,

@@ -6,7 +6,23 @@ import moment from 'moment';
 
 export default class CovidCommand extends BaseCommand {
 	constructor() {
-		super('covid', 'miscellaneous', []);
+		super(
+			'covid',
+			'miscellaneous',
+			[],
+			'',
+			'Get covid stats',
+			'',
+			[],
+			[],
+			["SEND_MESSAGES", "EMBED_LINKS"],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const choice = args[0];

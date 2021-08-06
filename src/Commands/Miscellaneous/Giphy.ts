@@ -2,7 +2,6 @@ import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
 import { Message } from 'discord.js';
 import Giphy from 'giphy-api';
-import * as dotenv from 'dotenv';
 
 export default class GiphyCommand extends BaseCommand {
 	constructor() {
@@ -11,11 +10,11 @@ export default class GiphyCommand extends BaseCommand {
 			'miscellaneous',
 			[],
 			'',
+			'Search Gifs on giphy',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,

@@ -5,7 +5,23 @@ import axios from 'axios';
 
 export default class LyricsCommand extends BaseCommand {
 	constructor() {
-		super('lyrics', 'miscellaneous', []);
+		super(
+			'lyrics',
+			'miscellaneous',
+			[],
+			'<song name>',
+			'Get the lyrics for any song',
+			'',
+			[],
+			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		// Endpoint: https://some-random-api.ml/lyrics?title=

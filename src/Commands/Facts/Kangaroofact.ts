@@ -9,17 +9,17 @@ export default class KangaroofactCommand extends BaseCommand {
 			'facts',
 			[],
 			'',
+			'Sends a kangaroo fact',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {

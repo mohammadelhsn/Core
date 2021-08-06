@@ -5,7 +5,23 @@ import axios from 'axios';
 
 export default class DocsCommand extends BaseCommand {
 	constructor() {
-		super('docs', 'miscellaneous', []);
+		super(
+			'docs',
+			'miscellaneous',
+			[],
+			'<query>',
+			'Search the Discord JS docs (stable)',
+			'',
+			[],
+			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const query = args[0];

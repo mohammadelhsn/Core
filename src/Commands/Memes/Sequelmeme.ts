@@ -9,17 +9,17 @@ export default class SequelmemeCommand extends BaseCommand {
 			'memes',
 			[],
 			'',
+			'Sends a sequel meme',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
 	async run(

@@ -9,7 +9,7 @@ export default class MemeCommand extends BaseCommand {
 			'memes',
 			[],
 			'',
-			'',
+			'Sends a random meme',
 			'',
 			[],
 			[],

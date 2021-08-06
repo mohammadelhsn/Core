@@ -9,17 +9,17 @@ export default class GiraffefactCommand extends BaseCommand {
 			'facts',
 			[],
 			'',
+			'Sends a giraffe fact',
 			'',
-			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
