@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, MessageAttachment } from 'discord.js';
+import { AwaitMessagesOptions, Message, MessageAttachment } from 'discord.js';
 import { Wanted } from 'discord-image-generation';
 
 export default class WantedCommand extends BaseCommand {
@@ -44,14 +44,14 @@ export default class WantedCommand extends BaseCommand {
 					error_message: 'You must specifiy a currency',
 				});
 
-				const msg = await message.channel.send({ embed: errorEmbed });
+				const msg = await message.channel.send({ embeds: errorEmbed });
 				return msg.delete({ timeout: 10000 });
 			}
 			const avatar = message.mentions.members
 				.first()
 				.user.displayAvatarURL({ format: 'png' });
 
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			try {
 				const image = await new Wanted().getImage(`${avatar}`, `${currency}`);
@@ -66,7 +66,7 @@ export default class WantedCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ files: [file], embed: embed });
+				return message.channel.send({ files: [file], embeds: [embed] });
 			} catch (e) {
 				m.delete();
 				console.log(e);
@@ -77,7 +77,7 @@ export default class WantedCommand extends BaseCommand {
 					text: this,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 		} else if (args[0] == 'me') {
 			const currency = args[1];
@@ -90,11 +90,11 @@ export default class WantedCommand extends BaseCommand {
 					error_message: 'You must specifiy a currency',
 				});
 
-				const msg = await message.channel.send(errorEmbed);
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [errorEmbed]});
+				return this.Utils.Delete(msg);
 			}
 
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			try {
 				const avatar = message.author.displayAvatarURL({ format: 'png' });
@@ -110,7 +110,7 @@ export default class WantedCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ files: [file], embed: embed });
+				return message.channel.send({ files: [file], embeds: [embed] });
 			} catch (e) {
 				m.delete();
 				console.log(e);
@@ -121,7 +121,7 @@ export default class WantedCommand extends BaseCommand {
 					text: this,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 		} else if (args[0] == 'help') {
 			return await this.HelpEmbed.Base({
@@ -134,7 +134,8 @@ export default class WantedCommand extends BaseCommand {
 
 		const isFromAuthor = (m) => m.author.id == message.author.id;
 
-		const options = {
+		const options: AwaitMessagesOptions = {
+			filter: isFromAuthor,
 			max: 1,
 			time: 60000,
 		};
@@ -144,10 +145,9 @@ export default class WantedCommand extends BaseCommand {
 			text: this,
 			description: 'Please sent the first image!',
 		});
-		await message.channel.send({ embed: tEmbed });
+		await message.channel.send({ embeds: [tEmbed] });
 
 		const firstColl = await message.channel.awaitMessages(
-			isFromAuthor,
 			options
 		);
 
@@ -160,8 +160,8 @@ export default class WantedCommand extends BaseCommand {
 					error_message: 'Must be an attachment!',
 				});
 
-				const msg = await message.channel.send({ embed: errorEmbed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [errorEmbed] });
+				return this.Utils.Delete(msg);
 			}
 			const attach = firstColl.first().attachments.first().url;
 
@@ -171,17 +171,16 @@ export default class WantedCommand extends BaseCommand {
 				description: 'Please mention a currency for the picture! "ex: $"',
 			});
 
-			await message.channel.send({ embed: dEmbed });
+			await message.channel.send({ embeds: [dEmbed] });
 
 			const secondColl = await message.channel.awaitMessages(
-				isFromAuthor,
 				options
 			);
 
 			if (secondColl.size > 0) {
 				const attach2 = secondColl.first().content;
 
-				const m = await message.channel.send({ embed: gEmbed });
+				const m = await message.channel.send({ embeds: [gEmbed] });
 				try {
 					const image = await new Wanted().getImage(`${attach}`, `${attach2}`);
 					const file = new MessageAttachment(image, 'wanted.png');
@@ -195,7 +194,7 @@ export default class WantedCommand extends BaseCommand {
 					});
 
 					m.delete();
-					return message.channel.send({ files: [file], embed: embed });
+					return message.channel.send({ files: [file], embeds: [embed] });
 				} catch (e) {
 					m.delete();
 					console.log(e);
@@ -206,7 +205,7 @@ export default class WantedCommand extends BaseCommand {
 						text: this,
 					});
 
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				}
 			} else timedOut = true;
 		} else timedOut = true;
@@ -219,8 +218,8 @@ export default class WantedCommand extends BaseCommand {
 				error_message: 'Command timed out',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 	}
 }

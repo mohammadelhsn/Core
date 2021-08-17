@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { AwaitReactionsOptions, Message } from 'discord.js';
 import axios from 'axios';
 
 export default class CollectionCommand extends BaseCommand {
@@ -33,7 +33,7 @@ export default class CollectionCommand extends BaseCommand {
 				id: message.guild.id,
 				error_message: 'Error details: Missing query',
 			});
-			const msg = await message.channel.send({ embed: errEmbed });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
 			return msg.delete({ timeout: 10000 });
 		}
 		const url = `https://djsdocs.sorta.moe/v2/embed?src=collection&q=${encodeURIComponent(
@@ -49,25 +49,29 @@ export default class CollectionCommand extends BaseCommand {
 				text: this,
 				id: message.guild.id,
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (!message.guild) {
-			return message.channel.send({ embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 
-		const msg = await message.channel.send({ embed });
+		const msg = await message.channel.send({ embeds: [embed] });
 		msg.react('🗑️');
 
 		let react;
 
+		const options: AwaitReactionsOptions = {
+			filter: (reaction, user) =>
+				reaction.emoji.name == '🗑️' && user.id === message.author.id,
+			max: 1,
+			time: 60000,
+			errors: ['time'],
+		};
+
 		try {
-			react = await msg.awaitReactions(
-				(reaction, user) =>
-					reaction.emoji.name === '🗑️' && user.id === message.author.id,
-				{ max: 1, time: 60000, errors: ['time'] }
-			);
+			react = await msg.awaitReactions(options);
 		} catch (error) {
 			msg.reactions.removeAll();
 		}

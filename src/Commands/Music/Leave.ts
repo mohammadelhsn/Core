@@ -40,8 +40,8 @@ export default class LeaveCommand extends BaseCommand {
 				text: this,
 				error_message: 'You must be in a voice channel',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const player = client.manager.players.get(message.guild.id);
@@ -53,8 +53,8 @@ export default class LeaveCommand extends BaseCommand {
 				text: this,
 				error_message: 'There are no active players at the moment',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (voiceChannel.id !== player.options.voiceChannel) {
@@ -64,8 +64,8 @@ export default class LeaveCommand extends BaseCommand {
 				text: this,
 				error_message: "You're not in the bots voice channel",
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		try {
@@ -78,7 +78,7 @@ export default class LeaveCommand extends BaseCommand {
 				id: message.guild.id,
 				text: this,
 			});
-			return message.channel.send({ embed: errEmbed });
+			return message.channel.send({ embeds: [errEmbed] });
 		}
 
 		const successEmbed = await this.SuccessEmbed.Base({
@@ -87,6 +87,6 @@ export default class LeaveCommand extends BaseCommand {
 			text: this,
 			success_message: '```Successfully stopped playing music!```',
 		});
-		return message.channel.send({ embed: successEmbed });
+		return message.channel.send({ embeds: [successEmbed] });
 	}
 }

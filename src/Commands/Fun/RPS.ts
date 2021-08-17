@@ -40,7 +40,7 @@ export default class RPSCommand extends BaseCommand {
 				error_message: 'Please make a choice',
 			});
 
-			const msg = await message.channel.send({ embed: errorEmbed });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
 			return msg.delete({ timeout: 10000 });
 		}
 		if (choice.includes('help')) {
@@ -61,8 +61,8 @@ export default class RPSCommand extends BaseCommand {
 				error_message: 'Please pick a valid choice: rock, paper or scissors',
 			});
 
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 		const rpsEmbed = await this.Embed.Base({
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -71,6 +71,6 @@ export default class RPSCommand extends BaseCommand {
 			description: `${random()}`,
 		});
 
-		return message.channel.send({ embed: rpsEmbed });
+		return message.channel.send({ embeds: [rpsEmbed] });
 	}
 }

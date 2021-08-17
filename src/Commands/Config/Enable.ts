@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, Permissions } from 'discord.js';
 
 export default class EnableCommand extends BaseCommand {
 	constructor() {
@@ -26,8 +26,12 @@ export default class EnableCommand extends BaseCommand {
 		client: DiscordClient,
 		message: Message,
 		args: string[]
-	): Promise<Message> {
-		if (!message.member.hasPermission(['MANAGE_GUILD' || 'ADMINISTRATOR'])) {
+	): Promise<Message | void> {
+		if (
+			!message.member.permissions.has([
+				Permissions.FLAGS.MANAGE_GUILD || Permissions.FLAGS.ADMINISTRATOR,
+			])
+		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -35,8 +39,8 @@ export default class EnableCommand extends BaseCommand {
 				perms: ['MANAGE_GUILD', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const toEnable = args.join(' ');
@@ -90,7 +94,7 @@ export default class EnableCommand extends BaseCommand {
 						success_message: `Successfully enabled \`${value}\``,
 					});
 
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				}
 
 				const embed = await this.ErrorEmbed.Base({
@@ -100,8 +104,8 @@ export default class EnableCommand extends BaseCommand {
 					error_message: 'This category is already enabled.',
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 			if (disabled.data.commands.includes(value.getName())) {
 				const newValue = disabled.data.commands.filter(
@@ -125,7 +129,7 @@ export default class EnableCommand extends BaseCommand {
 					success_message: `Successfully enabled \`${value.getName()}\``,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 			const embed = await this.ErrorEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -134,8 +138,8 @@ export default class EnableCommand extends BaseCommand {
 				error_message: 'This command is already enabled.',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		} finally {
 			con.release();
 		}

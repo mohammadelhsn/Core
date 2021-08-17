@@ -26,7 +26,7 @@ export default class DelnoteCommand extends BaseCommand {
 		client: DiscordClient,
 		message: Message,
 		args: string[]
-	): Promise<Message> {
+	): Promise<Message | void> {
 		const user = message.mentions.members.first();
 
 		const identifier = args[1];
@@ -39,8 +39,8 @@ export default class DelnoteCommand extends BaseCommand {
 				error_message: 'You have to mention a user!',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (!identifier) {
@@ -51,8 +51,8 @@ export default class DelnoteCommand extends BaseCommand {
 				error_message: 'You must specifiy the identifier for the note',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const notes = await this.Settings.Notes(message.guild.id);
@@ -71,8 +71,8 @@ export default class DelnoteCommand extends BaseCommand {
 				error_message: "Oops, looks like this note doesn't exist!",
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const newArray = [];
@@ -104,6 +104,6 @@ export default class DelnoteCommand extends BaseCommand {
 			success_message: `Successfully deleted note ${identifier} on ${user.user.tag}`,
 		});
 
-		return message.channel.send({ embed: embed });
+		return message.channel.send({ embeds: [embed] });
 	}
 }

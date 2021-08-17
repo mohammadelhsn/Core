@@ -42,7 +42,7 @@ export default class HugCommand extends BaseCommand {
 				text: this,
 				error_message: 'You are missing the mention',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
 			return msg.delete({ timeout: 10000 });
 		} else if (user == args[0] && user.toLowerCase().includes('help')) {
 			return await this.HelpEmbed.Base({
@@ -57,7 +57,7 @@ export default class HugCommand extends BaseCommand {
 				text: this,
 			});
 
-			const m = await message.channel.send({ embed: generatingEmbed });
+			const m = await message.channel.send({ embeds: [generatingEmbed] });
 			try {
 				const res = await this.Reactions.Hug();
 
@@ -70,8 +70,8 @@ export default class HugCommand extends BaseCommand {
 						text: this,
 					});
 
-					const msg = await message.channel.send({ embed: errEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errEmbed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const hugEmbed = await this.ImageEmbed.Base({
@@ -83,7 +83,7 @@ export default class HugCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ embed: hugEmbed });
+				return message.channel.send({ embeds: [hugEmbed] });
 			} catch (e) {
 				m.delete();
 				console.log(e);
@@ -93,7 +93,7 @@ export default class HugCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		}
 	}

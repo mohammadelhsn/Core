@@ -4,12 +4,12 @@ import DiscordClient from '../../Client/Client';
 
 export default class MessageEvent extends BaseEvent {
 	constructor() {
-		super('message');
+		super('messageCreate');
 	}
 
 	async run(client: DiscordClient, message: Message) {
 		if (message.author.bot) return;
-		if (message.channel.type == 'dm') return;
+		if (message.channel.type == 'DM') return;
 
 		const con = await this.con.connect();
 
@@ -36,8 +36,8 @@ export default class MessageEvent extends BaseEvent {
 						error_message: 'This command is disabled in this guild!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				if (categories.includes(command.getCategory())) {
@@ -48,8 +48,8 @@ export default class MessageEvent extends BaseEvent {
 						error_message: 'This category is disabled in this guild!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				if (
@@ -63,19 +63,24 @@ export default class MessageEvent extends BaseEvent {
 						error_message: 'This command is owner only!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
-				if (command.getNsfw() == true && message.channel.nsfw == false) {
-					const embed = await this.ErrorEmbed.NsfwError({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						text: 'Message event',
-						id: message.guild.id,
-					});
+				if (
+					message.channel.type == 'GUILD_TEXT' ||
+					message.channel.type == 'GUILD_NEWS'
+				) {
+					if (command.getNsfw() == true && message.channel.nsfw == false) {
+						const embed = await this.ErrorEmbed.NsfwError({
+							iconURL: message.author.displayAvatarURL({ dynamic: true }),
+							text: 'Message event',
+							id: message.guild.id,
+						});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
+					}
 				}
 
 				if (
@@ -90,8 +95,8 @@ export default class MessageEvent extends BaseEvent {
 						error_message: 'This command is currently off limits',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				command.run(client, message, cmdArgs);

@@ -37,7 +37,7 @@ export default class FoxfactCommand extends BaseCommand {
 				text: this,
 				id: message.guild.id,
 			});
-			const m = await message.channel.send({ embed: generatingEmbed });
+			const m = await message.channel.send({ embeds: [generatingEmbed] });
 			try {
 				const res = await this.Facts.Foxfact();
 
@@ -52,7 +52,7 @@ export default class FoxfactCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ embed: factEmbed });
+				return message.channel.send({ embeds: [factEmbed] });
 			} catch (e) {
 				m.delete();
 				console.log(e);
@@ -62,7 +62,7 @@ export default class FoxfactCommand extends BaseCommand {
 					text: this,
 					id: message.guild.id,
 				});
-				return message.channel.send({ embed: errorEmbed });
+				return message.channel.send({ embeds: [errorEmbed] });
 			}
 		}
 	}

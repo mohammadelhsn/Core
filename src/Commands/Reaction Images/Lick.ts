@@ -41,7 +41,7 @@ export default class LickCommand extends BaseCommand {
 				text: this,
 				error_message: 'You are missing a required argument',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
 			return msg.delete({ timeout: 10000 });
 		} else if (user == args[0] && user.toLowerCase().includes('help')) {
 			return await this.HelpEmbed.Base({
@@ -56,7 +56,7 @@ export default class LickCommand extends BaseCommand {
 				text: this,
 			});
 
-			const m = await message.channel.send({ embed: generatingEmbed });
+			const m = await message.channel.send({ embeds: [generatingEmbed] });
 			try {
 				const res = await this.Reactions.Lick();
 
@@ -69,8 +69,8 @@ export default class LickCommand extends BaseCommand {
 						text: this,
 					});
 
-					const msg = await message.channel.send({ embed: errEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errEmbed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const cuddleEmbed = await this.ImageEmbed.Base({
@@ -82,7 +82,7 @@ export default class LickCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ embed: cuddleEmbed });
+				return message.channel.send({ embeds: [cuddleEmbed] });
 			} catch (e) {
 				m.delete();
 
@@ -91,7 +91,7 @@ export default class LickCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errorEmbed });
+				return message.channel.send({ embeds: [errorEmbed] });
 			}
 		}
 	}

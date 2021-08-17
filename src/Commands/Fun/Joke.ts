@@ -37,7 +37,7 @@ export default class JokeCommand extends BaseCommand {
 			text: this,
 		});
 
-		const m = await message.channel.send({ embed: gEmbed });
+		const m = await message.channel.send({ embeds: [gEmbed] });
 
 		try {
 			const res = await this.Fun.Joke();
@@ -51,8 +51,8 @@ export default class JokeCommand extends BaseCommand {
 					text: this,
 				});
 
-				const msg = await message.channel.send({ embed: errEmbed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [errEmbed] });
+				return this.Utils.Delete(msg);
 			}
 
 			const embed = await this.Embed.Base({
@@ -62,7 +62,7 @@ export default class JokeCommand extends BaseCommand {
 			});
 
 			m.delete();
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} catch (e) {
 			m.delete();
 
@@ -71,7 +71,7 @@ export default class JokeCommand extends BaseCommand {
 				id: message.guild.id,
 				text: this,
 			});
-			return message.channel.send({ embed: errEmbed });
+			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
 }

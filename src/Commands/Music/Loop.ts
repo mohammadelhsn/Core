@@ -31,7 +31,7 @@ export default class LoopCommand extends BaseCommand {
 				text: this,
 				error_message: 'You must be in a voice channel',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
 			return msg.delete({ timeout: 1000 });
 		}
 
@@ -52,8 +52,8 @@ export default class LoopCommand extends BaseCommand {
 				text: this,
 				error_message: 'There are no active players at the moment',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (voiceChannel.id !== player.options.voiceChannel) {
@@ -63,8 +63,8 @@ export default class LoopCommand extends BaseCommand {
 				text: this,
 				error_message: "You're not in the bots voice channel",
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (player.trackRepeat == false) {
@@ -77,7 +77,7 @@ export default class LoopCommand extends BaseCommand {
 					text: this,
 					success_message: '```Successfully enabled loop! 🔁```',
 				});
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			} catch (e) {
 				console.log(e);
 
@@ -86,7 +86,7 @@ export default class LoopCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		} else {
 			try {
@@ -98,7 +98,7 @@ export default class LoopCommand extends BaseCommand {
 					text: this,
 					success_message: '```Successfully disabled loop! 🔁```',
 				});
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			} catch (e) {
 				console.log(e);
 
@@ -107,7 +107,7 @@ export default class LoopCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		}
 	}

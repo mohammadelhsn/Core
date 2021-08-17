@@ -2,7 +2,18 @@ import { Pool } from 'pg';
 import DiscordClient from '../Client/Client';
 import StateManager from './StateManager';
 import Funcs from './Structures/Interfaces/Funcs';
-import { Snowflake, Message, MessageEmbed, Collection } from 'discord.js';
+import {
+	Snowflake,
+	Message,
+	MessageEmbed,
+	Collection,
+	MessageReaction,
+	HexColorString,
+	AwaitMessagesOptions,
+	Permissions,
+	PermissionResolvable,
+	ReactionCollectorOptions,
+} from 'discord.js';
 import pagination from 'discord.js-pagination';
 import CachedGuild from './Structures/CachedGuild';
 import Colours from '../../Colours.json';
@@ -11,13 +22,17 @@ import Descriptions from '../../Descriptions.json';
 import CachedGuildTypes from './Structures/Interfaces/CachedGuild';
 import Emojis from '../../Emojis.json';
 import Schemas from './Schemas';
+import moment from 'moment';
 
 namespace Functions {
 	export class Colour {
 		constructor() {
 			this.Set = this.Set.bind(this);
 		}
-		Set(colour?: keyof Funcs.colours, options?: Funcs.ColourOpts): string {
+		Set(
+			colour?: keyof Funcs.colours,
+			options?: Funcs.ColourOpts
+		): HexColorString {
 			if (!colour) colour = 'random';
 			const colours = [
 				Colours.red_dark,
@@ -60,6 +75,7 @@ namespace Functions {
 			if (colour == 'random') {
 				const ranNum = Math.floor(Math.random() * colours.length);
 				const colour = colours[ranNum];
+				// @ts-ignore
 				return colour;
 			}
 			if (colour && shade == null) {
@@ -228,7 +244,50 @@ namespace Functions {
 		Mentionuser(id: Snowflake): string {
 			return `<@${id}>`;
 		}
+		Delete(message: Message, timeout?: number) {
+			if (!message) throw new Error('Missing message object');
+			if (!timeout) timeout = 10000;
+
+			setTimeout(function () {
+				message.delete().catch((err) => console.log(err));
+			}, timeout);
+		}
+		ResolvePermission(permissions: PermissionResolvable[]): bigint[] {
+			const newPermissions = [];
+
+			for (const perm of permissions) {
+				const permission = Permissions.FLAGS[perm as string];
+				newPermissions.push(permission);
+			}
+
+			return newPermissions;
+		}
+		// async TestPaginate(msg: Message, pages: MessageEmbed[], emojiList: string[] = ['⏪', '⏩'], timeout: number = 120000) {
+		// 	if (!msg && !msg.channel) throw new Error("No provided message")
+		// 	if (!pages) throw new Error("No provided pages")
+		// 	if (!emojiList) throw new Error("No provided emoji list")
+
+		// 	let page = 0;
+
+		// 	const currentPage = await msg.channel.send({ embeds: [pages[page].setFooter(`Page ${page + 1} / ${pages.length}`)]})
+
+		// 	for (const emoji of emojiList) await currentPage.react(emoji);
+
+		// 	const options: ReactionCollectorOptions = {
+		// 		filter: (reaction, user) => emojiList.includes(reaction.emoji.name) && !user.bot,
+		// 		time: timeout,
+		// 	}
+
+		// 	const reactionCollector = currentPage.createReactionCollector(options);
+
+		// 	reactionCollector.on('collect', (reaction) => {
+		// 		reaction.users.remove(msg.author)
+		// 		if (reaction.emoji.name == emojiList[0]) {
+		// 			page = page = page > 0 ? --page : pages.length - 1;
+		// 		}
+		// 	})
 	}
+
 	export class Channels {
 		con: Pool;
 		client: DiscordClient;
@@ -1264,7 +1323,7 @@ namespace Functions {
 		async Base(opts: Funcs.HelpEmbedOpts) {
 			const { message, iconURL, command } = opts;
 
-			const { lang, prefix, Strings } = this.cache.get(message.guild.id)
+			const { lang, prefix, Strings } = this.cache.get(message.guild.id);
 
 			const strings = {
 				titles: {

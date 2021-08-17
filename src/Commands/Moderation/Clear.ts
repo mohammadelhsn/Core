@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, TextChannel } from 'discord.js';
+import { Message, TextChannel, Permissions } from 'discord.js';
 
 export default class ClearCommand extends BaseCommand {
 	constructor() {
@@ -23,7 +23,11 @@ export default class ClearCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		if (!message.member.hasPermission(['MANAGE_MESSAGES' || 'ADMINISTRATOR'])) {
+		if (
+			!message.member.permissions.has([
+				Permissions.FLAGS.MANAGE_MESSAGES || Permissions.FLAGS.ADMINISTRATOR,
+			])
+		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -31,12 +35,14 @@ export default class ClearCommand extends BaseCommand {
 				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
+			const msg = await message.channel.send({ embeds: [embed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
 		if (
-			!message.guild.me.hasPermission(['MANAGE_MESSAGES' || 'ADMINISTRATOR'])
+			!message.guild.me.permissions.has([
+				Permissions.FLAGS.MANAGE_MESSAGES || Permissions.FLAGS.ADMINISTRATOR,
+			])
 		) {
 			const embed = await this.ErrorEmbed.ClientPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -45,8 +51,8 @@ export default class ClearCommand extends BaseCommand {
 				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (!args[0] || isNaN(parseInt(args[0]))) {
@@ -57,8 +63,8 @@ export default class ClearCommand extends BaseCommand {
 				error_message: 'You must provide a number!',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const toClear = parseInt(args[0]);
@@ -75,8 +81,8 @@ export default class ClearCommand extends BaseCommand {
 				error_message: 'The max amount of messages is 100',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (mention) {
@@ -97,8 +103,8 @@ export default class ClearCommand extends BaseCommand {
 					success_message: `Successfully deleted ${toDelete.length} message(s)`,
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 		}
 		const messages = await message.channel.messages.fetch({ limit: 100 });
@@ -118,8 +124,8 @@ export default class ClearCommand extends BaseCommand {
 				success_message: `Successfully deleted ${toDelete.length} message(s)`,
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 	}
 }

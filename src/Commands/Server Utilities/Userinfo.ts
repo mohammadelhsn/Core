@@ -82,7 +82,7 @@ export default class UserinfoCommand extends BaseCommand {
 					},
 				],
 			});
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 
 		const user =
@@ -115,7 +115,7 @@ export default class UserinfoCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			} catch (e) {
 				if (e.httpStatus == 400) {
 					const embed = await this.ErrorEmbed.Base({
@@ -124,8 +124,8 @@ export default class UserinfoCommand extends BaseCommand {
 						text: this,
 						error_message: 'Provided value is not an ID (snowflake)',
 					});
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 				if (e.httpStatus == 404) {
 					const embed = await this.ErrorEmbed.Base({
@@ -134,8 +134,8 @@ export default class UserinfoCommand extends BaseCommand {
 						text: this,
 						error_message: "Provided user doesn't exist or is banned",
 					});
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 				console.log(e);
 
@@ -144,8 +144,8 @@ export default class UserinfoCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 		} else {
 			let userflags = null;
@@ -190,7 +190,7 @@ export default class UserinfoCommand extends BaseCommand {
 					},
 				],
 			});
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 	}
 }

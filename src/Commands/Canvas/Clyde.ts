@@ -39,8 +39,8 @@ export default class ClydeCommand extends BaseCommand {
 				id: message.guild.id,
 			});
 
-			const msg = await message.channel.send({ embed: errEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const gEmbed = await this.GeneratingEmbed.DiscordIG({
@@ -57,7 +57,7 @@ export default class ClydeCommand extends BaseCommand {
 			});
 		}
 
-		const m = await message.channel.send({ embed: gEmbed });
+		const m = await message.channel.send({ embeds: [gEmbed] });
 
 		try {
 			const image = await this.Canvas.Clyde(text);
@@ -72,9 +72,9 @@ export default class ClydeCommand extends BaseCommand {
 			});
 
 			m.delete();
-			return message.channel.send({ files: [file], embed: embed });
-		} catch (error) {
-			m.delete();
+			return message.channel.send({ files: [file], embeds: [embed] });
+		} catch {
+			return m.delete();
 		}
 	}
 }

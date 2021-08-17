@@ -28,6 +28,6 @@ export default class TrackStartEvent extends BaseEvent {
 				},
 			],
 		});
-		return (channel as TextChannel).send({ embed: embed });
+		return (channel as TextChannel).send({ embeds: [embed] });
 	}
 }

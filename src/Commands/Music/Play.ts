@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, MessageCollectorOptions } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 
 export default class PlayCommand extends BaseCommand {
@@ -32,7 +32,7 @@ export default class PlayCommand extends BaseCommand {
 				text: this,
 				error_message: 'You must be in a voice channel to use this command',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
+			const msg = await message.channel.send({ embeds: errorEmbed });
 			return msg.delete({ timeout: 10000 });
 		}
 
@@ -44,8 +44,8 @@ export default class PlayCommand extends BaseCommand {
 				text: this,
 				error_message: 'I cannot connect to this channel',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 		if (!permissions.has('SPEAK')) {
 			const errorEmbed = await this.ErrorEmbed.Base({
@@ -54,8 +54,8 @@ export default class PlayCommand extends BaseCommand {
 				text: this,
 				error_message: 'I cannot speak in this channel',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const search = args.join(' ');
@@ -67,8 +67,8 @@ export default class PlayCommand extends BaseCommand {
 				text: this,
 				error_message: 'Please specify a link or query',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (search == 'help') {
@@ -106,7 +106,7 @@ export default class PlayCommand extends BaseCommand {
 				});
 
 				player.queue.add(res.tracks[0]);
-				message.channel.send({ embed: embed });
+				message.channel.send({ embeds: [embed] });
 				if (!player.playing) player.play();
 				break;
 			case 'SEARCH_RESULT':
@@ -129,16 +129,20 @@ export default class PlayCommand extends BaseCommand {
 					],
 				});
 
-				await message.channel.send({ embed: sembed });
-				const collector = message.channel.createMessageCollector(
-					(m) => {
+				await message.channel.send({ embeds: [sembed] });
+
+				const options: MessageCollectorOptions = {
+					filter: (m) => {
 						return (
 							m.author.id === message.author.id &&
 							new RegExp(`^([1-5]|cancel)$`, 'i').test(m.content)
 						);
 					},
-					{ time: 30000, max: 1 }
-				);
+					time: 30000,
+					max: 1,
+				};
+
+				const collector = message.channel.createMessageCollector(options);
 
 				collector.on('collect', async (m) => {
 					if (/cancel/i.test(m.content)) return collector.stop('cancelled');
@@ -160,7 +164,7 @@ export default class PlayCommand extends BaseCommand {
 						],
 					});
 
-					message.channel.send({ embed: tEmbed });
+					message.channel.send({ embeds: [tEmbed] });
 					if (!player.playing) player.play();
 				});
 
@@ -172,7 +176,8 @@ export default class PlayCommand extends BaseCommand {
 							text: this,
 							success_message: 'Successfully cancelled selection',
 						});
-						return message.channel.send({ embed: successEmbed });
+						message.channel.send({ embeds: [successEmbed] });
+						return;
 					}
 				});
 				break;

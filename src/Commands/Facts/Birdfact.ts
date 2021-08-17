@@ -38,7 +38,7 @@ export default class BirdfactCommand extends BaseCommand {
 				id: message.guild.id,
 				text: this,
 			});
-			const m = await message.channel.send({ embed: generatingEmbed });
+			const m = await message.channel.send({ embeds: [generatingEmbed] });
 			try {
 				const res = await this.Facts.Birdfact();
 
@@ -50,8 +50,8 @@ export default class BirdfactCommand extends BaseCommand {
 						id: message.guild.id,
 						text: this,
 					});
-					const msg = await message.channel.send({ embed: errEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errEmbed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const factEmbed = await this.Embed.Base({
@@ -64,7 +64,7 @@ export default class BirdfactCommand extends BaseCommand {
 					fields: [{ name: 'Fact', value: `\`${res.text}\`` }],
 				});
 				m.delete();
-				return message.channel.send({ embed: factEmbed });
+				return message.channel.send({ embeds: [factEmbed] });
 			} catch (e) {
 				m.delete();
 				console.log(e);
@@ -74,7 +74,7 @@ export default class BirdfactCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errorEmbed });
+				return message.channel.send({ embeds: [errorEmbed] });
 			}
 		}
 	}

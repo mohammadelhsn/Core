@@ -42,7 +42,7 @@ export default class ToastCommand extends BaseCommand {
 			provider: 'Fun responses',
 		});
 
-		const m = await message.channel.send({ embed: gEmbed });
+		const m = await message.channel.send({ embeds: [gEmbed] });
 
 		try {
 			const embed = await this.Embed.Base({
@@ -54,7 +54,7 @@ export default class ToastCommand extends BaseCommand {
 				fields: [{ name: 'Toast', value: `"\`${await fun.toast()}\`"` }],
 			});
 			m.delete();
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} catch (e) {
 			m.delete();
 
@@ -63,7 +63,7 @@ export default class ToastCommand extends BaseCommand {
 				id: message.guild.id,
 				text: this,
 			});
-			return message.channel.send({ embed: errEmbed });
+			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
 }

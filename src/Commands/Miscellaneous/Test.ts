@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, MessageFlags, Permissions } from 'discord.js';
 
 export default class TesstCommand extends BaseCommand {
 	constructor() {
@@ -23,13 +23,8 @@ export default class TesstCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		return message.channel.send(
-			await this.ErrorEmbed.UserPermissions({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				text: this,
-				id: message.guild.id,
-				perms: ['ADMINISTRATOR'],
-			})
-		);
+		const msg = await message.channel.send({ content: 'This is a test' });
+		msg.timeout();
+		console.log(msg.content);
 	}
 }

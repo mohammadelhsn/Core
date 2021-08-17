@@ -38,7 +38,7 @@ export default class PingCommand extends BaseCommand {
 			description: '`Pinging...`',
 		});
 
-		const m = await message.channel.send({ embed: embed });
+		const m = await message.channel.send({ embeds: [embed] });
 
 		const ping = m.createdTimestamp - message.createdTimestamp;
 
@@ -53,6 +53,6 @@ export default class PingCommand extends BaseCommand {
 			],
 		});
 
-		return m.edit(newEmbed);
+		return m.edit({ embeds: [newEmbed] });
 	}
 }

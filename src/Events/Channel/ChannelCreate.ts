@@ -6,8 +6,8 @@ export default class ChannelCreateEvent extends BaseEvent {
 	constructor() {
 		super('channelCreate');
 	}
-	async run(client: DiscordClient, channel: GuildChannel | DMChannel) {
-		if (channel.type == 'dm') return;
+	async run(client: DiscordClient, channel: GuildChannel) {
+		if (channel.type.toLowerCase() == 'dm') return;
 
 		const { guild } = channel;
 
@@ -50,6 +50,6 @@ export default class ChannelCreateEvent extends BaseEvent {
 			],
 		});
 
-		return log.send({ embed: embed });
+		return log.send({ embeds: [embed] });
 	}
 }

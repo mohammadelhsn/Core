@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, Permissions } from 'discord.js';
 
 export default class DeafenCommand extends BaseCommand {
 	constructor() {
@@ -26,21 +26,11 @@ export default class DeafenCommand extends BaseCommand {
 		client: DiscordClient,
 		message: Message,
 		args: string[]
-	): Promise<Message> {
-		if (!message.member.hasPermission(['DEAFEN_MEMBERS' || 'ADMINISTRATOR'])) {
-			const embed = await this.ErrorEmbed.UserPermissions({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				text: this,
-				id: message.guild.id,
-				perms: ['DEAFEN_MEMBERS', 'ADMINISTRATOR'],
-			});
-
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
-		}
-
+	): Promise<Message | void> {
 		if (
-			!message.guild.me.hasPermission(['DEAFEN_MEMBERS' || 'ADMINISTRATOR'])
+			!message.member.permissions.has([
+				Permissions.FLAGS.DEAFEN_MEMBERS || Permissions.FLAGS.ADMINISTRATOR,
+			])
 		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -49,8 +39,22 @@ export default class DeafenCommand extends BaseCommand {
 				perms: ['DEAFEN_MEMBERS', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
+		}
+
+		if (
+			!message.guild.me.permissions.has(['DEAFEN_MEMBERS' || 'ADMINISTRATOR'])
+		) {
+			const embed = await this.ErrorEmbed.UserPermissions({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				id: message.guild.id,
+				perms: ['DEAFEN_MEMBERS', 'ADMINISTRATOR'],
+			});
+
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const user = message.mentions.members.first();
@@ -65,8 +69,8 @@ export default class DeafenCommand extends BaseCommand {
 				error_message: 'You cannot deafen yourself!',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (user.id == client.user.id) {
@@ -77,13 +81,13 @@ export default class DeafenCommand extends BaseCommand {
 				error_message: 'I cannot deafen myself with this command. ',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
-		const { serverDeaf, channelID } = user.voice;
+		const { serverDeaf, channelId } = user.voice;
 
-		if (!channelID || channelID == null) {
+		if (!channelId || channelId == null) {
 			const embed = await this.ErrorEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -91,8 +95,8 @@ export default class DeafenCommand extends BaseCommand {
 				error_message: 'This user is not in a voice channel!',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		try {
@@ -104,8 +108,8 @@ export default class DeafenCommand extends BaseCommand {
 				id: message.guild.id,
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		} finally {
 			if (user.voice.deaf == true) {
 				const embed = await this.SuccessEmbed.Base({
@@ -115,7 +119,7 @@ export default class DeafenCommand extends BaseCommand {
 					success_message: `Successfully deafened ${user.user.tag}`,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 
 			if (user.voice.deaf == false) {
@@ -126,7 +130,7 @@ export default class DeafenCommand extends BaseCommand {
 					success_message: `Successfully un-deafened ${user.user.tag}`,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 		}
 	}

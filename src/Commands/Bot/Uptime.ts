@@ -38,6 +38,6 @@ export default class UptimeCommand extends BaseCommand {
 				client.uptime
 			)}\``,
 		});
-		return message.channel.send({ embed: uptimeEmbed });
+		return message.channel.send({ embeds: [uptimeEmbed] });
 	}
 }

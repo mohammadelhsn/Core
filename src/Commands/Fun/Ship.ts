@@ -54,8 +54,8 @@ export default class ShipCommand extends BaseCommand {
 				error_message: 'You require at least one mention',
 			});
 
-			const msg = await message.channel.send({ embed: errEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const ship = Math.floor(Math.random() * 100) + 1;
@@ -67,7 +67,7 @@ export default class ShipCommand extends BaseCommand {
 				title: `${mention1.user.username} and ${mention2.user.username} dont ship well. Oof`,
 				description: `:broken_heart: \`${ship}\`% :broken_heart:`,
 			});
-			return message.channel.send({ embed: badmatch });
+			return message.channel.send({ embeds: [badmatch] });
 		} else if (ship === 100) {
 			const perfectMatch = await this.Embed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -76,7 +76,7 @@ export default class ShipCommand extends BaseCommand {
 				description: `:heart_eyes: \`${ship}\`% :heart_eyes:`,
 			});
 
-			return message.channel.send({ embed: perfectMatch });
+			return message.channel.send({ embeds: [perfectMatch] });
 		} else {
 			const match = await this.Embed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -85,7 +85,7 @@ export default class ShipCommand extends BaseCommand {
 				description: `:heart: \`${ship}\`% :heart:`,
 			});
 
-			return message.channel.send({ embed: match });
+			return message.channel.send({ embeds: [match] });
 		}
 	}
 }

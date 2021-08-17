@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, TextChannel } from 'discord.js';
+import { Message, TextChannel, Permissions } from 'discord.js';
 
 export default class KickCommand extends BaseCommand {
 	constructor() {
@@ -23,7 +23,11 @@ export default class KickCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		if (!message.member.hasPermission(['KICK_MEMBERS' || 'ADMINISTRATOR'])) {
+		if (
+			!message.member.permissions.has([
+				Permissions.FLAGS.KICK_MEMBERS || Permissions.FLAGS.ADMINISTRATOR,
+			])
+		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -31,11 +35,15 @@ export default class KickCommand extends BaseCommand {
 				perms: ['KICK_MEMBERS', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
+			const msg = await message.channel.send({ embeds: [embed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
-		if (!message.member.hasPermission(['KICK_MEMBERS' || 'ADMINISTRATOR'])) {
+		if (
+			!message.member.permissions.has([
+				Permissions.FLAGS.KICK_MEMBERS || Permissions.FLAGS.ADMINISTRATOR,
+			])
+		) {
 			const embed = await this.ErrorEmbed.ClientPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -43,8 +51,8 @@ export default class KickCommand extends BaseCommand {
 				perms: ['KICK_MEMBERS', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (!args[0]) {
@@ -55,8 +63,8 @@ export default class KickCommand extends BaseCommand {
 				error_message: 'You must include at least one argument',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const user =
@@ -72,8 +80,8 @@ export default class KickCommand extends BaseCommand {
 				error_message: "I couldn't find this user for you!",
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (user.id == message.author.id) {
@@ -84,8 +92,8 @@ export default class KickCommand extends BaseCommand {
 				error_message: "You can't kick yourself!",
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (user.id == client.user.id) {
@@ -96,8 +104,8 @@ export default class KickCommand extends BaseCommand {
 				error_message: "I can't kick myself!",
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (user.id == '398264990567628812') {
@@ -108,8 +116,8 @@ export default class KickCommand extends BaseCommand {
 				error_message: "I can't kick my owner!",
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const reason = args.slice(1).join(' ') || 'No reason given';
@@ -131,7 +139,7 @@ export default class KickCommand extends BaseCommand {
 				],
 			});
 
-			await user.send({ embed: embed });
+			await user.send({ embeds: [embed] });
 			await user.kick(reason);
 		} finally {
 			const successEmbed = await this.SuccessEmbed.Base({
@@ -141,8 +149,8 @@ export default class KickCommand extends BaseCommand {
 				success_message: `Successfully kicked ${user.user.tag} (${user.user.id})`,
 			});
 
-			const msg = await message.channel.send({ embed: successEmbed });
-			msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [successEmbed] });
+			this.Utils.Delete(msg);
 		}
 
 		const caseNumber = await this.Moderation.GetCaseNumber(message.guild.id);
@@ -169,13 +177,13 @@ export default class KickCommand extends BaseCommand {
 		if (modlog != null) {
 			const msg = await (
 				(await client.channels.fetch(modlog)) as TextChannel
-			).send({ embed: modlogEmbed });
+			).send({ embeds: [modlogEmbed] });
 			mmsg = msg.id;
 		}
 		if (publicmodlog != null) {
 			const msg = await (
 				(await client.channels.fetch(publicmodlog)) as TextChannel
-			).send({ embed: modlogEmbed });
+			).send({ embeds: [modlogEmbed] });
 			pmsg = msg.id;
 		}
 

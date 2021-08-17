@@ -686,21 +686,14 @@ export default class HelpCommand extends BaseCommand {
 					error_message: "The command you mentioned doesn't exist!",
 				});
 				return message.channel.send(errorEmbed);
-			} else {
-				if (message.channel.type === 'dm') {
-					return await this.HelpEmbed.Base({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						command: command,
-						message: message,
-					});
-				} else {
-					return await this.HelpEmbed.Base({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						command: command,
-						message: message,
-					});
-				}
-			}
+			} 
+
+			return await this.HelpEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				command: command,
+				message: message
+			})
+
 		}
 	}
 }

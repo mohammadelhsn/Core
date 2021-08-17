@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, MessageAttachment } from 'discord.js';
+import { AwaitMessagesOptions, Message, MessageAttachment } from 'discord.js';
 
 export default class PhcommentCommand extends BaseCommand {
 	constructor() {
@@ -37,7 +37,8 @@ export default class PhcommentCommand extends BaseCommand {
 
 		const isFromAuthor = (m) => m.author.id == message.author.id;
 
-		const options = {
+		const options: AwaitMessagesOptions = {
+			filter: isFromAuthor,
 			max: 1,
 			time: 60000,
 		};
@@ -49,12 +50,9 @@ export default class PhcommentCommand extends BaseCommand {
 			text: this,
 		});
 
-		await message.channel.send({ embed: tEmbed });
+		await message.channel.send({ embeds: [tEmbed] });
 
-		const firstColl = await message.channel.awaitMessages(
-			isFromAuthor,
-			options
-		);
+		const firstColl = await message.channel.awaitMessages(options);
 
 		if (firstColl.size > 0) {
 			let avatar;
@@ -82,12 +80,9 @@ export default class PhcommentCommand extends BaseCommand {
 				text: this,
 			});
 
-			await message.channel.send(dEmbed);
+			await message.channel.send({ embeds: [dEmbed] });
 
-			const secondColl = await message.channel.awaitMessages(
-				isFromAuthor,
-				options
-			);
+			const secondColl = await message.channel.awaitMessages(options);
 
 			if (
 				secondColl.size > 0 &&
@@ -104,8 +99,8 @@ export default class PhcommentCommand extends BaseCommand {
 						error_message: 'This username is too long',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const title = secondColl.first().content;
@@ -116,12 +111,9 @@ export default class PhcommentCommand extends BaseCommand {
 					description: 'Please specifiy the content for the comment',
 				});
 
-				await message.channel.send({ embed: cEmbed });
+				await message.channel.send({ embeds: [cEmbed] });
 
-				const thirdColl = await message.channel.awaitMessages(
-					isFromAuthor,
-					options
-				);
+				const thirdColl = await message.channel.awaitMessages(options);
 
 				if (
 					thirdColl.size > 0 &&
@@ -139,8 +131,8 @@ export default class PhcommentCommand extends BaseCommand {
 								'Content is too long! Comment content has to be under 1000 characters',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					const content = thirdColl.first().content;
@@ -158,7 +150,7 @@ export default class PhcommentCommand extends BaseCommand {
 
 					return await message.channel.send({
 						files: [file],
-						embed: embed,
+						embeds: [embed],
 					});
 				} else timedOut = true;
 			} else timedOut = true;
@@ -172,8 +164,8 @@ export default class PhcommentCommand extends BaseCommand {
 				error_message: 'Command timed out',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 	}
 }

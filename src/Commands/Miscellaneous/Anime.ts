@@ -33,7 +33,7 @@ export default class AnimeCommand extends BaseCommand {
 				text: this,
 				error_message: 'Missing a required argument (query)',
 			});
-			const msg = await message.channel.send({ embed: errEmbed });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
@@ -50,8 +50,8 @@ export default class AnimeCommand extends BaseCommand {
 					text: this,
 				});
 
-				const msg = await message.channel.send({ embed: errEmbed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [errEmbed] });
+				return this.Utils.Delete(msg);
 			}
 
 			const embeds = [];

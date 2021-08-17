@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, MessageAttachment } from 'discord.js';
+import { AwaitMessagesOptions, Message, MessageAttachment } from 'discord.js';
 import { Affect } from 'discord-image-generation';
 
 export default class AffectCommand extends BaseCommand {
@@ -35,7 +35,7 @@ export default class AffectCommand extends BaseCommand {
 		});
 
 		if (mention) {
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			try {
 				const avatar = mention.user.displayAvatarURL({ format: 'png' });
@@ -51,7 +51,7 @@ export default class AffectCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ files: [file], embed: embed });
+				return message.channel.send({ files: [file], embeds: embed });
 			} catch (error) {
 				m.delete();
 				const embed = await this.ErrorEmbed.UnexpectedError({
@@ -60,7 +60,7 @@ export default class AffectCommand extends BaseCommand {
 					text: this,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 		}
 
@@ -72,7 +72,7 @@ export default class AffectCommand extends BaseCommand {
 			});
 		}
 		if (args[0] && args[0].toLowerCase().includes('me')) {
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			try {
 				const avatar = message.author.displayAvatarURL({ format: 'png' });
@@ -88,7 +88,7 @@ export default class AffectCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ files: [file], embed: embed });
+				return message.channel.send({ files: [file], embeds: [embed] });
 			} catch (error) {
 				m.delete();
 
@@ -98,12 +98,12 @@ export default class AffectCommand extends BaseCommand {
 					text: this,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 		}
 
 		if (message.attachments.size > 0) {
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			try {
 				const avatar = message.attachments.first().url;
@@ -119,7 +119,7 @@ export default class AffectCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ files: [file], embed: embed });
+				return message.channel.send({ files: [file], embeds: [embed] });
 			} catch (error) {
 				m.delete();
 				const embed = await this.ErrorEmbed.UnexpectedError({
@@ -128,7 +128,7 @@ export default class AffectCommand extends BaseCommand {
 					text: this,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 		}
 
@@ -136,7 +136,8 @@ export default class AffectCommand extends BaseCommand {
 
 		const isFromAuthor = (m) => m.author.id == message.author.id;
 
-		const options = {
+		const options: AwaitMessagesOptions = {
+			filter: isFromAuthor,
 			max: 1,
 			time: 60000,
 		};
@@ -147,12 +148,9 @@ export default class AffectCommand extends BaseCommand {
 			title: 'Affect command',
 			description: `Please send the first image you want.`,
 		});
-		await message.channel.send({ embed: tEmbed });
+		await message.channel.send({ embeds: [tEmbed] });
 
-		const firstColl = await message.channel.awaitMessages(
-			isFromAuthor,
-			options
-		);
+		const firstColl = await message.channel.awaitMessages(options);
 
 		if (firstColl.size == 0) timedOut = true;
 
@@ -164,14 +162,14 @@ export default class AffectCommand extends BaseCommand {
 				success_message: 'Successfully cancelled selection',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (firstColl.first().attachments.size == 0) timedOut = true;
 
 		if (timedOut == false && firstColl.first().attachments.size > 0) {
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			try {
 				const avatar = firstColl.first().attachments.first().url;
@@ -187,7 +185,7 @@ export default class AffectCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ files: [file], embed: embed });
+				return message.channel.send({ files: [file], embeds: [embed] });
 			} catch (error) {}
 		}
 
@@ -199,8 +197,8 @@ export default class AffectCommand extends BaseCommand {
 				error_message: 'Command timed out',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 	}
 }

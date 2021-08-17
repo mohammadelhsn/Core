@@ -33,7 +33,7 @@ export default class SexyrateCommand extends BaseCommand {
 				title: 'Sexyrate command',
 				description: `:heart: Sexy rate :heart: I rate you a \`${sexyrate}\` out of 100 on the sexy rate scale!`,
 			});
-			return message.channel.send({ embed: sexyRateEmbed });
+			return message.channel.send({ embeds: [sexyRateEmbed] });
 		} else {
 			let mention = message.mentions.users.first();
 			let toR8;
@@ -55,7 +55,7 @@ export default class SexyrateCommand extends BaseCommand {
 						text: this,
 						description: `:heart: Sexy rate :heart: I rate ${toR8} a \`${sexyrate}\` out of 100 on the sexy rate scale!`,
 					});
-					return message.channel.send({ embed: rateEmbed });
+					return message.channel.send({ embeds: [rateEmbed] });
 				}
 			}
 			if (toR8 == mention) {
@@ -65,7 +65,7 @@ export default class SexyrateCommand extends BaseCommand {
 					description: `:heart: Sexy rate :heart: I rate ${toR8} a \`${sexyrate}\` out of 100 on the sexy rate scale!`,
 				});
 
-				return message.channel.send({ embed: rateEmbed });
+				return message.channel.send({ embeds: [rateEmbed] });
 			}
 		}
 	}

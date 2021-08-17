@@ -42,7 +42,7 @@ export default class TopicCommand extends BaseCommand {
 			provider: 'Fun-responses',
 		});
 
-		const m = await message.channel.send({ embed: gEmbed });
+		const m = await message.channel.send({ embeds: [gEmbed] });
 
 		try {
 			const embed = await this.Embed.Base({
@@ -55,7 +55,7 @@ export default class TopicCommand extends BaseCommand {
 			});
 
 			m.delete();
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} catch (e) {
 			m.delete();
 
@@ -64,7 +64,7 @@ export default class TopicCommand extends BaseCommand {
 				text: this,
 				id: message.guild.id,
 			});
-			return message.channel.send({ embed: errEmbed });
+			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
 }

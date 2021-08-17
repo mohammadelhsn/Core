@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, MessageAttachment } from 'discord.js';
+import { AwaitMessagesOptions, Message, MessageAttachment } from 'discord.js';
 import { LisaPresentation } from 'discord-image-generation';
 
 export default class LisaCommand extends BaseCommand {
@@ -41,7 +41,7 @@ export default class LisaCommand extends BaseCommand {
 		});
 
 		if (args[0]) {
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			const text = args.join(' ');
 			const image = await new LisaPresentation().getImage(text);
@@ -56,14 +56,15 @@ export default class LisaCommand extends BaseCommand {
 			});
 
 			m.delete();
-			return message.channel.send({ files: [file], embed: embed });
+			return message.channel.send({ files: [file], embeds: [embed] });
 		}
 
 		let timedOut = false;
 
 		const isFromAuthor = (m) => m.author.id == message.author.id;
 
-		const options = {
+		const options: AwaitMessagesOptions = {
+			filter: isFromAuthor,
 			max: 1,
 			time: 60000,
 		};
@@ -74,15 +75,12 @@ export default class LisaCommand extends BaseCommand {
 			description: 'Please specify text for the presentation',
 		});
 
-		await message.channel.send({ embed: tEmbed });
+		await message.channel.send({ embeds: [tEmbed] });
 
-		const firstColl = await message.channel.awaitMessages(
-			isFromAuthor,
-			options
-		);
+		const firstColl = await message.channel.awaitMessages(options);
 
 		if (firstColl.size > 0) {
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			try {
 				const attach = firstColl.first().content;
@@ -90,7 +88,7 @@ export default class LisaCommand extends BaseCommand {
 				const img = await new LisaPresentation().getImage(`${attach}`);
 				const attachment = new MessageAttachment(img, 'lisa_presentation.png');
 				m.delete();
-				return message.channel.send(attachment);
+				return message.channel.send({ files: [attachment] });
 			} catch (e) {
 				m.delete();
 				console.log(e);
@@ -100,7 +98,7 @@ export default class LisaCommand extends BaseCommand {
 					text: this,
 					id: message.guild.id,
 				});
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		} else {
 			timedOut = true;
@@ -114,8 +112,8 @@ export default class LisaCommand extends BaseCommand {
 				error_message: 'Command timed out',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 	}
 }

@@ -82,7 +82,7 @@ export default class RolesCommand extends BaseCommand {
 				],
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: embed });
 		}
 
 		if (
@@ -98,8 +98,8 @@ export default class RolesCommand extends BaseCommand {
 				text: this,
 			});
 
-			const msg: Message = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg: Message = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const con = await this.con.connect();
@@ -122,8 +122,8 @@ export default class RolesCommand extends BaseCommand {
 								'You cannot set the muterole to the @everyone role',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					if (data.data.muterole == newValue.id) {
@@ -134,8 +134,8 @@ export default class RolesCommand extends BaseCommand {
 							error_message: 'Muterole is already set to that value!',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					data.data.muterole = newValue.id;
@@ -171,7 +171,7 @@ export default class RolesCommand extends BaseCommand {
 						],
 					});
 
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				}
 				if (data.data.muterole == null) {
 					const embed = await this.ErrorEmbed.Base({
@@ -181,8 +181,8 @@ export default class RolesCommand extends BaseCommand {
 						error_message: 'Muterole is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				data.data.muterole = null;
@@ -214,7 +214,7 @@ export default class RolesCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 			if (toUpdate == 'admin') {
 				if (newValue) {
@@ -227,8 +227,8 @@ export default class RolesCommand extends BaseCommand {
 								'You cannot set the adminrole to the @everyone role',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					if (data.data.adminrole == newValue.id) {
@@ -239,8 +239,8 @@ export default class RolesCommand extends BaseCommand {
 							error_message: 'Adminrole is already set to that value!',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					data.data.adminrole = newValue.id;
@@ -276,7 +276,7 @@ export default class RolesCommand extends BaseCommand {
 						],
 					});
 
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				}
 				if (data.data.adminrole == null) {
 					const embed = await this.ErrorEmbed.Base({
@@ -286,8 +286,8 @@ export default class RolesCommand extends BaseCommand {
 						error_message: 'Adminrole is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				data.data.adminrole = null;
@@ -319,7 +319,7 @@ export default class RolesCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 			if (toUpdate == 'warning') {
 				if (newValue) {
@@ -332,8 +332,8 @@ export default class RolesCommand extends BaseCommand {
 								'You cannot set the warningrole to the @everyone role',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					if (data.data.warningrole == newValue.id) {
@@ -344,8 +344,8 @@ export default class RolesCommand extends BaseCommand {
 							error_message: 'Warning role is already set to that value!',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					data.data.warningrole = newValue.id;
@@ -381,7 +381,7 @@ export default class RolesCommand extends BaseCommand {
 						],
 					});
 
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				}
 				if (data.data.warningrole == null) {
 					const embed = await this.ErrorEmbed.Base({
@@ -391,8 +391,8 @@ export default class RolesCommand extends BaseCommand {
 						error_message: 'Warning role is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				data.data.warningrole = null;
@@ -424,7 +424,7 @@ export default class RolesCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 			if (toUpdate == 'mod') {
 				if (newValue) {
@@ -436,8 +436,8 @@ export default class RolesCommand extends BaseCommand {
 							error_message: 'You cannot set the modrole to the @everyone role',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					if (data.data.modrole == newValue.id) {
@@ -448,8 +448,8 @@ export default class RolesCommand extends BaseCommand {
 							error_message: 'Mod role is already set to that value!',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					data.data.modrole = newValue.id;
@@ -485,7 +485,7 @@ export default class RolesCommand extends BaseCommand {
 						],
 					});
 
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				}
 				if (data.data.modrole == null) {
 					const embed = await this.ErrorEmbed.Base({
@@ -495,8 +495,8 @@ export default class RolesCommand extends BaseCommand {
 						error_message: 'Mod role is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				data.data.modrole = null;
@@ -528,7 +528,7 @@ export default class RolesCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 		} finally {
 			con.release();

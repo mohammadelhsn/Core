@@ -48,8 +48,8 @@ export default class TickleCommand extends BaseCommand {
 					text: this,
 					error_message: 'You are missing a reuiqred mention!',
 				});
-				const msg = await message.channel.send({ embed: errorEmbed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [errorEmbed] });
+				return this.Utils.Delete(msg);
 			}
 
 			const generatingEmbed = await this.GeneratingEmbed.NekosFun({
@@ -58,7 +58,7 @@ export default class TickleCommand extends BaseCommand {
 				text: this,
 			});
 
-			const m = await message.channel.send({ embed: generatingEmbed });
+			const m = await message.channel.send({ embeds: [generatingEmbed] });
 			try {
 				const res = await this.Reactions.Tickle();
 
@@ -71,8 +71,8 @@ export default class TickleCommand extends BaseCommand {
 						text: this,
 					});
 
-					const msg = await message.channel.send({ embed: errEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errEmbed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const tickleEmbed = await this.ImageEmbed.Base({
@@ -84,7 +84,7 @@ export default class TickleCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ embed: tickleEmbed });
+				return message.channel.send({ embeds: [tickleEmbed] });
 			} catch (e) {
 				m.delete();
 
@@ -93,7 +93,7 @@ export default class TickleCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		}
 	}

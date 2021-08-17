@@ -11,7 +11,7 @@ export default class ChannelUpdateEvent extends BaseEvent {
 		oldChannel: DMChannel | GuildChannel,
 		newChannel: DMChannel | GuildChannel
 	) {
-		if (oldChannel.type == 'dm' || newChannel.type == 'dm') return;
+		if (oldChannel.type == 'DM' || newChannel.type == 'DM') return;
 
 		const { guild } = newChannel;
 

@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, Permissions } from 'discord.js';
 
 export default class BotnickCommand extends BaseCommand {
 	constructor() {
@@ -24,7 +24,9 @@ export default class BotnickCommand extends BaseCommand {
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		if (
-			!message.member.hasPermission(['MANAGE_NICKNAMES' || 'ADMINISTRATOR'])
+			!message.member.permissions.has([
+				Permissions.FLAGS.MANAGE_NICKNAMES || Permissions.FLAGS.ADMINISTRATOR,
+			])
 		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -33,11 +35,11 @@ export default class BotnickCommand extends BaseCommand {
 				perms: ['MANAGE_NICKNAMES', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
+			const msg = await message.channel.send({ embeds: [embed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
-		if (!message.guild.me.hasPermission(['MANAGE_NICKNAMES'])) {
+		if (!message.guild.me.permissions.has(Permissions.FLAGS.MANAGE_NICKNAMES)) {
 			const embed = await this.ErrorEmbed.ClientPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -45,8 +47,8 @@ export default class BotnickCommand extends BaseCommand {
 				perms: ['MANAGE_NICKNAMES', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		let name = args.join(' ');
@@ -77,7 +79,7 @@ export default class BotnickCommand extends BaseCommand {
 				],
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} catch (error) {
 			const embed = await this.ErrorEmbed.UnexpectedError({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -85,7 +87,7 @@ export default class BotnickCommand extends BaseCommand {
 				id: message.guild.id,
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 	}
 }

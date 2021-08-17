@@ -38,7 +38,7 @@ export default class CryCommand extends BaseCommand {
 				text: this,
 			});
 
-			const m = await message.channel.send({ embed: generatingEmbed });
+			const m = await message.channel.send({ embeds: [generatingEmbed] });
 			try {
 				const res = await this.Reactions.Cry();
 
@@ -51,8 +51,8 @@ export default class CryCommand extends BaseCommand {
 						text: this,
 					});
 
-					const msg = await message.channel.send({ embed: errEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errEmbed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const imageEmbed = await this.ImageEmbed.Base({
@@ -64,17 +64,19 @@ export default class CryCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ embed: imageEmbed });
+				return message.channel.send({ embeds: [imageEmbed] });
 			} catch (e) {
 				m.delete();
 
-				return message.channel.send(
-					await this.ErrorEmbed.UnexpectedError({
-						id: message.guild.id,
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						text: self,
-					})
-				);
+				return message.channel.send({
+					embeds: [
+						await this.ErrorEmbed.UnexpectedError({
+							id: message.guild.id,
+							iconURL: message.author.displayAvatarURL({ dynamic: true }),
+							text: self,
+						}),
+					],
+				});
 			}
 		}
 	}

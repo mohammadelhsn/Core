@@ -33,7 +33,7 @@ export default class SimprateCommand extends BaseCommand {
 				title: 'Simprate command',
 				description: `:heart: Simp rate :heart: I rate you a \`${sexyrate}\` out of 100 on the simp rate scale!`,
 			});
-			return message.channel.send({ embed: simprate });
+			return message.channel.send({ embeds: [simprate] });
 		} else {
 			let mention = message.mentions.users.first();
 			let toR8;
@@ -57,7 +57,7 @@ export default class SimprateCommand extends BaseCommand {
 						description: `:heart: Simp rate :heart: I rate ${toR8} a \`${sexyrate}\` out of 100 on the simp rate scale!`,
 					});
 
-					return message.channel.send({ embed: rateEmbed });
+					return message.channel.send({ embeds: [rateEmbed] });
 				}
 			}
 			if (toR8 == mention) {
@@ -67,7 +67,7 @@ export default class SimprateCommand extends BaseCommand {
 					title: 'Simprate command',
 					description: `:heart: Simp rate :heart: I rate ${toR8} a \`${sexyrate}\` out of 100 on the simp rate scale!`,
 				});
-				return message.channel.send({ embed: rateEmbed });
+				return message.channel.send({ embeds: [rateEmbed] });
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, Permissions } from 'discord.js';
 
 export default class DisableCommand extends BaseCommand {
 	constructor() {
@@ -26,7 +26,7 @@ export default class DisableCommand extends BaseCommand {
 		client: DiscordClient,
 		message: Message,
 		args: string[]
-	): Promise<Message> {
+	): Promise<void | Message> {
 		// prettier-ignore
 		const categories = {
 			aww: 'aww',
@@ -46,7 +46,11 @@ export default class DisableCommand extends BaseCommand {
 			'server utilities': 'server utilities',
 		};
 
-		if (!message.member.hasPermission(['MANAGE_GUILD' || 'ADMINISTRATOR'])) {
+		if (
+			!message.member.permissions.has([
+				Permissions.FLAGS.MANAGE_GUILD || Permissions.FLAGS.ADMINISTRATOR,
+			])
+		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -54,8 +58,8 @@ export default class DisableCommand extends BaseCommand {
 				perms: ['MANAGE_GUILD', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const toDisable = args.join(' ');
@@ -79,8 +83,8 @@ export default class DisableCommand extends BaseCommand {
 							error_message: 'You cannot disable this category',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					disabled.data.categories.push(value);
@@ -100,7 +104,7 @@ export default class DisableCommand extends BaseCommand {
 						success_message: `Successfully disabled category \`${value}\``,
 					});
 
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				}
 
 				const embed = await this.ErrorEmbed.Base({
@@ -110,8 +114,8 @@ export default class DisableCommand extends BaseCommand {
 					error_message: 'This category is already disabled',
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 			if (!disabled.data.commands.includes(value.getName())) {
 				if (
@@ -126,8 +130,8 @@ export default class DisableCommand extends BaseCommand {
 						error_message: 'You cannot disable commands from that category',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				disabled.data.commands.push(value.getName());
@@ -147,7 +151,7 @@ export default class DisableCommand extends BaseCommand {
 					success_message: `Successfully disabled \`${value.getName()}\``,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 			const embed = await this.ErrorEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -157,8 +161,8 @@ export default class DisableCommand extends BaseCommand {
 					'This command is already disabled or is not able to be disabled',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		} finally {
 			con.release();
 		}

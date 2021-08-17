@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, Permissions } from 'discord.js';
 
 export default class EventsCommand extends BaseCommand {
 	constructor() {
@@ -30,7 +30,7 @@ export default class EventsCommand extends BaseCommand {
 		const todo = args.slice(0, 2).join(' ');
 		const mention = message.mentions.channels.first();
 
-		if (!message.member.hasPermission(['MANAGE_GUILD' || 'ADMINISTRATOR'])) {
+		if (!message.member.permissions.has([Permissions.FLAGS.MANAGE_GUILD || Permissions.FLAGS.ADMINISTRATOR])) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -38,8 +38,8 @@ export default class EventsCommand extends BaseCommand {
 				perms: ["MANAGE_GUILD", "ADMINISTRATOR"]
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const con = await this.con.connect();
@@ -400,7 +400,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -411,8 +411,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -445,7 +445,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'channel delete') {
 				const oldValue = {
@@ -491,7 +491,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -502,8 +502,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -536,7 +536,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'channel update') {
 				const oldValue = {
@@ -582,7 +582,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -593,8 +593,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -627,7 +627,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'emoji create') {
 				const oldValue = {
@@ -673,7 +673,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -684,8 +684,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -718,7 +718,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'emoji delete') {
 				const oldValue = {
@@ -764,7 +764,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -775,8 +775,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -809,7 +809,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'emoji update') {
 				const oldValue = {
@@ -855,7 +855,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -866,8 +866,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -900,7 +900,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'ban add') {
 				const oldValue = {
@@ -946,7 +946,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -957,8 +957,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -991,7 +991,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'ban remove') {
 				const oldValue = {
@@ -1037,7 +1037,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -1048,8 +1048,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -1082,7 +1082,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'member join') {
 				const oldValue = {
@@ -1128,7 +1128,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -1139,8 +1139,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -1173,7 +1173,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'member leave') {
 				const oldValue = {
@@ -1219,7 +1219,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -1230,8 +1230,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -1264,7 +1264,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'member update') {
 				const oldValue = {
@@ -1310,7 +1310,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -1321,8 +1321,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -1355,7 +1355,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'guild update') {
 				const oldValue = {
@@ -1401,7 +1401,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -1412,8 +1412,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -1446,7 +1446,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'invite create') {
 				const oldValue = {
@@ -1492,7 +1492,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -1503,8 +1503,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -1537,7 +1537,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'invite delete') {
 				const oldValue = {
@@ -1583,7 +1583,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -1594,8 +1594,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -1628,7 +1628,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'message delete') {
 				const oldValue = {
@@ -1674,7 +1674,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -1685,8 +1685,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -1719,7 +1719,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'message edit') {
 				const oldValue = {
@@ -1765,7 +1765,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -1776,8 +1776,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -1810,7 +1810,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'bulk delete') {
 				const oldValue = {
@@ -1856,7 +1856,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -1867,8 +1867,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -1901,7 +1901,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'vc join') {
 				const oldValue = {
@@ -1947,7 +1947,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -1958,8 +1958,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -1992,7 +1992,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'vc leave') {
 				const oldValue = {
@@ -2038,7 +2038,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -2049,8 +2049,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -2083,7 +2083,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'vc move') {
 				const oldValue = {
@@ -2129,7 +2129,7 @@ export default class EventsCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: successEmbed });
+					return message.channel.send({ embeds: [successEmbed] });
 				}
 
 				if (data.channelCreate.enabled == false) {
@@ -2140,8 +2140,8 @@ export default class EventsCommand extends BaseCommand {
 						error_message: 'This event is already disabled!',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg)
 				}
 
 				try {
@@ -2174,7 +2174,7 @@ export default class EventsCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			}
 			if (todo.toLowerCase() == 'list') {
 				const channelEvents = this.Embed.Base({

@@ -7,7 +7,7 @@ export default class ChannelDeleteEvent extends BaseEvent {
 		super('channelDelete');
 	}
 	async run(client: DiscordClient, channel: GuildChannel | DMChannel) {
-		if (channel.type == 'dm') return;
+		if (channel.type == 'DM') return;
 
 		const { guild } = channel;
 
@@ -47,6 +47,6 @@ export default class ChannelDeleteEvent extends BaseEvent {
 			],
 		});
 
-		return log.send({ embed: embed });
+		return log.send({ embeds: [embed] });
 	}
 }

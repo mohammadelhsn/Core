@@ -78,17 +78,15 @@ export default class BotinfoCommand extends BaseCommand {
 					{ name: 'Bot owner', value: `\`${bot.owner}\`` },
 				],
 			});
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} catch (error) {
-			console.log(error);
-
 			const embed = await this.ErrorEmbed.UnexpectedError({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				id: message.guild.id,
 				text: this,
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} finally {
 			con.release();
 		}

@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, Permissions } from 'discord.js';
 
 export default class PublicModlogCommand extends BaseCommand {
 	constructor() {
@@ -23,7 +23,11 @@ export default class PublicModlogCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		if (!message.member.hasPermission(['MANAGE_GUILD' || 'ADMINISTRATOR'])) {
+		if (
+			!message.member.permissions.has([
+				Permissions.FLAGS.MANAGE_GUILD || Permissions.FLAGS.ADMINISTRATOR,
+			])
+		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				id: message.guild.id,
@@ -31,7 +35,7 @@ export default class PublicModlogCommand extends BaseCommand {
 				perms: ['MANAGE_GUILD', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
+			const msg = await message.channel.send({ embeds: [embed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
@@ -65,7 +69,7 @@ export default class PublicModlogCommand extends BaseCommand {
 				],
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 
 		if (toConfigure.toLowerCase().includes('enable')) {
@@ -79,8 +83,8 @@ export default class PublicModlogCommand extends BaseCommand {
 					error_message: 'You are missing the required mention!',
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			if (publicmodlog != null) {
@@ -92,8 +96,8 @@ export default class PublicModlogCommand extends BaseCommand {
 						"Public mod log is already enabled, use 'publicmodlog update #mention' instead!",
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			const con = await this.con.connect();
@@ -124,7 +128,7 @@ export default class PublicModlogCommand extends BaseCommand {
 					text: this,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			} finally {
 				con.release();
 			}
@@ -140,7 +144,7 @@ export default class PublicModlogCommand extends BaseCommand {
 				],
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 		if (toConfigure.toLowerCase().includes('disable')) {
 			if (publicmodlog == null) {
@@ -152,8 +156,8 @@ export default class PublicModlogCommand extends BaseCommand {
 						"Publicmodlog is already disabled, use 'publicmodlog enable #mention' to enable it!",
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			const con = await this.con.connect();
@@ -184,7 +188,7 @@ export default class PublicModlogCommand extends BaseCommand {
 					text: this,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			} finally {
 				con.release();
 			}
@@ -200,7 +204,7 @@ export default class PublicModlogCommand extends BaseCommand {
 				],
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 		if (toConfigure.toLowerCase().includes('update')) {
 			if (publicmodlog == null) {
@@ -212,8 +216,8 @@ export default class PublicModlogCommand extends BaseCommand {
 						"Public mod log is disabled! Use 'publicmodlog enable #mention' to enable it!",
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 			const mention = message.mentions.channels.first();
 
@@ -225,8 +229,8 @@ export default class PublicModlogCommand extends BaseCommand {
 					error_message: 'You are missing the required mention!',
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			const con = await this.con.connect();
@@ -257,7 +261,7 @@ export default class PublicModlogCommand extends BaseCommand {
 					text: this,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			} finally {
 				con.release();
 			}
@@ -273,7 +277,7 @@ export default class PublicModlogCommand extends BaseCommand {
 				],
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 
 		return await this.HelpEmbed.Base({

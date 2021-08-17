@@ -40,7 +40,7 @@ export default class AdviceCommand extends BaseCommand {
 			provider: 'Advice slip API',
 		});
 
-		const m = await message.channel.send({ embed: generatingEmbed });
+		const m = await message.channel.send({ embeds: [generatingEmbed] });
 
 		try {
 			const res = await this.Fun.Advice();
@@ -54,8 +54,8 @@ export default class AdviceCommand extends BaseCommand {
 					text: this,
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			const embed = await this.Embed.Base({
@@ -71,7 +71,7 @@ export default class AdviceCommand extends BaseCommand {
 			});
 
 			m.delete();
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} catch (e) {
 			m.delete();
 
@@ -80,7 +80,7 @@ export default class AdviceCommand extends BaseCommand {
 				id: message.guild.id,
 				text: this,
 			});
-			return message.channel.send({ embed: errorEmbed });
+			return message.channel.send({ embeds: [errorEmbed] });
 		}
 	}
 }

@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, Permissions } from 'discord.js';
 
 export default class PrefixCommand extends BaseCommand {
 	constructor() {
@@ -23,7 +23,11 @@ export default class PrefixCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		if (!message.member.hasPermission(['MANAGE_MESSAGES' || 'ADMINISTRATOR'])) {
+		if (
+			!message.member.permissions.has([
+				Permissions.FLAGS.MANAGE_MESSAGES || Permissions.FLAGS.ADMINISTRATOR,
+			])
+		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -31,7 +35,7 @@ export default class PrefixCommand extends BaseCommand {
 				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
+			const msg = await message.channel.send({ embeds: [embed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
@@ -47,8 +51,8 @@ export default class PrefixCommand extends BaseCommand {
 				error_message: 'Missing a required argument',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (newPrefix.toLowerCase() == 'help') {
@@ -67,8 +71,8 @@ export default class PrefixCommand extends BaseCommand {
 				error_message: 'Prefix is too long! The max length is 3!',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const con = await this.con.connect();
@@ -91,7 +95,7 @@ export default class PrefixCommand extends BaseCommand {
 				],
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} catch (error) {
 			console.log(error);
 		} finally {

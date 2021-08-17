@@ -33,7 +33,7 @@ export default class RedditCommand extends BaseCommand {
 				text: this,
 				error_message: 'You are missing a required argument',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
@@ -74,7 +74,7 @@ export default class RedditCommand extends BaseCommand {
 						},
 					],
 				});
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			} catch (err) {
 				if (err.status == 404) {
 					const errorEmbed = await this.ErrorEmbed.NoResult({
@@ -82,15 +82,15 @@ export default class RedditCommand extends BaseCommand {
 						id: message.guild.id,
 						text: this,
 					});
-					const msg = await message.channel.send({ embed: errorEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errorEmbed] });
+					return this.Utils.Delete(msg);
 				} else {
 					const errorEmbed = await this.ErrorEmbed.UnexpectedError({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
 						text: this,
 					});
-					return message.channel.send({ embed: errorEmbed });
+					return message.channel.send({ embeds: [errorEmbed] });
 				}
 			}
 		}
@@ -136,14 +136,14 @@ export default class RedditCommand extends BaseCommand {
 					image: data.misc.banner,
 					link: data.link,
 				});
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			} catch (err) {
 				const errorEmbed = await this.ErrorEmbed.UnexpectedError({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errorEmbed });
+				return message.channel.send({ embeds: [errorEmbed] });
 			}
 		}
 	}

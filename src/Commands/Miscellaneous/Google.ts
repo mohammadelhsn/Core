@@ -44,8 +44,8 @@ export default class GoogleCommand extends BaseCommand {
 				text: this,
 				error_message: 'You are missing the required query',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const href = await search(query);
@@ -56,8 +56,8 @@ export default class GoogleCommand extends BaseCommand {
 				id: message.guild.id,
 				text: this,
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const embed = await this.Embed.Base({
@@ -69,7 +69,7 @@ export default class GoogleCommand extends BaseCommand {
 			description: href.snippet,
 			link: href.link,
 		});
-		return message.channel.send({ embed: embed });
+		return message.channel.send({ embeds: [embed] });
 
 		async function search(query) {
 			const { data } = await axios.get(

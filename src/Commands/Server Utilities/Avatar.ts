@@ -9,7 +9,7 @@ export default class AvatarCommand extends BaseCommand {
 			'server utilities',
 			[],
 			'(mention)',
-			"Returns the mentioned users avatar or your avatar",
+			'Returns the mentioned users avatar or your avatar',
 			'',
 			[],
 			[],
@@ -41,7 +41,7 @@ export default class AvatarCommand extends BaseCommand {
 				image: user.user.displayAvatarURL({ dynamic: true }),
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 
 		if (argument) {
@@ -65,7 +65,7 @@ export default class AvatarCommand extends BaseCommand {
 						image: profile.displayAvatarURL({ dynamic: true }),
 					});
 
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				} catch (e) {
 					return;
 				}
@@ -83,7 +83,7 @@ export default class AvatarCommand extends BaseCommand {
 				image: message.author.displayAvatarURL({ dynamic: true }),
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 	}
 }

@@ -31,8 +31,8 @@ export default class VolumeCommand extends BaseCommand {
 				error_message: 'There is no music playing at the moment',
 				id: message.guild.id,
 			});
-			const msg = await message.channel.send({ embed: errEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
+			return this.Utils.Delete(msg);
 		}
 		const voiceChannel = message.member.voice.channel;
 		if (!voiceChannel) {
@@ -42,8 +42,8 @@ export default class VolumeCommand extends BaseCommand {
 				id: message.guild.id,
 				error_message: 'You are not connected to the voice channel',
 			});
-			const msg = await message.channel.send({ embed: errEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (voiceChannel.id !== player.options.voiceChannel) {
@@ -53,8 +53,8 @@ export default class VolumeCommand extends BaseCommand {
 				text: this,
 				error_message: 'You are not connected to the right channel',
 			});
-			const msg = await message.channel.send({ embed: errEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const volume = args[0];
@@ -65,8 +65,8 @@ export default class VolumeCommand extends BaseCommand {
 				text: this,
 				error_message: 'You must provide a number to set volume to',
 			});
-			const msg = await message.channel.send({ embed: errEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (volume === 'help') {
@@ -84,8 +84,8 @@ export default class VolumeCommand extends BaseCommand {
 				text: this,
 				error_message: 'Provided argument is not a number',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (Number(volume) <= 0 || Number(volume) > 100) {
@@ -95,8 +95,8 @@ export default class VolumeCommand extends BaseCommand {
 				id: message.guild.id,
 				error_message: 'Number must be from 1-100',
 			});
-			const msg = await message.channel.send({ embed: errEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
+			return this.Utils.Delete(msg);
 		}
 		try {
 			player.setVolume(parseInt(volume));
@@ -108,7 +108,7 @@ export default class VolumeCommand extends BaseCommand {
 				id: message.guild.id,
 				text: this,
 			});
-			return message.channel.send({ embed: errEmbed });
+			return message.channel.send({ embeds: [errEmbed] });
 		}
 		const successEmbed = await this.SuccessEmbed.Base({
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -116,6 +116,6 @@ export default class VolumeCommand extends BaseCommand {
 			success_message: `Successfully set the volume to \`${volume}\``,
 			text: this,
 		});
-		return message.channel.send({ embed: successEmbed });
+		return message.channel.send({ embeds: [successEmbed] });
 	}
 }

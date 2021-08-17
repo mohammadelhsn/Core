@@ -34,7 +34,7 @@ export default class NewsCommand extends BaseCommand {
 				error_message: '<alltime || sources || top>',
 			});
 
-			const msg = await message.channel.send({ embed: errEmbed });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
@@ -46,8 +46,8 @@ export default class NewsCommand extends BaseCommand {
 				error_message: 'You are missing the language argument',
 			});
 
-			const msg = await message.channel.send({ embed: errEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (args[0].toLowerCase() == 'alltime') {
@@ -62,8 +62,8 @@ export default class NewsCommand extends BaseCommand {
 						error_message: 'You are missing the query argument',
 					});
 
-					const msg = await message.channel.send({ embed: errEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errEmbed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const res = await news.v2.everything({
@@ -80,8 +80,8 @@ export default class NewsCommand extends BaseCommand {
 						id: message.guild.id,
 					});
 
-					const msg = await message.channel.send({ embed: errEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errEmbed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const embeds = [];
@@ -119,7 +119,7 @@ export default class NewsCommand extends BaseCommand {
 					text: this,
 					id: message.guild.id,
 				});
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		} else if (args[0].toLowerCase() === 'top') {
 			try {
@@ -132,8 +132,8 @@ export default class NewsCommand extends BaseCommand {
 						id: message.guild.id,
 						error_message: 'Missing a required argument',
 					});
-					const msg = await message.channel.send(errorEmbed);
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errorEmbed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const res = await news.v2.topHeadlines({
@@ -148,8 +148,8 @@ export default class NewsCommand extends BaseCommand {
 						id: message.guild.id,
 					});
 
-					const msg = await message.channel.send({ embed: errEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errEmbed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const articles = res.articles;
@@ -188,7 +188,7 @@ export default class NewsCommand extends BaseCommand {
 					text: this,
 					id: message.guild.id,
 				});
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		} else if (args[0].toLowerCase() === 'sources') {
 			try {
@@ -202,8 +202,8 @@ export default class NewsCommand extends BaseCommand {
 						error_message: 'You are missing the query',
 					});
 
-					const msg = await message.channel.send({ embed: errEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errEmbed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const res = await news.v2.sources({
@@ -218,8 +218,8 @@ export default class NewsCommand extends BaseCommand {
 						id: message.guild.id,
 					});
 
-					const msg = await message.channel.send({ embed: errEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errEmbed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const sources = res.sources;
@@ -253,7 +253,7 @@ export default class NewsCommand extends BaseCommand {
 					id: message.guild.id,
 				});
 
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		} else if (args[0].toLowerCase() == 'help') {
 			return await this.HelpEmbed.Base({
@@ -268,8 +268,8 @@ export default class NewsCommand extends BaseCommand {
 				id: message.guild.id,
 			});
 
-			const msg = await message.channel.send({ embed: errEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
+			return this.Utils.Delete(msg);
 		}
 	}
 }

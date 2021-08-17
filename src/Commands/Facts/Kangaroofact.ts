@@ -38,7 +38,7 @@ export default class KangaroofactCommand extends BaseCommand {
 			text: this,
 			id: message.guild.id,
 		});
-		const m = await message.channel.send({ embed: generatingEmbed });
+		const m = await message.channel.send({ embeds: [generatingEmbed] });
 		try {
 			const res = await this.Facts.Kangaroofact();
 
@@ -51,8 +51,8 @@ export default class KangaroofactCommand extends BaseCommand {
 					id: message.guild.id,
 				});
 
-				const msg = await message.channel.send({ embed: errEmbed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [errEmbed] });
+				return this.Utils.Delete(msg);
 			}
 
 			const factEmbed = await this.Embed.Base({
@@ -65,7 +65,7 @@ export default class KangaroofactCommand extends BaseCommand {
 			});
 
 			m.delete();
-			return message.channel.send({ embed: factEmbed });
+			return message.channel.send({ embeds: [factEmbed] });
 		} catch (e) {
 			console.log(e);
 
@@ -74,7 +74,7 @@ export default class KangaroofactCommand extends BaseCommand {
 				text: this,
 				id: message.guild.id,
 			});
-			return message.channel.send({ embed: errorEmbed });
+			return message.channel.send({ embeds: [errorEmbed] });
 		}
 	}
 }

@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, Util } from 'discord.js';
 import axios from 'axios';
 
 export default class LyricsCommand extends BaseCommand {
@@ -20,7 +20,7 @@ export default class LyricsCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'working'
+			'WIP'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
@@ -34,7 +34,7 @@ export default class LyricsCommand extends BaseCommand {
 				text: this,
 				error_message: 'Must include a song name!',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
@@ -49,8 +49,8 @@ export default class LyricsCommand extends BaseCommand {
 				id: message.guild.id,
 				text: this,
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const songEmbed = await this.Embed.Base({
@@ -60,9 +60,12 @@ export default class LyricsCommand extends BaseCommand {
 			description: `Author: ${body.author}`,
 			link: body.links.genius ? body.links.genius : null,
 		});
-		return message.channel.send(`${body.lyrics}`, {
-			split: true,
-			embed: songEmbed,
+
+		Util.splitMessage(body.lyrics);
+
+		return message.channel.send({
+			content: `\`\`\`${body.lyrics}\`\`\``,
+			embeds: [songEmbed],
 		});
 	}
 }

@@ -37,7 +37,7 @@ export default class GiphyCommand extends BaseCommand {
 							id: message.guild.id,
 							text: this,
 						});
-						const msg = await message.channel.send({ embed: errorEmbed });
+						const msg = await message.channel.send({ embeds: [errorEmbed] });
 						return msg.delete({ timeout: 10000 });
 					}
 					const embeds = [];
@@ -70,7 +70,7 @@ export default class GiphyCommand extends BaseCommand {
 						id: message.guild.id,
 						text: this,
 					});
-					return message.channel.send({ embed: errorEmbed });
+					return message.channel.send({ embeds: [errorEmbed] });
 				}
 			} else if (type == 'random') {
 				try {
@@ -82,8 +82,8 @@ export default class GiphyCommand extends BaseCommand {
 							id: message.guild.id,
 							text: this,
 						});
-						const msg = await message.channel.send({ embed: errorEmbed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [errorEmbed] });
+						return this.Utils.Delete(msg);
 					} else if (res.meta.status == 200) {
 						const embed = await this.ImageEmbed.Base({
 							iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -104,7 +104,7 @@ export default class GiphyCommand extends BaseCommand {
 							image: res.data.images.original.url,
 							link: res.data.url,
 						});
-						return message.channel.send({ embed: embed });
+						return message.channel.send({ embeds: [embed] });
 					}
 				} catch (e) {
 					console.log(e);
@@ -114,7 +114,7 @@ export default class GiphyCommand extends BaseCommand {
 						id: message.guild.id,
 						text: this,
 					});
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				}
 			} else {
 				try {
@@ -126,8 +126,8 @@ export default class GiphyCommand extends BaseCommand {
 							id: message.guild.id,
 							text: this,
 						});
-						const msg = await message.channel.send({ embed: eEmbed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [eEmbed] });
+						return this.Utils.Delete(msg);
 					}
 					const embeds = [];
 					for (const gif of res.data) {
@@ -158,7 +158,7 @@ export default class GiphyCommand extends BaseCommand {
 						id: message.guild.id,
 						text: this,
 					});
-					return message.channel.send({ embed: errorEmbed });
+					return message.channel.send({ embeds: [errorEmbed] });
 				}
 			}
 		}

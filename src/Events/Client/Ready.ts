@@ -14,7 +14,7 @@ export default class ReadyEvent extends BaseEvent {
 		let status = `${client.guilds.cache.size} servers | ${client.users.cache.size} users`;
 
 		client.user.setPresence({
-			activity: { name: status, type: 'WATCHING' },
+			activities: [{ name: status, type: 'WATCHING' }],
 			status: 'dnd',
 		});
 

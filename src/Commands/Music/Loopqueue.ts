@@ -31,8 +31,8 @@ export default class LoopQueueCommand extends BaseCommand {
 				text: this,
 				error_message: 'You must be in a voice channel',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (args[0]) {
@@ -52,8 +52,8 @@ export default class LoopQueueCommand extends BaseCommand {
 				text: this,
 				error_message: 'There are no active players at the moment',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (voiceChannel.id !== player.options.voiceChannel) {
@@ -63,8 +63,8 @@ export default class LoopQueueCommand extends BaseCommand {
 				text: this,
 				error_message: "You're not in the bots voice channel",
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 		//🔁
 
@@ -78,7 +78,7 @@ export default class LoopQueueCommand extends BaseCommand {
 					text: this,
 					success_message: '```Successfully enabled queue loop! 🔁```',
 				});
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			} catch (e) {
 				console.log(e);
 
@@ -87,7 +87,7 @@ export default class LoopQueueCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		} else {
 			try {
@@ -99,7 +99,7 @@ export default class LoopQueueCommand extends BaseCommand {
 					text: this,
 					success_message: '```Successfully disabled queue loop! 🔁```',
 				});
-				return message.channel.send({ embed: successEmbed });
+				return message.channel.send({ embeds: [successEmbed] });
 			} catch (e) {
 				console.log(e);
 
@@ -108,7 +108,7 @@ export default class LoopQueueCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		}
 	}

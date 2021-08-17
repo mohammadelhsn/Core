@@ -41,7 +41,7 @@ export default class TruthCommand extends BaseCommand {
 			provider: 'Alexflipnote API',
 		});
 
-		const m = await message.channel.send({ embed: generatingEmbed });
+		const m = await message.channel.send({ embeds: [generatingEmbed] });
 
 		if (!truth) {
 			m.delete();
@@ -52,7 +52,7 @@ export default class TruthCommand extends BaseCommand {
 				text: this,
 				error_message: 'Missing argument',
 			});
-			return message.channel.send({ embed: errEmbed });
+			return message.channel.send({ embeds: [errEmbed] });
 		}
 		const truthEmbed = await this.ImageEmbed.Base({
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -65,6 +65,6 @@ export default class TruthCommand extends BaseCommand {
 		});
 
 		m.delete();
-		return message.channel.send({ embed: truthEmbed });
+		return message.channel.send({ embeds: [truthEmbed] });
 	}
 }

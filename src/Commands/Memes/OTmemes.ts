@@ -42,7 +42,7 @@ export default class OTMemeCommand extends BaseCommand {
 			provider: 'r/OTMemes',
 		});
 
-		const m = await message.channel.send({ embed: gEmbed });
+		const m = await message.channel.send({ embeds: [gEmbed] });
 
 		try {
 			const res = await this.Memes.OTmeme();
@@ -56,8 +56,8 @@ export default class OTMemeCommand extends BaseCommand {
 					text: this,
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			const embed = await this.ImageEmbed.Base({
@@ -75,7 +75,7 @@ export default class OTMemeCommand extends BaseCommand {
 			});
 
 			m.delete();
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} catch (error) {
 			m.delete();
 
@@ -85,7 +85,7 @@ export default class OTMemeCommand extends BaseCommand {
 				text: this,
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 	}
 }

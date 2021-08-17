@@ -1,8 +1,9 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, MessageCollectorOptions, MessageEmbed } from 'discord.js';
 import axios from 'axios';
 import moment from 'moment';
+import { cpuUsage } from 'process';
 
 export default class CovidCommand extends BaseCommand {
 	constructor() {
@@ -15,7 +16,7 @@ export default class CovidCommand extends BaseCommand {
 			'',
 			[],
 			[],
-			["SEND_MESSAGES", "EMBED_LINKS"],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
@@ -24,7 +25,11 @@ export default class CovidCommand extends BaseCommand {
 			'working'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {
+	async run(
+		client: DiscordClient,
+		message: Message,
+		args: string[]
+	): Promise<any> {
 		const choice = args[0];
 		const q = args.slice(1).join(' ');
 		const lang = await this.Translator.Getlang(message.guild.id);
@@ -92,7 +97,7 @@ export default class CovidCommand extends BaseCommand {
 						},
 					],
 				});
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			} catch (e) {
 				console.log(e);
 
@@ -101,7 +106,7 @@ export default class CovidCommand extends BaseCommand {
 					text: this,
 					id: message.guild.id,
 				});
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		}
 		if (choice.toLowerCase().includes('worldwide')) {
@@ -168,7 +173,7 @@ export default class CovidCommand extends BaseCommand {
 						},
 					],
 				});
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			} catch (e) {
 				console.log(e);
 
@@ -177,7 +182,7 @@ export default class CovidCommand extends BaseCommand {
 					text: this,
 					id: message.guild.id,
 				});
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		} else if (choice.toLowerCase().includes('country')) {
 			if (!q) {
@@ -258,7 +263,7 @@ export default class CovidCommand extends BaseCommand {
 						text: this,
 						id: message.guild.id,
 					});
-					return message.channel.send({ embed: errEmbed });
+					return message.channel.send({ embeds: [errEmbed] });
 				}
 			} else {
 				try {
@@ -324,7 +329,7 @@ export default class CovidCommand extends BaseCommand {
 						],
 					});
 
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				} catch (e) {
 					if (e.response.status == 404) {
 						const errEmbed = await this.ErrorEmbed.NoResult({
@@ -332,7 +337,7 @@ export default class CovidCommand extends BaseCommand {
 							text: this,
 							id: message.guild.id,
 						});
-						return message.channel.send({ embed: errEmbed });
+						return message.channel.send({ embeds: [errEmbed] });
 					}
 
 					console.log(e);
@@ -342,7 +347,7 @@ export default class CovidCommand extends BaseCommand {
 						text: this,
 						id: message.guild.id,
 					});
-					return message.channel.send({ embed: errEmbed });
+					return message.channel.send({ embeds: [errEmbed] });
 				}
 			}
 		} else if (choice.toLowerCase().includes('region')) {
@@ -386,7 +391,7 @@ export default class CovidCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			} catch (e) {
 				console.log(e);
 
@@ -396,7 +401,7 @@ export default class CovidCommand extends BaseCommand {
 					id: message.guild.id,
 				});
 
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		} else if (choice.toLowerCase().includes('vaccine')) {
 			// https://api.covid19tracker.ca/summary
@@ -405,58 +410,60 @@ export default class CovidCommand extends BaseCommand {
 				const data = res.data;
 
 				return message.channel.send({
-					embed: await this.Embed.Base({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						text: this,
-						title: 'Covid command | Vaccines',
-						description: `Location: \`Canada\``,
-						fields: [
-							{
-								name: 'Latest date:',
-								value: `\`${data.data[0].latest_date}\``,
-							},
-							{
-								name: 'Last updated',
-								value: `\`${data.last_updated}\``,
-							},
-							{
-								name: 'New Vaccinations:',
-								value: `\`${this.Utils.FormatNumber(
-									data.data[0].change_vaccinations
-								)}\``,
-							},
-							{
-								name: 'New Vaccinated:',
-								value: `\`${this.Utils.FormatNumber(
-									data.data[0].change_vaccinated
-								)}\``,
-							},
-							{
-								name: 'New vaccines distributed:',
-								value: `\`${this.Utils.FormatNumber(
-									data.data[0].change_vaccines_distributed
-								)}\``,
-							},
-							{
-								name: 'Total vaccinations:',
-								value: `\`${this.Utils.FormatNumber(
-									data.data[0].total_vaccinations
-								)}\``,
-							},
-							{
-								name: 'Total vaccinated:',
-								value: `\`${this.Utils.FormatNumber(
-									data.data[0].total_vaccinated
-								)}\``,
-							},
-							{
-								name: 'Total vaccines distributed:',
-								value: `\`${this.Utils.FormatNumber(
-									data.data[0].total_vaccines_distributed
-								)}\``,
-							},
-						],
-					}),
+					embeds: [
+						await this.Embed.Base({
+							iconURL: message.author.displayAvatarURL({ dynamic: true }),
+							text: this,
+							title: 'Covid command | Vaccines',
+							description: `Location: \`Canada\``,
+							fields: [
+								{
+									name: 'Latest date:',
+									value: `\`${data.data[0].latest_date}\``,
+								},
+								{
+									name: 'Last updated',
+									value: `\`${data.last_updated}\``,
+								},
+								{
+									name: 'New Vaccinations:',
+									value: `\`${this.Utils.FormatNumber(
+										data.data[0].change_vaccinations
+									)}\``,
+								},
+								{
+									name: 'New Vaccinated:',
+									value: `\`${this.Utils.FormatNumber(
+										data.data[0].change_vaccinated
+									)}\``,
+								},
+								{
+									name: 'New vaccines distributed:',
+									value: `\`${this.Utils.FormatNumber(
+										data.data[0].change_vaccines_distributed
+									)}\``,
+								},
+								{
+									name: 'Total vaccinations:',
+									value: `\`${this.Utils.FormatNumber(
+										data.data[0].total_vaccinations
+									)}\``,
+								},
+								{
+									name: 'Total vaccinated:',
+									value: `\`${this.Utils.FormatNumber(
+										data.data[0].total_vaccinated
+									)}\``,
+								},
+								{
+									name: 'Total vaccines distributed:',
+									value: `\`${this.Utils.FormatNumber(
+										data.data[0].total_vaccines_distributed
+									)}\``,
+								},
+							],
+						}),
+					],
 				});
 			} catch (e) {
 				console.log(e);
@@ -467,7 +474,7 @@ export default class CovidCommand extends BaseCommand {
 					id: message.guild.id,
 				});
 
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		} else if (choice.toLowerCase().includes('continent')) {
 			// https://corona.lmao.ninja/v2/continents/{continent}
@@ -561,7 +568,7 @@ export default class CovidCommand extends BaseCommand {
 						id: message.guild.id,
 					});
 
-					return message.channel.send({ embed: errEmbed });
+					return message.channel.send({ embeds: [errEmbed] });
 				}
 			} else {
 				try {
@@ -630,7 +637,7 @@ export default class CovidCommand extends BaseCommand {
 							},
 						],
 					});
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				} catch (e) {
 					if (e.response.status == 404) {
 						const embed = await this.ErrorEmbed.Base({
@@ -639,8 +646,8 @@ export default class CovidCommand extends BaseCommand {
 							id: message.guild.id,
 							error_message: "Couldn't find this continent",
 						});
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 				}
 			}
@@ -721,18 +728,21 @@ export default class CovidCommand extends BaseCommand {
 							title: 'Covid command | Counties',
 							description: string,
 						});
-						const msg = await message.channel.send({ embed: embed });
-						msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						this.Utils.Delete(msg);
 
-						const collector = message.channel.createMessageCollector(
-							(m) => {
+						const options: MessageCollectorOptions = {
+							filter: (m) => {
 								return (
 									m.author.id === message.author.id &&
 									new RegExp('^([1-5|cancel])$', 'i').test(m.content)
 								);
 							},
-							{ time: 30000, max: 1 }
-						);
+							time: 30000,
+							max: 1,
+						};
+
+						const collector = message.channel.createMessageCollector(options);
 
 						collector.on('collect', async (m) => {
 							if (/cancel/i.test(m.content)) return collector.stop('cancelled');
@@ -772,12 +782,14 @@ export default class CovidCommand extends BaseCommand {
 								],
 							});
 
-							return message.channel.send({ embed: embed });
+							message.channel.send({ embeds: [embed] });
+							return;
 						});
 
 						collector.on('end', async (_, reason) => {
 							if (['time', 'cancelled'].includes(reason)) {
-								return message.channel.send('Cancelled selection');
+								message.channel.send('Cancelled selection');
+								return;
 							}
 						});
 					} else {
@@ -814,7 +826,7 @@ export default class CovidCommand extends BaseCommand {
 							],
 						});
 
-						return message.channel.send({ embed: embed });
+						return message.channel.send({ embeds: [embed] });
 					}
 				} catch (e) {
 					console.log(e);
@@ -826,8 +838,8 @@ export default class CovidCommand extends BaseCommand {
 							id: message.guild.id,
 							error_message: "Couldn't find this country!",
 						});
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 				}
 			}
@@ -838,8 +850,8 @@ export default class CovidCommand extends BaseCommand {
 				id: message.guild.id,
 			});
 
-			const msg = await message.channel.send({ embed: errEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
+			return this.Utils.Delete(msg);
 		}
 	}
 }

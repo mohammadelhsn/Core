@@ -38,7 +38,7 @@ export default class LaughCommand extends BaseCommand {
 				text: this,
 			});
 
-			const m = await message.channel.send({ embed: generatingEmbed });
+			const m = await message.channel.send({ embeds: [generatingEmbed] });
 			try {
 				const res = await this.Reactions.Laugh();
 
@@ -51,8 +51,8 @@ export default class LaughCommand extends BaseCommand {
 						text: this,
 					});
 
-					const msg = await message.channel.send({ embed: errEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errEmbed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const imageEmbed = await this.ImageEmbed.Base({
@@ -64,7 +64,7 @@ export default class LaughCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ embed: imageEmbed });
+				return message.channel.send({ embeds: [imageEmbed] });
 			} catch (e) {
 				m.delete();
 
@@ -73,7 +73,7 @@ export default class LaughCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		}
 	}

@@ -6,6 +6,9 @@
 		"dev": "nodemon ./src/Index.ts"
 	},
 	"main": "index.js",
+	"engines": {
+		"node": "16.x"
+	},
 	"dependencies": {
 		"@iamtraction/google-translate": "^1.1.2",
 		"@processversion/api-wrapper": "^1.1.2",
@@ -14,6 +17,7 @@
 		"@types/node": "^16.4.2",
 		"@types/pg": "^8.6.0",
 		"axios": "^0.21.1",
+		"canvas": "^2.8.0",
 		"discord-canvas": "^1.4.1",
 		"discord-image-generation": "^1.4.9",
 		"discord.js": "^13.0.0",

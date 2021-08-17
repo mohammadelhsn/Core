@@ -32,7 +32,7 @@ export default class NowPlayingCommand extends BaseCommand {
 				text: this,
 				error_message: 'You are not in a voice channel',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
@@ -56,8 +56,8 @@ export default class NowPlayingCommand extends BaseCommand {
 				text: this,
 				error_message: 'There is no music playing',
 			});
-			const msg = await message.channel.send({ embed: errEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (voiceChannel.id !== player.options.voiceChannel) {
@@ -67,8 +67,8 @@ export default class NowPlayingCommand extends BaseCommand {
 				text: this,
 				error_message: 'You are not in the same voice channel as the player',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 		try {
 			const title = player.queue.current.title;
@@ -120,7 +120,7 @@ export default class NowPlayingCommand extends BaseCommand {
 				image: player.queue.current.thumbnail,
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} catch (e) {
 			console.log(e);
 
@@ -129,7 +129,7 @@ export default class NowPlayingCommand extends BaseCommand {
 				id: message.guild.id,
 				text: this,
 			});
-			return message.channel.send({ embed: errEmbed });
+			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
 }

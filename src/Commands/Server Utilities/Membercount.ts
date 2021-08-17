@@ -91,7 +91,7 @@ export default class MembercountCommand extends BaseCommand {
 				],
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 
 		return await this.HelpEmbed.Base({

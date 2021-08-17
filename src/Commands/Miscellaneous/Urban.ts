@@ -43,8 +43,8 @@ export default class UrbanCommand extends BaseCommand {
 						id: message.guild.id,
 						text: this,
 					});
-					const msg = await message.channel.send({ embed: errorEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errorEmbed] });
+					return this.Utils.Delete(msg);
 				}
 				let {
 					word,
@@ -85,7 +85,7 @@ export default class UrbanCommand extends BaseCommand {
 						},
 					],
 				});
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			});
 		} catch (e) {
 			console.log(e);
@@ -95,7 +95,7 @@ export default class UrbanCommand extends BaseCommand {
 				id: message.guild.id,
 				text: this,
 			});
-			return message.channel.send({ embed: errorEmbed });
+			return message.channel.send({ embeds: [errorEmbed] });
 		}
 	}
 }

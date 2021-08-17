@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, AwaitMessagesOptions } from 'discord.js';
 
 export default class LeavesCommand extends BaseCommand {
 	constructor() {
@@ -26,7 +26,7 @@ export default class LeavesCommand extends BaseCommand {
 		client: DiscordClient,
 		message: Message,
 		args: string[]
-	): Promise<Message> {
+	): Promise<Message | void> {
 		const todo = args[0];
 
 		const leave = await this.Settings.LeaveSystem(message.guild.id, true);
@@ -64,7 +64,7 @@ export default class LeavesCommand extends BaseCommand {
 				],
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 
 		if (todo.toLowerCase() == 'enable') {
@@ -76,15 +76,16 @@ export default class LeavesCommand extends BaseCommand {
 					error_message: 'Leave system is already enabled!',
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			let timedOut = false;
 
 			const isFromAuthor = (m) => m.author.id == message.author.id;
 
-			const options = {
+			const options: AwaitMessagesOptions = {
+				filter: isFromAuthor,
 				max: 1,
 				time: 60000,
 			};
@@ -96,12 +97,9 @@ export default class LeavesCommand extends BaseCommand {
 					'What type of media would you like to use? `image` or `text`?',
 			});
 
-			await message.channel.send({ embed: tEmbed });
+			await message.channel.send({ embeds: [tEmbed] });
 
-			const firstColl = await message.channel.awaitMessages(
-				isFromAuthor,
-				options
-			);
+			const firstColl = await message.channel.awaitMessages(options);
 
 			if (firstColl.size == 0 || !firstColl.first().content) timedOut = true;
 
@@ -115,8 +113,8 @@ export default class LeavesCommand extends BaseCommand {
 					error_message: 'Successfully cancelled selection',
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			if (
@@ -132,8 +130,8 @@ export default class LeavesCommand extends BaseCommand {
 						'Only "image" and "text" are the supported medias as of now',
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			if (timedOut == false) data.data.media = media.toLowerCase();
@@ -149,12 +147,9 @@ export default class LeavesCommand extends BaseCommand {
 				],
 			});
 
-			await message.channel.send({ embed: mEmbed });
+			await message.channel.send({ embeds: [mEmbed] });
 
-			const secondColl = await message.channel.awaitMessages(
-				isFromAuthor,
-				options
-			);
+			const secondColl = await message.channel.awaitMessages(options);
 
 			if (secondColl.size == 0 || !secondColl.first().content) timedOut = true;
 
@@ -168,8 +163,8 @@ export default class LeavesCommand extends BaseCommand {
 					error_message: 'Successfully cancelled selection',
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			if (timedOut == false) {
@@ -183,12 +178,9 @@ export default class LeavesCommand extends BaseCommand {
 					"Mention the channel where you'd like the message to be sent!",
 			});
 
-			await message.channel.send({ embed: cEmbed });
+			await message.channel.send({ embeds: [cEmbed] });
 
-			const thirdColl = await message.channel.awaitMessages(
-				isFromAuthor,
-				options
-			);
+			const thirdColl = await message.channel.awaitMessages(options);
 
 			if (thirdColl.size == 0 || !thirdColl.first().content) timedOut = true;
 
@@ -202,8 +194,8 @@ export default class LeavesCommand extends BaseCommand {
 					error_message: 'Successfully cancelled selection',
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			if (timedOut == false) {
@@ -241,8 +233,8 @@ export default class LeavesCommand extends BaseCommand {
 					id: message.guild.id,
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			const embed = await this.SuccessEmbed.Base({
@@ -252,7 +244,7 @@ export default class LeavesCommand extends BaseCommand {
 				success_message: 'Successfully enabled leave system',
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 		if (todo.toLowerCase() == 'disable') {
 			if (data.data.isenabled == false) {
@@ -263,8 +255,8 @@ export default class LeavesCommand extends BaseCommand {
 					error_message: 'Leave system is already disabled!',
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			const con = await this.con.connect();
@@ -293,7 +285,7 @@ export default class LeavesCommand extends BaseCommand {
 				success_message: 'Successfully disabled leave system',
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 		if (todo.toLowerCase() == 'update') {
 			const toUpdate = args[1];
@@ -308,8 +300,8 @@ export default class LeavesCommand extends BaseCommand {
 							'Leave system is disabled, to enable use "leave enable"',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				let timedOut = false;
@@ -328,12 +320,9 @@ export default class LeavesCommand extends BaseCommand {
 						'What type of media would you like to use? `image` or `text`?',
 				});
 
-				await message.channel.send({ embed: tEmbed });
+				await message.channel.send({ embeds: [tEmbed] });
 
-				const firstColl = await message.channel.awaitMessages(
-					isFromAuthor,
-					options
-				);
+				const firstColl = await message.channel.awaitMessages(options);
 
 				if (firstColl.size == 0 || !firstColl.first().content) timedOut = true;
 
@@ -347,8 +336,8 @@ export default class LeavesCommand extends BaseCommand {
 						error_message: 'Successfully cancelled selection',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				if (
@@ -364,8 +353,8 @@ export default class LeavesCommand extends BaseCommand {
 							'Only "image" and "text" are the supported medias as of now',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				if (timedOut == false) data.data.media = media;
@@ -378,8 +367,8 @@ export default class LeavesCommand extends BaseCommand {
 						id: message.guild.id,
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const con = await this.con.connect();
@@ -403,7 +392,7 @@ export default class LeavesCommand extends BaseCommand {
 					success_message: `Successfully set media to \`${media}\``,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 			if (toUpdate == 'channel') {
 				if (data.data.isenabled == false) {
@@ -415,15 +404,16 @@ export default class LeavesCommand extends BaseCommand {
 							'Leave system is disabled, to enable use "leave enable"',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				let timedOut = false;
 
 				const isFromAuthor = (m) => m.author.id == message.author.id;
 
-				const options = {
+				const options: AwaitMessagesOptions = {
+					filter: isFromAuthor,
 					max: 1,
 					time: 60000,
 				};
@@ -435,12 +425,9 @@ export default class LeavesCommand extends BaseCommand {
 						"Mention the channel where you'd like the message to be sent!",
 				});
 
-				await message.channel.send({ embed: cEmbed });
+				await message.channel.send({ embeds: [cEmbed] });
 
-				const firstColl = await message.channel.awaitMessages(
-					isFromAuthor,
-					options
-				);
+				const firstColl = await message.channel.awaitMessages(options);
 
 				if (firstColl.size == 0 || !firstColl.first().content) timedOut = true;
 
@@ -454,8 +441,8 @@ export default class LeavesCommand extends BaseCommand {
 						error_message: 'Successfully cancelled selection',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				if (timedOut == false) {
@@ -491,8 +478,8 @@ export default class LeavesCommand extends BaseCommand {
 						id: message.guild.id,
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const embed = await this.SuccessEmbed.Base({
@@ -502,7 +489,7 @@ export default class LeavesCommand extends BaseCommand {
 					success_message: 'Successfully updated leave system channel!',
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 			if (toUpdate == 'message') {
 				if (data.data.isenabled == false) {
@@ -514,15 +501,16 @@ export default class LeavesCommand extends BaseCommand {
 							'Leave system is disabled, to enable use "leave enable"',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				let timedOut = false;
 
 				const isFromAuthor = (m) => m.author.id == message.author.id;
 
-				const options = {
+				const options: AwaitMessagesOptions = {
+					filter: isFromAuthor,
 					max: 1,
 					time: 60000,
 				};
@@ -538,12 +526,9 @@ export default class LeavesCommand extends BaseCommand {
 					],
 				});
 
-				await message.channel.send({ embed: mEmbed });
+				await message.channel.send({ embeds: [mEmbed] });
 
-				const firstColl = await message.channel.awaitMessages(
-					isFromAuthor,
-					options
-				);
+				const firstColl = await message.channel.awaitMessages(options);
 
 				if (firstColl.size == 0 || !firstColl.first().content) timedOut = true;
 
@@ -557,8 +542,8 @@ export default class LeavesCommand extends BaseCommand {
 						error_message: 'Successfully cancelled selection',
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				if (timedOut == false) {
@@ -587,8 +572,8 @@ export default class LeavesCommand extends BaseCommand {
 						id: message.guild.id,
 					});
 
-					const msg = await message.channel.send({ embed: embed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [embed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const embed = await this.SuccessEmbed.Base({
@@ -598,7 +583,7 @@ export default class LeavesCommand extends BaseCommand {
 					success_message: 'Successfully updated leave system message!',
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 			const embed = await this.ErrorEmbed.InvalidChoice({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -606,8 +591,8 @@ export default class LeavesCommand extends BaseCommand {
 				id: message.guild.id,
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 	}
 }

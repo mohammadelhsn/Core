@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, MessageAttachment } from 'discord.js';
+import { AwaitMessagesOptions, Message, MessageAttachment } from 'discord.js';
 
 export default class TweetCommand extends BaseCommand {
 	constructor() {
@@ -37,7 +37,8 @@ export default class TweetCommand extends BaseCommand {
 
 		const isFromAuthor = (m) => m.author.id == message.author.id;
 
-		const options = {
+		const options: AwaitMessagesOptions = {
+			filter: isFromAuthor,
 			max: 1,
 			time: 60000,
 		};
@@ -48,12 +49,9 @@ export default class TweetCommand extends BaseCommand {
 			description: 'Please mention someone / say me for a username',
 		});
 
-		await message.channel.send({ embed: tEmbed });
+		await message.channel.send({ embeds: [tEmbed] });
 
-		const firstColl = await message.channel.awaitMessages(
-			isFromAuthor,
-			options
-		);
+		const firstColl = await message.channel.awaitMessages(options);
 
 		if (firstColl.size > 0) {
 			let username;
@@ -72,12 +70,9 @@ export default class TweetCommand extends BaseCommand {
 				description: 'Mention some text for the comment!',
 			});
 
-			await message.channel.send({ embed: dEmbed });
+			await message.channel.send({ embeds: [dEmbed] });
 
-			const secondColl = await message.channel.awaitMessages(
-				isFromAuthor,
-				options
-			);
+			const secondColl = await message.channel.awaitMessages(options);
 
 			if (secondColl.size > 0) {
 				const comment = secondColl.first().content;
@@ -90,7 +85,7 @@ export default class TweetCommand extends BaseCommand {
 						success_message: 'Successfully cancelled selection!',
 					});
 
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				}
 
 				const gEmbed = await this.GeneratingEmbed.SomeRandomApi({
@@ -99,7 +94,8 @@ export default class TweetCommand extends BaseCommand {
 					id: message.guild.id,
 				});
 
-				const m = await message.channel.send(gEmbed);
+				const m = await message.channel.send({ embeds: [gEmbed] });
+
 				try {
 					const image = await this.Canvas.Tweet(username, comment);
 					const file = new MessageAttachment(image.file, 'tweet.png');
@@ -113,7 +109,7 @@ export default class TweetCommand extends BaseCommand {
 					});
 
 					m.delete();
-					return message.channel.send({ files: [file], embed: embed });
+					return message.channel.send({ files: [file], embeds: [embed] });
 				} catch (e) {
 					m.delete();
 					console.log(e);
@@ -124,7 +120,7 @@ export default class TweetCommand extends BaseCommand {
 						text: this,
 					});
 
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				}
 			} else timedOut = true;
 		} else timedOut = true;
@@ -137,8 +133,8 @@ export default class TweetCommand extends BaseCommand {
 				error_message: 'Command timed out',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 	}
 }

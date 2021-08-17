@@ -8,13 +8,13 @@ export default class VoiceStateUpdateEvent extends BaseEvent {
 	}
 	async run(client: DiscordClient, oldState: VoiceState, newState: VoiceState) {
 		if (oldState.member.user.bot || newState.member.user.bot) return;
-		if (oldState.channelID == null && newState.channelID != null) {
+		if (oldState.channelId == null && newState.channelId != null) {
 			// user joined the channel
 		}
-		if (oldState.channelID != null && newState.channelID == null) {
+		if (oldState.channelId != null && newState.channelId == null) {
 			// user left the channel
 		}
-		if (oldState.channelID != null && newState.channelID != null) {
+		if (oldState.channelId != null && newState.channelId != null) {
 			// user moved channels
 		}
 		return;

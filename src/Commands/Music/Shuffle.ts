@@ -32,7 +32,7 @@ export default class ShuffleCommand extends BaseCommand {
 				text: this,
 			});
 
-			const msg = await message.channel.send({ embed: errorEmbed });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
@@ -53,8 +53,8 @@ export default class ShuffleCommand extends BaseCommand {
 				error_message: 'There are no active players at the moment',
 			});
 
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (voiceChannel.id !== player.options.voiceChannel) {
@@ -65,8 +65,8 @@ export default class ShuffleCommand extends BaseCommand {
 				error_message: "You're not in the bots voice channel",
 			});
 
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 		//🔁
 
@@ -80,7 +80,7 @@ export default class ShuffleCommand extends BaseCommand {
 				text: this,
 				id: message.guild.id,
 			});
-			return message.channel.send({ embed: errEmbed });
+			return message.channel.send({ embeds: [errEmbed] });
 		}
 
 		const successEmbed = await this.SuccessEmbed.Base({
@@ -90,6 +90,6 @@ export default class ShuffleCommand extends BaseCommand {
 			success_message: '```Successfully shuffled the queue! 🔀```',
 		});
 
-		return message.channel.send({ embed: successEmbed });
+		return message.channel.send({ embeds: [successEmbed] });
 	}
 }

@@ -83,7 +83,7 @@ export default class EmojisCommand extends BaseCommand {
 						id: message.guild.id,
 						text: this,
 					});
-					const msg = await message.channel.send({ embed: errorEmbed });
+					const msg = await message.channel.send({ embeds: [errorEmbed] });
 					return msg.delete({ timeout: 10000 });
 				} else {
 					const embeds = [];
@@ -119,7 +119,7 @@ export default class EmojisCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errorEmbed });
+				return message.channel.send({ embeds: [errorEmbed] });
 			}
 		} else {
 			try {
@@ -130,8 +130,8 @@ export default class EmojisCommand extends BaseCommand {
 						id: message.guild.id,
 						text: this,
 					});
-					const msg = await message.channel.send({ embed: errorEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errorEmbed] });
+					return this.Utils.Delete(msg);
 				} else {
 					const embeds = [];
 					for (const e of emojis) {
@@ -166,7 +166,7 @@ export default class EmojisCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errorEmbed });
+				return message.channel.send({ embeds: [errorEmbed] });
 			}
 		}
 	}

@@ -33,7 +33,7 @@ export default class RobloxCommand extends BaseCommand {
 				text: this,
 				error_message: 'Please mention a user to search!',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
@@ -50,7 +50,7 @@ export default class RobloxCommand extends BaseCommand {
 					fields: [{ name: 'Join date', value: data.joinDate }],
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 
 			const embed = this.Embed.Base({
@@ -59,8 +59,8 @@ export default class RobloxCommand extends BaseCommand {
 				description: data.bio,
 				text: this,
 				fields: [
-					{ name: 'Past usernames', value: data.pastNames },
-					{ name: 'Friends', value: data.friends },
+					{ name: 'Past usernames', value: data.pastNames.toString() },
+					{ name: 'Friends', value: data.friends.toString() },
 					{ name: 'Followers', value: data.followers },
 					{ name: 'Following', value: data.following },
 					{ name: 'Age', value: data.age },
@@ -68,14 +68,14 @@ export default class RobloxCommand extends BaseCommand {
 				],
 				link: data.profile_url,
 			});
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} catch (e) {
 			const errEmbed = await this.ErrorEmbed.UnexpectedError({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				id: message.guild.id,
 				text: this,
 			});
-			return message.channel.send({ embed: errEmbed });
+			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
 }

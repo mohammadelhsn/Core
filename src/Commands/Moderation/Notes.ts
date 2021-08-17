@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, Permissions } from 'discord.js';
 
 export default class NotesCommand extends BaseCommand {
 	constructor() {
@@ -27,7 +27,11 @@ export default class NotesCommand extends BaseCommand {
 		message: Message,
 		args: string[]
 	): Promise<Message | void> {
-		if (!message.member.hasPermission('MANAGE_GUILD' || 'ADMINISTRATOR')) {
+		if (
+			!message.member.permissions.has([
+				Permissions.FLAGS.ADMINISTRATOR || Permissions.FLAGS.MANAGE_GUILD,
+			])
+		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -35,8 +39,8 @@ export default class NotesCommand extends BaseCommand {
 				perms: ['MANAGE_GUILD', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (!args[0]) {
@@ -47,8 +51,8 @@ export default class NotesCommand extends BaseCommand {
 				error_message: 'You must specify a user!',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const user =
@@ -65,8 +69,8 @@ export default class NotesCommand extends BaseCommand {
 				error_message: "I couldn't find this user!",
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const identifier = args[1];
@@ -92,7 +96,7 @@ export default class NotesCommand extends BaseCommand {
 					description: `Content: ${index.content}`,
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 
 			if (filtered.length == 0) {
@@ -104,8 +108,8 @@ export default class NotesCommand extends BaseCommand {
 						"I couldn't find this note for this user with this identifier",
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 		}
 
@@ -125,7 +129,7 @@ export default class NotesCommand extends BaseCommand {
 				description: `Content: ${note.content}`,
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 
 		if (filtered.length == 0) {
@@ -136,8 +140,8 @@ export default class NotesCommand extends BaseCommand {
 				error_message: "I couldn't find any notes for this user!",
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		for (let note of filtered) {

@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, UserFlags } from 'discord.js';
+import { HexColorString, Message, UserFlags } from 'discord.js';
 
 export default class RoleinfoCommand extends BaseCommand {
 	constructor() {
@@ -53,8 +53,9 @@ export default class RoleinfoCommand extends BaseCommand {
 				],
 			});
 
-			embed.setColor(roleinfo.colour);
-			return message.channel.send({ embed: embed });
+			embed.setColor(roleinfo.colour as HexColorString);
+
+			return message.channel.send({ embeds: [embed] });
 		}
 
 		return await this.HelpEmbed.Base({

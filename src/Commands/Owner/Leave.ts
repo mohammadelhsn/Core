@@ -36,6 +36,6 @@ export default class TesstCommand extends BaseCommand {
 			success_message: `Successfully left ${guild.name}`,
 		});
 
-		return message.channel.send({ embed: embed });
+		return message.channel.send({ embeds: [embed] });
 	}
 }

@@ -31,12 +31,15 @@ export default class GuildCreateEvent extends BaseEvent {
 			fields: [
 				{ name: 'Guild name', value: `\`${guild.name}\`` },
 				{ name: 'Guild ID', value: `\`${guild.id}\`` },
-				{ name: 'Guild owner', value: `\`${guild.owner.user.tag}\`` },
-				{ name: 'Guild owner ID', value: `\`${guild.ownerID}\`` },
+				{
+					name: 'Guild owner',
+					value: `\`${(await guild.fetchOwner()).user.tag}\``,
+				},
+				{ name: 'Guild owner ID', value: `\`${guild.ownerId}\`` },
 				{ name: 'Guild membercount', value: `\`${guild.memberCount}\`` },
 			],
 		});
 
-		return logs.send({ embed: embed });
+		return logs.send({ embeds: [embed] });
 	}
 }

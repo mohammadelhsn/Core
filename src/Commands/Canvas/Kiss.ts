@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, MessageAttachment } from 'discord.js';
+import { AwaitMessagesOptions, Message, MessageAttachment } from 'discord.js';
 import { Kiss } from 'discord-image-generation';
 
 export default class KissCommand extends BaseCommand {
@@ -33,7 +33,7 @@ export default class KissCommand extends BaseCommand {
 		});
 
 		if (message.mentions.members.size == 2) {
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			const user1 = message.mentions.members
 				.first()
@@ -55,7 +55,7 @@ export default class KissCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ files: [file], embed: embed });
+				return message.channel.send({ files: [file], embeds: embed });
 			} catch (error) {
 				m.delete();
 
@@ -64,12 +64,12 @@ export default class KissCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 		}
 
 		if (message.mentions.members.size == 1) {
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			const user1 = message.mentions.members
 				.first()
@@ -89,7 +89,7 @@ export default class KissCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ files: [file], embed: embed });
+				return message.channel.send({ files: [file], embeds: [embed] });
 			} catch (error) {
 				m.delete();
 
@@ -98,7 +98,7 @@ export default class KissCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 		}
 
@@ -111,7 +111,7 @@ export default class KissCommand extends BaseCommand {
 		}
 
 		if (message.attachments.size > 2) {
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			const user1 = message.attachments.first().url;
 			const user2 = message.attachments.last().url;
@@ -129,7 +129,7 @@ export default class KissCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ files: [file], embed: embed });
+				return message.channel.send({ files: [file], embeds: [embed] });
 			} catch (error) {
 				m.delete();
 
@@ -138,13 +138,13 @@ export default class KissCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			}
 		}
 
 		if (message.attachments.size == 1) {
 			if (message.attachments.size > 2) {
-				const m = await message.channel.send({ embed: gEmbed });
+				const m = await message.channel.send({ embeds: [gEmbed] });
 
 				const user1 = message.attachments.first().url;
 				const user2 = message.author.displayAvatarURL({ format: 'png' });
@@ -162,7 +162,7 @@ export default class KissCommand extends BaseCommand {
 					});
 
 					m.delete();
-					return message.channel.send({ files: [file], embed: embed });
+					return message.channel.send({ files: [file], embeds: [embed] });
 				} catch (error) {
 					m.delete();
 
@@ -171,7 +171,7 @@ export default class KissCommand extends BaseCommand {
 						id: message.guild.id,
 						text: this,
 					});
-					return message.channel.send({ embed: embed });
+					return message.channel.send({ embeds: [embed] });
 				}
 			}
 		}
@@ -180,7 +180,8 @@ export default class KissCommand extends BaseCommand {
 
 		const isFromAuthor = (m) => m.author.id == message.author.id;
 
-		const options = {
+		const options: AwaitMessagesOptions = {
+			filter: isFromAuthor,
 			max: 1,
 			time: 60000,
 		};
@@ -191,80 +192,74 @@ export default class KissCommand extends BaseCommand {
 			title: 'Kiss command',
 			description: 'Attach the first image',
 		});
-		await message.channel.send({ embed: tEmbed });
+		await message.channel.send({ embeds: [tEmbed] });
 
-		const firstColl = await message.channel.awaitMessages(
-			isFromAuthor,
-			options
-		);
+		const firstColl = await message.channel.awaitMessages(options);
 
-		if (firstColl.size > 0) {
-			const attach = firstColl.first().attachments.first().url;
+		if (firstColl.size == 0) {
+			if (firstColl.size > 0) {
+				const attach = firstColl.first().attachments.first().url;
 
-			const dEmbed = await this.Embed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				text: this,
-				title: 'Kiss command',
-				description: 'Please attach the second image',
-			});
-
-			await message.channel.send({ embed: dEmbed });
-			const secondColl = await message.channel.awaitMessages(
-				isFromAuthor,
-				options
-			);
-
-			if (secondColl.size > 0) {
-				const attach2 = secondColl.first().attachments.first().url;
-
-				const gEmbed = await this.GeneratingEmbed.DiscordIG({
+				const dEmbed = await this.Embed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					id: message.guild.id,
 					text: this,
+					title: 'Kiss command',
+					description: 'Please attach the second image',
 				});
 
-				const m = await message.channel.send({ embed: gEmbed });
-				try {
-					const image = await new Kiss().getImage(attach, attach2);
-					const attachment = new MessageAttachment(image, 'kiss.png');
+				await message.channel.send({ embeds: [dEmbed] });
+				const secondColl = await message.channel.awaitMessages(options);
 
-					const embed = await this.ImageEmbed.Base({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						text: this,
-						title: 'Kiss command',
-						description: guild.Strings.DiscordIG,
-						image: 'attachment://kiss.png',
-					});
+				if (secondColl.size > 0) {
+					const attach2 = secondColl.first().attachments.first().url;
 
-					m.delete();
-					return message.channel.send({ files: [attachment], embed: embed });
-				} catch (e) {
-					m.delete();
-					console.log(e);
-
-					const errorEmbed = await this.ErrorEmbed.UnexpectedError({
+					const gEmbed = await this.GeneratingEmbed.DiscordIG({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
 						text: this,
 					});
-					return message.channel.send({ embed: errorEmbed });
-				}
-			} else {
-				timedOut = true;
-			}
-		} else {
-			timedOut = true;
-		}
 
-		if (timedOut === true) {
-			const errorEmbed = await this.ErrorEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
-				text: this,
-				error_message: 'Timed out',
-			});
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+					const m = await message.channel.send({ embeds: [gEmbed] });
+					try {
+						const image = await new Kiss().getImage(attach, attach2);
+						const attachment = new MessageAttachment(image, 'kiss.png');
+
+						const embed = await this.ImageEmbed.Base({
+							iconURL: message.author.displayAvatarURL({ dynamic: true }),
+							text: this,
+							title: 'Kiss command',
+							description: guild.Strings.DiscordIG,
+							image: 'attachment://kiss.png',
+						});
+
+						m.delete();
+						return message.channel.send({
+							files: [attachment],
+							embeds: [embed],
+						});
+					} catch (e) {
+						m.delete();
+
+						const errorEmbed = await this.ErrorEmbed.UnexpectedError({
+							iconURL: message.author.displayAvatarURL({ dynamic: true }),
+							id: message.guild.id,
+							text: this,
+						});
+						return message.channel.send({ embeds: [errorEmbed] });
+					}
+				} else timedOut = true;
+			} else timedOut = true;
+
+			if (timedOut === true) {
+				const errorEmbed = await this.ErrorEmbed.Base({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					id: message.guild.id,
+					text: this,
+					error_message: 'Timed out',
+				});
+				const msg = await message.channel.send({ embeds: [errorEmbed] });
+				return this.Utils.Delete(msg);
+			}
 		}
 	}
 }

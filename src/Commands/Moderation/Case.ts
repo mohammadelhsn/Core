@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, TextChannel } from 'discord.js';
+import { Message, TextChannel, Permissions } from 'discord.js';
 import moment from 'moment';
 
 export default class CaseCommand extends BaseCommand {
@@ -24,7 +24,11 @@ export default class CaseCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		if (!message.member.hasPermission(['BAN_MEMBERS' || 'ADMINISTRATOR'])) {
+		if (
+			!message.member.permissions.has([
+				Permissions.FLAGS.BAN_MEMBERS || Permissions.FLAGS.ADMINISTRATOR,
+			])
+		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -32,8 +36,8 @@ export default class CaseCommand extends BaseCommand {
 				perms: ['BAN_MEMBERS', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const caseNumber = parseInt(args[0]);
@@ -47,8 +51,8 @@ export default class CaseCommand extends BaseCommand {
 				error_message: 'Specify a case number!',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (reason) {
@@ -65,8 +69,8 @@ export default class CaseCommand extends BaseCommand {
 					error_message: 'There is no moderation with this case number',
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 
 			const modlog = moderation.modlog;
@@ -125,8 +129,8 @@ export default class CaseCommand extends BaseCommand {
 							error_message: 'I cannot find the stored message!',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					const embed = msg.first().embeds[0];
@@ -139,13 +143,13 @@ export default class CaseCommand extends BaseCommand {
 							error_message: 'The moderation embedd cannot be found!',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					embed.fields[2].value = reason;
 
-					msg.first().edit({ embed: embed });
+					msg.first().edit({ embeds: [embed] });
 
 					mnew = reason;
 
@@ -169,8 +173,8 @@ export default class CaseCommand extends BaseCommand {
 							error_message: 'I cannot find the stored message!',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					const embed = msg.first().embeds[0];
@@ -183,13 +187,13 @@ export default class CaseCommand extends BaseCommand {
 							error_message: 'The moderation embedd cannot be found!',
 						});
 
-						const msg = await message.channel.send({ embed: embed });
-						return msg.delete({ timeout: 10000 });
+						const msg = await message.channel.send({ embeds: [embed] });
+						return this.Utils.Delete(msg);
 					}
 
 					embed.fields[2].value = reason;
 
-					msg.first().edit({ embed: embed });
+					msg.first().edit({ embeds: [embed] });
 
 					pmUpdated = true;
 
@@ -228,7 +232,7 @@ export default class CaseCommand extends BaseCommand {
 					],
 				});
 
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embeds: [embed] });
 			} finally {
 				con.release();
 			}
@@ -308,6 +312,6 @@ export default class CaseCommand extends BaseCommand {
 			],
 		});
 
-		return message.channel.send({ embed: embed });
+		return message.channel.send({ embeds: [embed] });
 	}
 }

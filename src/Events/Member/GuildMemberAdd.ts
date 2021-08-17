@@ -67,7 +67,7 @@ export default class GuildMemberAddEvent extends BaseEvent {
 					.replace(/{server}/g, member.guild.name)
 					.replace(/{single}/g, "'");
 
-				channel.send(message);
+				channel.send({ content: message });
 			}
 		}
 		if (guildMemberAdd.enabled == true) {
@@ -105,7 +105,7 @@ export default class GuildMemberAddEvent extends BaseEvent {
 				],
 			});
 
-			log.send({ embed: embed });
+			log.send({ embeds: [embed] });
 		}
 		return;
 	}

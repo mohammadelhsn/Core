@@ -42,7 +42,7 @@ export default class QuoteCommand extends BaseCommand {
 			provider: 'Kote API',
 		});
 
-		const m = await message.channel.send({ embed: gEmbed });
+		const m = await message.channel.send({ embeds: [gEmbed] });
 
 		try {
 			const res = await kote.brainyQuote();
@@ -58,7 +58,7 @@ export default class QuoteCommand extends BaseCommand {
 			});
 
 			m.delete();
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} catch (e) {
 			m.delete();
 			console.log(e);
@@ -68,7 +68,7 @@ export default class QuoteCommand extends BaseCommand {
 				id: message.guild.id,
 				text: this,
 			});
-			return message.channel.send({ embed: errEmbed });
+			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
 }

@@ -39,7 +39,7 @@ export default class ShibeCommand extends BaseCommand {
 			text: this,
 			provider: 'Shibe Online API',
 		});
-		const m = await message.channel.send({ embed: generatingEmbed });
+		const m = await message.channel.send({ embeds: [generatingEmbed] });
 
 		try {
 			const res = await this.Animals.Shibe();
@@ -52,8 +52,8 @@ export default class ShibeCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				const msg = await message.channel.send({ embed: errEmbed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [errEmbed] });
+				return this.Utils.Delete(msg);
 			}
 
 			const embed = await this.ImageEmbed.Base({
@@ -66,7 +66,7 @@ export default class ShibeCommand extends BaseCommand {
 				image: res.file,
 			});
 			m.delete();
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} catch (e) {
 			m.delete();
 
@@ -75,7 +75,7 @@ export default class ShibeCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 			});
-			return message.channel.send({ embed: errEmbed });
+			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
 }

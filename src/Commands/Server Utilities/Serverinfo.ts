@@ -26,9 +26,7 @@ export default class ServerinfoCommand extends BaseCommand {
 		const serverinfo = {
 			name: `${message.guild.name}`,
 			id: `${message.guild.id}`,
-			owner: `${message.guild.owner}`,
-			ownerid: `${message.guild.ownerID}`,
-			region: `${message.guild.region}`,
+			ownerid: `${message.guild.ownerId}`,
 			available: `\`${message.guild.available ? 'Yes' : 'No'}\``,
 			large: `\`${message.guild.large ? 'Yes' : 'No'}\``,
 			partnered: `\`${message.guild.partnered ? 'Yes' : 'No'}\``,
@@ -42,10 +40,12 @@ export default class ServerinfoCommand extends BaseCommand {
 			}\``,
 			totalChannels: `\`${message.guild.channels.cache.size}\``,
 			textChannels: `\`${
-				message.guild.channels.cache.filter((ch) => ch.type === 'text').size
+				message.guild.channels.cache.filter((ch) => ch.type === 'GUILD_TEXT')
+					.size
 			}\``,
 			voiceChannels: `\`${
-				message.guild.channels.cache.filter((ch) => ch.type === 'voice').size
+				message.guild.channels.cache.filter((ch) => ch.type === 'GUILD_VOICE')
+					.size
 			}\``,
 			contentFilter: `\`${message.guild.explicitContentFilter}\``,
 			verificationlvl: `\`${message.guild.verificationLevel}\``,
@@ -74,9 +74,7 @@ export default class ServerinfoCommand extends BaseCommand {
 				description: `${serverinfo.name} serverinfo`,
 				fields: [
 					{ name: 'ID', value: `${serverinfo.id}` },
-					{ name: 'Server owner:', value: `${serverinfo.owner}` },
 					{ name: 'Server owner ID:', value: `${serverinfo.ownerid}` },
-					{ name: 'Server region:', value: `${serverinfo.region}` },
 					{ name: 'Created at:', value: `${serverinfo.createdAt}` },
 					{
 						name: 'Total channels',
@@ -102,7 +100,7 @@ export default class ServerinfoCommand extends BaseCommand {
 					{ name: 'Bot count', value: `${serverinfo.bots}`, inline: true },
 				],
 			});
-			return message.channel.send({ embed: serverinfoEmbed });
+			return message.channel.send({ embeds: [serverinfoEmbed] });
 		}
 	}
 }

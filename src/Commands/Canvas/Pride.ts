@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, MessageAttachment } from 'discord.js';
+import { AwaitMessagesOptions, Message, MessageAttachment } from 'discord.js';
 
 export default class PrideCommand extends BaseCommand {
 	constructor() {
@@ -32,7 +32,7 @@ export default class PrideCommand extends BaseCommand {
 		});
 
 		if (message.mentions.members.size == 1) {
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			const user = message.mentions.members.first();
 
@@ -49,11 +49,11 @@ export default class PrideCommand extends BaseCommand {
 			});
 
 			m.delete();
-			return message.channel.send({ files: [file], embed: embed });
+			return message.channel.send({ files: [file], embeds: embed });
 		}
 
 		if (args[0] && args[0].toLowerCase().includes('me')) {
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			const user = message.author;
 
@@ -70,7 +70,7 @@ export default class PrideCommand extends BaseCommand {
 			});
 
 			m.delete();
-			return message.channel.send({ files: [file], embed: embed });
+			return message.channel.send({ files: [file], embeds: [embed] });
 		}
 
 		if (args[0] && args[0].toLowerCase().includes('help')) {
@@ -85,7 +85,8 @@ export default class PrideCommand extends BaseCommand {
 
 		const isFromAuthor = (m) => m.author.id == message.author.id;
 
-		const options = {
+		const options: AwaitMessagesOptions = {
+			filter: isFromAuthor,
 			max: 1,
 			time: 60000,
 		};
@@ -96,12 +97,9 @@ export default class PrideCommand extends BaseCommand {
 			description: 'Please send the first image or mention a user',
 		});
 
-		await message.channel.send({ embed: tEmbed });
+		await message.channel.send({ embeds: [tEmbed] });
 
-		const firstColl = await message.channel.awaitMessages(
-			isFromAuthor,
-			options
-		);
+		const firstColl = await message.channel.awaitMessages(options);
 
 		if (firstColl.size > 0) {
 			const attach =
@@ -111,7 +109,7 @@ export default class PrideCommand extends BaseCommand {
 					.mentions.members.first()
 					?.user?.displayAvatarURL({ format: 'png' });
 
-			const m = await message.channel.send({ embed: gEmbed });
+			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			const image = this.Canvas.Pride(attach);
 			const file = new MessageAttachment(image.file, 'pride.png');
@@ -125,7 +123,7 @@ export default class PrideCommand extends BaseCommand {
 			});
 
 			m.delete();
-			return message.channel.send({ files: [file], embed: embed });
+			return message.channel.send({ files: [file], embeds: [embed] });
 		} else timedOut = true;
 
 		if (timedOut === true) {
@@ -136,8 +134,8 @@ export default class PrideCommand extends BaseCommand {
 				error_message: 'Command timed out',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 	}
 }

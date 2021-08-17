@@ -40,7 +40,7 @@ export default class SmackCommand extends BaseCommand {
 				text: this,
 				error_message: 'You are missing the mention!',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
 			return msg.delete({ timeout: 10000 });
 		} else if (user == args[0] && user.toLowerCase().includes('help')) {
 			return await this.HelpEmbed.Base({
@@ -55,7 +55,7 @@ export default class SmackCommand extends BaseCommand {
 				text: this,
 			});
 
-			const m = await message.channel.send({ embed: generatingEmbed });
+			const m = await message.channel.send({ embeds: [generatingEmbed] });
 			try {
 				const res = await this.Reactions.Smack();
 
@@ -68,8 +68,8 @@ export default class SmackCommand extends BaseCommand {
 						text: this,
 					});
 
-					const msg = await message.channel.send({ embed: errEmbed });
-					return msg.delete({ timeout: 10000 });
+					const msg = await message.channel.send({ embeds: [errEmbed] });
+					return this.Utils.Delete(msg);
 				}
 
 				const pokeEmbed = await this.ImageEmbed.Base({
@@ -81,7 +81,7 @@ export default class SmackCommand extends BaseCommand {
 				});
 
 				m.delete();
-				return message.channel.send({ embed: pokeEmbed });
+				return message.channel.send({ embeds: [pokeEmbed] });
 			} catch (e) {
 				m.delete();
 
@@ -90,7 +90,7 @@ export default class SmackCommand extends BaseCommand {
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embed: errEmbed });
+				return message.channel.send({ embeds: [errEmbed] });
 			}
 		}
 	}

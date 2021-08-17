@@ -57,7 +57,7 @@ export default class ChannelinfoCommand extends BaseCommand {
 					{ name: 'Channel created at', value: `\`${channelinfo.createdAt}\`` },
 				],
 			});
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: embed });
 		} else if (args[0].toLowerCase().includes('help')) {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -78,8 +78,8 @@ export default class ChannelinfoCommand extends BaseCommand {
 			const embed = await this.Embed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
-				title: `${channel.guild} Channelinfo`,
-				description: `<#${channel.id}>`,
+				title: `${channelinfo.guild} Channelinfo`,
+				description: `<#${channelinfo.id}>`,
 				fields: [
 					{ name: 'Channel name:', value: `\`${channelinfo.name}\`` },
 					{
@@ -91,7 +91,7 @@ export default class ChannelinfoCommand extends BaseCommand {
 					{ name: 'Channel created at', value: `\`${channelinfo.createdAt}\`` },
 				],
 			});
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		}
 	}
 }

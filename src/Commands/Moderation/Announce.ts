@@ -1,6 +1,12 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { GuildChannel, Message, TextChannel } from 'discord.js';
+import {
+	GuildChannel,
+	Message,
+	TextChannel,
+	Permissions,
+	AwaitMessagesOptions,
+} from 'discord.js';
 
 export default class AnnounceCommand extends BaseCommand {
 	constructor() {
@@ -26,8 +32,12 @@ export default class AnnounceCommand extends BaseCommand {
 		client: DiscordClient,
 		message: Message,
 		args: string[]
-	): Promise<Message> {
-		if (!message.member.hasPermission(['MANAGE_GUILD', 'ADMINISTRATOR'])) {
+	): Promise<Message | void> {
+		if (
+			!message.member.permissions.has([
+				Permissions.FLAGS.MANAGE_GUILD || Permissions.FLAGS.ADMINISTRATOR,
+			])
+		) {
 			const errorEmbed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -35,15 +45,14 @@ export default class AnnounceCommand extends BaseCommand {
 				perms: ['MANAGE_GUILD', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 
 		let timedOut = false;
 
-		const isFromAuthor = (m) => m.author.id == message.author.id;
-
-		const options = {
+		const options: AwaitMessagesOptions = {
+			filter: (m) => m.author.id == message.author.id,
 			max: 1,
 			time: 60000,
 		};
@@ -55,12 +64,9 @@ export default class AnnounceCommand extends BaseCommand {
 			description: `Please mention a title for the announcement`,
 		});
 
-		await message.channel.send({ embed: tEmbed });
+		await message.channel.send({ embeds: [tEmbed] });
 
-		const firstColl = await message.channel.awaitMessages(
-			isFromAuthor,
-			options
-		);
+		const firstColl = await message.channel.awaitMessages(options);
 
 		if (firstColl.size > 0) {
 			const title = firstColl.first().content;
@@ -72,12 +78,9 @@ export default class AnnounceCommand extends BaseCommand {
 				description: `Please mention the content for the announcement`,
 			});
 
-			await message.channel.send({ embed: dEmbed });
+			await message.channel.send({ embeds: [dEmbed] });
 
-			const secondColl = await message.channel.awaitMessages(
-				isFromAuthor,
-				options
-			);
+			const secondColl = await message.channel.awaitMessages(options);
 
 			if (secondColl.size > 0) {
 				const description = secondColl.first().content;
@@ -89,26 +92,21 @@ export default class AnnounceCommand extends BaseCommand {
 					description: `Please mention a channel.`,
 				});
 
-				await message.channel.send({ embed: cEmbed });
+				await message.channel.send({ embeds: [cEmbed] });
 
-				const thridColl = await message.channel.awaitMessages(
-					isFromAuthor,
-					options
-				);
+				const thridColl = await message.channel.awaitMessages(options);
 
 				if (thridColl.size > 0) {
 					const result = thridColl.first().content;
 					const msg = thridColl.first();
-					let channel: string | TextChannel | GuildChannel =
+					let channel =
 						message.guild.channels.cache.find((c) => c.name === result) ||
 						message.guild.channels.cache.find((c) => c.id === result) ||
 						msg.mentions.channels.first();
 
-					if (!channel) {
-						channel = message.channel.id;
-					} else {
-						channel = (channel as TextChannel).id;
-					}
+					if (channel.type != 'GUILD_TEXT') return;
+
+					const channelId = channel.id;
 
 					const embed = this.Embed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -117,8 +115,8 @@ export default class AnnounceCommand extends BaseCommand {
 						description: description,
 					});
 
-					(client.channels.cache.get(channel) as TextChannel).send({
-						embed: embed,
+					(client.channels.cache.get(channelId) as TextChannel).send({
+						embeds: [embed],
 					});
 				} else timedOut = true;
 			} else timedOut = true;
@@ -132,8 +130,8 @@ export default class AnnounceCommand extends BaseCommand {
 				error_message: 'Command timed out!',
 			});
 
-			const msg = await message.channel.send({ embed: errorEmbed });
-			return msg.delete({ timeout: 100000 });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
+			return this.Utils.Delete(msg);
 		}
 	}
 }

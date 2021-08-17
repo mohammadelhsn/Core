@@ -29,12 +29,12 @@ export default class ChangelogCommand extends BaseCommand {
 			title: 'Changelog command',
 			description: `${client.version} changelog`,
 			fields: [
-				{ name: 'Additions', value: `` },
-				{ name: 'Modifications', value: `` },
+				{ name: 'Additions', value: `Slash commands (WIP still)` },
+				{ name: 'Modifications', value: `Discord.JS V13 updates!` },
 				{ name: 'Removals', value: `` },
 			],
 		});
 
-		return message.channel.send({ embed: embed });
+		return message.channel.send({ embeds: [embed] });
 	}
 }

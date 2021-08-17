@@ -20,7 +20,7 @@ export default class QueueEndEvent extends BaseEvent {
 				this.Translator.Getstring(lang, 'provided_by')
 			)}: \`Lavalink\``,
 		});
-		channel.send({ embed: embed });
+		channel.send({ embeds: [embed] });
 		player.destroy();
 	}
 }

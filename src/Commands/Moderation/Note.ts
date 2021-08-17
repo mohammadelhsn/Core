@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, Permissions } from 'discord.js';
 
 export default class NoteCommand extends BaseCommand {
 	constructor() {
@@ -26,8 +26,12 @@ export default class NoteCommand extends BaseCommand {
 		client: DiscordClient,
 		message: Message,
 		args: string[]
-	): Promise<Message> {
-		if (!message.member.hasPermission(['MANAGE_GUILD' || 'ADMINISTRATOR'])) {
+	): Promise<Message | void> {
+		if (
+			!message.member.permissions.has([
+				Permissions.FLAGS.MANAGE_GUILD || Permissions.FLAGS.ADMINISTRATOR,
+			])
+		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -35,8 +39,8 @@ export default class NoteCommand extends BaseCommand {
 				perms: ['MANAGE_GUILD', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		if (!args[0]) {
@@ -47,8 +51,8 @@ export default class NoteCommand extends BaseCommand {
 				error_message: 'You must specify a user!',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const user =
@@ -65,8 +69,8 @@ export default class NoteCommand extends BaseCommand {
 				error_message: "I couldn't find this user!",
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const identifier = args[1];
@@ -79,8 +83,8 @@ export default class NoteCommand extends BaseCommand {
 				error_message: 'You must specify some identifier to use for this note',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const notes = await this.Settings.Notes(message.guild.id);
@@ -98,8 +102,8 @@ export default class NoteCommand extends BaseCommand {
 						'A note with this identifier already exists for this user',
 				});
 
-				const msg = await message.channel.send({ embed: embed });
-				return msg.delete({ timeout: 10000 });
+				const msg = await message.channel.send({ embeds: [embed] });
+				return this.Utils.Delete(msg);
 			}
 		}
 
@@ -113,8 +117,8 @@ export default class NoteCommand extends BaseCommand {
 				error_message: 'You must include some content for the note!',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const note = {
@@ -150,6 +154,6 @@ export default class NoteCommand extends BaseCommand {
 			],
 		});
 
-		return message.channel.send({ embed: embed });
+		return message.channel.send({ embeds: [embed] });
 	}
 }

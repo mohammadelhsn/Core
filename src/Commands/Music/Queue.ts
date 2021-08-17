@@ -35,7 +35,7 @@ export default class QueueCommand extends BaseCommand {
 				text: this,
 				error_message: 'There is nothing playing',
 			});
-			const msg = await message.channel.send({ embed: errorEmbed });
+			const msg = await message.channel.send({ embeds: [errorEmbed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
@@ -77,6 +77,6 @@ export default class QueueCommand extends BaseCommand {
 			image: player.queue.current.thumbnail,
 			link: player.queue.current.uri,
 		});
-		return message.channel.send({ embed: embed });
+		return message.channel.send({ embeds: [embed] });
 	}
 }

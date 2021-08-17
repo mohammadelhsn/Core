@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, Permissions } from 'discord.js';
 import iso from 'iso-639-1';
 
 export default class LanguageCommand extends BaseCommand {
@@ -24,7 +24,7 @@ export default class LanguageCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		if (!message.member.hasPermission(['ADMINISTRATOR'])) {
+		if (!message.member.permissions.has(['ADMINISTRATOR'])) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
@@ -32,7 +32,7 @@ export default class LanguageCommand extends BaseCommand {
 				perms: ['ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embed: embed });
+			const msg = await message.channel.send({ embeds: [embed] });
 			return msg.delete({ timeout: 10000 });
 		}
 
@@ -46,8 +46,8 @@ export default class LanguageCommand extends BaseCommand {
 				error_message: 'You must specify a new language!',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const code = iso.getCode(language);
@@ -60,8 +60,8 @@ export default class LanguageCommand extends BaseCommand {
 				error_message: 'This language is not supported!',
 			});
 
-			const msg = await message.channel.send({ embed: embed });
-			return msg.delete({ timeout: 10000 });
+			const msg = await message.channel.send({ embeds: [embed] });
+			return this.Utils.Delete(msg);
 		}
 
 		const con = await this.con.connect();
@@ -80,7 +80,7 @@ export default class LanguageCommand extends BaseCommand {
 				success_message: `Successfully set guild language to \`${code}\``,
 			});
 
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embeds: [embed] });
 		} finally {
 			con.release();
 		}
