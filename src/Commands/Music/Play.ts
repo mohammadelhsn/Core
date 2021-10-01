@@ -20,7 +20,7 @@ export default class PlayCommand extends BaseCommand {
 			false,
 			false,
 			5000,
-			'working'
+			'WIP'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
