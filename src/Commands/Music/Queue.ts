@@ -20,7 +20,7 @@ export default class QueueCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'working'
+			'WIP'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
