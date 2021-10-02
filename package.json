@@ -24,7 +24,6 @@
 		"discord.js-pagination": "^1.0.3",
 		"dotenv": "^10.0.0",
 		"emoji-api": "^1.0.2",
-		"erela.js": "^2.3.3",
 		"figlet": "^1.5.0",
 		"fun-responses": "^1.3.2",
 		"giphy-api": "^2.0.1",

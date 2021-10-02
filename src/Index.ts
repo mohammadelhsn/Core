@@ -1,6 +1,5 @@
 import { registerCommands, registerEvents } from './Utils/Register';
 import { Intents, Message } from 'discord.js';
-import { Manager } from 'erela.js';
 import * as dotenv from 'dotenv';
 import DiscordClient from './Client/Client';
 const client = new DiscordClient({
@@ -24,22 +23,7 @@ dotenv.config();
 
 globalThis.client = client as DiscordClient;
 
-client.manager = new Manager({
-	nodes: [
-		{
-			port: parseInt(process.env.LAVALINK_PORT),
-			host: process.env.HOST,
-			password: process.env.PASSWORD,
-		},
-	],
-	send: (id, payload) => {
-		const guild = client.guilds.cache.get(id);
-		if (guild) guild.shard.send(payload);
-	},
-});
-
-client.on('raw', (d) => client.manager.updateVoiceState(d));
-
+// @ts-ignore
 Message.prototype.timeout = function (msg?: Message, timeout?: number) {
 	if (!timeout) timeout = 10000;
 

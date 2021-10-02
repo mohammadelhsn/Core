@@ -1,5 +1,4 @@
 import { Client, ClientOptions, Collection, Snowflake } from 'discord.js';
-import { Manager } from 'erela.js';
 import BaseEvent from '../Utils/Structures/BaseEvent';
 import BaseCommand from '../Utils/Structures/BaseCommand';
 import CachedGuild from '../Utils/Structures/CachedGuild';
@@ -19,7 +18,6 @@ export default class DiscordClient extends Client {
 	>();
 	private _version = '0.1';
 	private _updated_at = 'Tuesday May 18, 2021';
-	public manager: Manager;
 
 	constructor(options?: ClientOptions) {
 		super(options);

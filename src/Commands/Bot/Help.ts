@@ -48,7 +48,6 @@ export default class HelpCommand extends BaseCommand {
 					memes: `Memes [${commands['memes'].length}]`,
 					miscellaneous: `Miscellaneous [${commands['miscellaneous'].length}]`,
 					moderation: `Moderation [${commands['moderation'].length}]`,
-					music: `Moderation [${commands['music'].length}]`,
 					owner: `Owner [${commands['owner'].length}]`,
 					reaction_images: `Reaction images [${commands['reaction images'].length}]`,
 					server_utilities: `Server utilities [${commands['server utilities'].length}]`,
@@ -67,7 +66,6 @@ export default class HelpCommand extends BaseCommand {
 						.map((c) => `\`${c}\``)
 						.join(', '),
 					moderation: commands['moderation'].map((c) => `\`${c}\``).join(', '),
-					music: commands['music'].map((c) => `\`${c}\``).join(', '),
 					owner: commands['owner'].map((c) => `\`${c}\``).join(', '),
 					reaction_images: commands['reaction images']
 						.map((c) => `\`${c}\``)
@@ -336,30 +334,6 @@ export default class HelpCommand extends BaseCommand {
 						`${categories.titles.moderation}`,
 						`${categories.command.moderation}`
 					);
-				const music = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
-					.setTitle(
-						`Core help command | Command count: ${client.commands.size}`
-					)
-					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
-					)
-					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-					.setTimestamp()
-					.addField(
-						`${categories.titles.music}`,
-						`${categories.command.music}`
-					);
 				const oEmbed = new MessageEmbed()
 					.setAuthor(
 						client.user.username,
@@ -447,7 +421,6 @@ export default class HelpCommand extends BaseCommand {
 					meEmbed,
 					miEmbed,
 					moEmbed,
-					music,
 					oEmbed,
 					rEmbed,
 					suEmbed
@@ -501,18 +474,6 @@ export default class HelpCommand extends BaseCommand {
 						},
 					],
 				});
-				// const eEmbed = this.Embed.Base({
-				// 	iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				// 	text: this,
-				// 	title: `Core help command | Command count: ${client.commands.size}`,
-				// 	description: `\`<>\` is required \`()\` is optional`,
-				// 	fields: [
-				// 		{
-				// 			name: `${categories.titles.economy}`,
-				// 			value: `${categories.command.economy}`,
-				// 		},
-				// 	],
-				// });
 				const fEmbed = this.Embed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
@@ -537,54 +498,6 @@ export default class HelpCommand extends BaseCommand {
 						},
 					],
 				});
-				// const levelEmbed = this.Embed.Base({
-				// 	iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				// 	text: this,
-				// 	title: `Core help command | Command count: ${client.commands.size}`,
-				// 	description: `\`<>\` is required \`()\` is optional`,
-				// 	fields: [
-				// 		{
-				// 			name: `${categories.titles.levels}`,
-				// 			value: `${categories.command.levels}`,
-				// 		},
-				// 	],
-				// });
-				// const logEmbed = this.Embed.Base({
-				// 	iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				// 	text: this,
-				// 	title: `Core help command | Command count: ${client.commands.size}`,
-				// 	description: `\`<>\` is required \`()\` is optional`,
-				// 	fields: [
-				// 		{
-				// 			name: `${categories.titles.logging}`,
-				// 			value: `${categories.command.logging}`,
-				// 		},
-				// 	],
-				// });
-				// const mEmbed = this.Embed.Base({
-				// 	iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				// 	text: this,
-				// 	title: `Core help command | Command count: ${client.commands.size}`,
-				// 	description: `\`<>\` is required \`()\` is optional`,
-				// 	fields: [
-				// 		{
-				// 			name: `${categories.titles.manager}`,
-				// 			value: `${categories.command.manager}`,
-				// 		},
-				// 	],
-				// });
-				// const meEmbed = this.Embed.Base({
-				// 	iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				// 	text: this,
-				// 	title: `Core help command | Command count: ${client.commands.size}`,
-				// 	description: `\`<>\` is required \`()\` is optional`,
-				// 	fields: [
-				// 		{
-				// 			name: `${categories.titles.memes}`,
-				// 			value: `${categories.command.memes}`,
-				// 		},
-				// 	],
-				// });
 				const miEmbed = this.Embed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
@@ -597,18 +510,6 @@ export default class HelpCommand extends BaseCommand {
 						},
 					],
 				});
-				// const moEmbed = this.Embed.Base({
-				// 	iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				// 	text: this,
-				// 	title: `Core help command | Command count: ${client.commands.size}`,
-				// 	description: `\`<>\` is required \`()\` is optional`,
-				// 	fields: [
-				// 		{
-				// 			name: `${categories.titles.moderation}`,
-				// 			value: `${categories.command.moderation}`,
-				// 		},
-				// 	],
-				// });
 
 				const oEmbed = this.Embed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -659,15 +560,9 @@ export default class HelpCommand extends BaseCommand {
 					botEmbed,
 					cEmbed,
 					coEmbed,
-					//				eEmbed,
 					fEmbed,
 					fuEmbed,
-					//					levelEmbed,
-					//					logEmbed,
-					//					mEmbed,
-					//					meEmbed,
 					miEmbed,
-					//					moEmbed,
 					oEmbed,
 					rEmbed,
 					suEmbed
@@ -686,14 +581,13 @@ export default class HelpCommand extends BaseCommand {
 					error_message: "The command you mentioned doesn't exist!",
 				});
 				return message.channel.send(errorEmbed);
-			} 
+			}
 
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: command,
-				message: message
-			})
-
+				message: message,
+			});
 		}
 	}
 }
