@@ -22,9 +22,5 @@ export default class TesstCommand extends BaseCommand {
 			'working'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {
-		const msg = await message.channel.send({ content: 'This is a test' });
-		msg.timeout();
-		console.log(msg.content);
-	}
+	async run(client: DiscordClient, message: Message, args: string[]) {}
 }
