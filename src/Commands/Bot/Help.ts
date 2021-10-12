@@ -580,7 +580,7 @@ export default class HelpCommand extends BaseCommand {
 					text: this,
 					error_message: "The command you mentioned doesn't exist!",
 				});
-				return message.channel.send(errorEmbed);
+				return message.channel.send({ embeds: [errorEmbed] });
 			}
 
 			return await this.HelpEmbed.Base({
