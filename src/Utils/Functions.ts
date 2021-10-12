@@ -14,7 +14,6 @@ import {
 	PermissionResolvable,
 	ReactionCollectorOptions,
 } from 'discord.js';
-import pagination from 'discord.js-pagination';
 import CachedGuild from './Structures/CachedGuild';
 import Colours from '../../Colours.json';
 import Languages from '../../Languages.json';
@@ -159,12 +158,11 @@ namespace Functions {
 		con: Pool;
 		client: DiscordClient;
 		cache: Collection<Snowflake, CachedGuild>;
-		Pagination: Funcs.pagination;
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
 			this.cache = this.client.database;
-			this.Pagination = pagination;
+			this.Pagination = this.Pagination.bind(this);
 			this.Duration = this.Duration.bind(this);
 			this.Capitalize = this.Capitalize.bind(this);
 			this.Paginate = this.Paginate.bind(this);
@@ -186,6 +184,54 @@ namespace Functions {
 				2,
 				'0'
 			)} seconds`;
+		}
+		async Pagination(msg, pages, emojiList = ['⏪', '⏩'], timeout = 120000) {
+			// THIS IS NOT MY FUNCTION BUT I'VE UDPATED THE CODE BECAUSE IT BROKE IN DJS V13
+			// IF THE ORGINAL OWNER WOULD LIKE ME TO REMOVE THIS I CAN Contact me here: ProcessVersion#4472 
+
+			if (!msg && !msg.channel) throw new Error('Channel is inaccessible.');
+			if (!pages) throw new Error('Pages are not given.');
+			if (emojiList.length !== 2) throw new Error('Need two emojis.');
+			let page = 0;
+			const curPage = await msg.channel.send({
+				embeds: [pages[page].setFooter(`Page ${page + 1} / ${pages.length}`)],
+			});
+			for (const emoji of emojiList) await curPage.react(emoji);
+
+			const options = {
+				filter: (reaction, user) =>
+					emojiList.includes(reaction.emoji.name) && !user.bot,
+
+				time: timeout,
+			};
+
+			const reactionCollector = curPage.createReactionCollector(options);
+
+			reactionCollector.on('collect', (reaction, user) => {
+				reaction.users.remove(msg.author.id);
+
+				switch (reaction.emoji.name) {
+					case emojiList[0]:
+						page = page > 0 ? --page : pages.length - 1;
+						break;
+					case emojiList[1]:
+						page = page + 1 < pages.length ? ++page : 0;
+						break;
+					default:
+						break;
+				}
+
+				curPage.edit({
+					embeds: [pages[page].setFooter(`Page ${page + 1} / ${pages.length}`)],
+				});
+			});
+
+			reactionCollector.on('end', (_, reason) => {
+				if (!curPage.deleted) {
+					curPage.reactions.removeAll();
+				}
+			});
+			return curPage;
 		}
 		Paginate(
 			message: Message,
