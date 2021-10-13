@@ -1,6 +1,13 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, MessageFlags, Permissions } from 'discord.js';
+import {
+	Message,
+	MessageFlags,
+	Permissions,
+	Interaction,
+	CommandInteraction,
+	MessageEmbed,
+} from 'discord.js';
 
 export default class TesstCommand extends BaseCommand {
 	constructor() {
@@ -23,4 +30,14 @@ export default class TesstCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {}
+	async slash(interaction: CommandInteraction) {
+		await interaction.deferReply();
+		const embed = new MessageEmbed();
+		embed.setTitle('Hi');
+		embed.setColor(this.Colour.Set());
+
+		setTimeout(async () => {
+			await interaction.editReply({ embeds: [embed] });
+		}, 13 * 1000);
+	}
 }

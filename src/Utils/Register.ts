@@ -1,6 +1,7 @@
 import path from 'path';
 import { promises as fs } from 'fs';
 import DiscordClient from '../Client/Client';
+import BaseCommand from './Structures/BaseCommand';
 
 export async function registerCommands(
 	client: DiscordClient,
@@ -13,7 +14,7 @@ export async function registerCommands(
 		if (stat.isDirectory()) registerCommands(client, path.join(dir, file));
 		if (file.endsWith('.js') || file.endsWith('.ts')) {
 			const { default: Command } = await import(path.join(dir, file));
-			const command = new Command();
+			const command: BaseCommand = new Command();
 			client.commands.set(command.getName(), command);
 			command.getAliases().forEach((alias: string) => {
 				client.aliases.set(alias, command.getName());

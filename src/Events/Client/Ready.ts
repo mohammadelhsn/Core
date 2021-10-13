@@ -1,6 +1,9 @@
 import BaseEvent from '../../Utils/Structures/BaseEvent';
 import DiscordClient from '../../Client/Client';
 import Guild from '../../Utils/Structures/CachedGuild';
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { REST } from '@discordjs/rest';
+import { Routes } from 'discord-api-types/v9';
 
 export default class ReadyEvent extends BaseEvent {
 	constructor() {
@@ -15,6 +18,22 @@ export default class ReadyEvent extends BaseEvent {
 			activities: [{ name: status, type: 'WATCHING' }],
 			status: 'dnd',
 		});
+
+		// const commands = [
+		// 	new SlashCommandBuilder()
+		// 		.setName('tesst')
+		// 		.setDescription('This is just a test'),
+		// ].map((cmd) => cmd.toJSON());
+
+		// const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
+
+		// rest
+		// 	.put(
+		// 		Routes.applicationGuildCommands(client.user.id, '690975783363280918'),
+		// 		{ body: commands }
+		// 	)
+		// 	.then(() => console.log('Successfully registered application commands.'))
+		// 	.catch((err) => console.log(err));
 
 		for (const g of client.guilds.cache) {
 			const guildId = g[1].id;

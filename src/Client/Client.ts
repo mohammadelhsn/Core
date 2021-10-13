@@ -8,6 +8,7 @@ export default class DiscordClient extends Client {
 	private _events = new Collection<string, BaseEvent>();
 	private _aliases = new Collection<string, string>();
 	private _database = new Collection<Snowflake, CachedGuild>();
+	private _slashCommands = new Collection<string, BaseCommand>();
 	private _cooldown = new Collection<
 		Snowflake,
 		{ cmd: string; time: number }
@@ -37,6 +38,9 @@ export default class DiscordClient extends Client {
 	}
 	get cooldown(): Collection<Snowflake, { cmd: string; time: number }> {
 		return this._cooldown;
+	}
+	get slashCommands(): Collection<string, BaseCommand> {
+		return this._slashCommands;
 	}
 	get snipes(): Collection<
 		Snowflake,
