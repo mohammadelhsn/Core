@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, UserFlags } from 'discord.js';
+import { CommandInteraction, Message, UserFlags } from 'discord.js';
 
 export default class UserinfoCommand extends BaseCommand {
 	constructor() {
@@ -193,4 +193,5 @@ export default class UserinfoCommand extends BaseCommand {
 			return message.channel.send({ embeds: [embed] });
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

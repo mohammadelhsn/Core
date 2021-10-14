@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, AwaitMessagesOptions } from 'discord.js';
+import { Message, AwaitMessagesOptions, CommandInteraction } from 'discord.js';
 
 export default class LeavesCommand extends BaseCommand {
 	constructor() {
@@ -595,4 +595,5 @@ export default class LeavesCommand extends BaseCommand {
 			return this.Utils.Delete(msg);
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

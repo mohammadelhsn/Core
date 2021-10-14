@@ -1,6 +1,11 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, TextChannel, Permissions } from 'discord.js';
+import {
+	Message,
+	TextChannel,
+	Permissions,
+	CommandInteraction,
+} from 'discord.js';
 
 export default class ClearCommand extends BaseCommand {
 	constructor() {
@@ -128,4 +133,5 @@ export default class ClearCommand extends BaseCommand {
 			return this.Utils.Delete(msg);
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

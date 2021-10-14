@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, Util } from 'discord.js';
+import { CommandInteraction, Message, Util } from 'discord.js';
 import axios from 'axios';
 
 export default class LyricsCommand extends BaseCommand {
@@ -68,4 +68,5 @@ export default class LyricsCommand extends BaseCommand {
 			embeds: [songEmbed],
 		});
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

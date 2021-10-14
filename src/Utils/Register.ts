@@ -14,6 +14,8 @@ export async function registerCommands(
 		if (stat.isDirectory()) registerCommands(client, path.join(dir, file));
 		if (file.endsWith('.js') || file.endsWith('.ts')) {
 			const { default: Command } = await import(path.join(dir, file));
+			//			console.log(file);
+			//			console.log(Command);
 			const command: BaseCommand = new Command();
 			client.commands.set(command.getName(), command);
 			command.getAliases().forEach((alias: string) => {

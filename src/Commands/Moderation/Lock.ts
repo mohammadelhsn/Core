@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 
 export default class LockCommand extends BaseCommand {
 	constructor() {
@@ -23,4 +23,5 @@ export default class LockCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

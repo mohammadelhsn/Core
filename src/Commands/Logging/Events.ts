@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, Permissions } from 'discord.js';
+import { CommandInteraction, Message, Permissions } from 'discord.js';
 
 export default class EventsCommand extends BaseCommand {
 	constructor() {
@@ -30,12 +30,16 @@ export default class EventsCommand extends BaseCommand {
 		const todo = args.slice(0, 2).join(' ');
 		const mention = message.mentions.channels.first();
 
-		if (!message.member.permissions.has([Permissions.FLAGS.MANAGE_GUILD || Permissions.FLAGS.ADMINISTRATOR])) {
+		if (
+			!message.member.permissions.has([
+				Permissions.FLAGS.MANAGE_GUILD || Permissions.FLAGS.ADMINISTRATOR,
+			])
+		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				id: message.guild.id,
-				perms: ["MANAGE_GUILD", "ADMINISTRATOR"]
+				perms: ['MANAGE_GUILD', 'ADMINISTRATOR'],
 			});
 
 			const msg = await message.channel.send({ embeds: [embed] });
@@ -412,7 +416,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -503,7 +507,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -594,7 +598,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -685,7 +689,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -776,7 +780,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -867,7 +871,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -958,7 +962,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -1049,7 +1053,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -1140,7 +1144,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -1231,7 +1235,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -1322,7 +1326,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -1413,7 +1417,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -1504,7 +1508,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -1595,7 +1599,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -1686,7 +1690,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -1777,7 +1781,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -1868,7 +1872,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -1959,7 +1963,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -2050,7 +2054,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -2141,7 +2145,7 @@ export default class EventsCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				try {
@@ -2358,4 +2362,5 @@ export default class EventsCommand extends BaseCommand {
 			command: this,
 		});
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

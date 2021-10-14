@@ -1,6 +1,11 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { AwaitMessagesOptions, Message, MessageAttachment } from 'discord.js';
+import {
+	AwaitMessagesOptions,
+	CommandInteraction,
+	Message,
+	MessageAttachment,
+} from 'discord.js';
 import { Wanted } from 'discord-image-generation';
 
 export default class WantedCommand extends BaseCommand {
@@ -90,7 +95,7 @@ export default class WantedCommand extends BaseCommand {
 					error_message: 'You must specifiy a currency',
 				});
 
-				const msg = await message.channel.send({ embeds: [errorEmbed]});
+				const msg = await message.channel.send({ embeds: [errorEmbed] });
 				return this.Utils.Delete(msg);
 			}
 
@@ -147,9 +152,7 @@ export default class WantedCommand extends BaseCommand {
 		});
 		await message.channel.send({ embeds: [tEmbed] });
 
-		const firstColl = await message.channel.awaitMessages(
-			options
-		);
+		const firstColl = await message.channel.awaitMessages(options);
 
 		if (firstColl.size > 0) {
 			if (firstColl.first().attachments.size <= 0) {
@@ -173,9 +176,7 @@ export default class WantedCommand extends BaseCommand {
 
 			await message.channel.send({ embeds: [dEmbed] });
 
-			const secondColl = await message.channel.awaitMessages(
-				options
-			);
+			const secondColl = await message.channel.awaitMessages(options);
 
 			if (secondColl.size > 0) {
 				const attach2 = secondColl.first().content;
@@ -222,4 +223,5 @@ export default class WantedCommand extends BaseCommand {
 			return this.Utils.Delete(msg);
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

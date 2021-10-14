@@ -1,6 +1,11 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { AwaitMessagesOptions, Message, MessageAttachment } from 'discord.js';
+import {
+	AwaitMessagesOptions,
+	CommandInteraction,
+	Message,
+	MessageAttachment,
+} from 'discord.js';
 import { Kiss } from 'discord-image-generation';
 
 export default class KissCommand extends BaseCommand {
@@ -262,4 +267,5 @@ export default class KissCommand extends BaseCommand {
 			}
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

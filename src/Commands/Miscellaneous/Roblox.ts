@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 import API from '@processversion/api-wrapper';
 
 export default class RobloxCommand extends BaseCommand {
@@ -78,4 +78,5 @@ export default class RobloxCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

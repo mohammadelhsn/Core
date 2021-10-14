@@ -1,6 +1,11 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, TextChannel, Permissions } from 'discord.js';
+import {
+	Message,
+	TextChannel,
+	Permissions,
+	CommandInteraction,
+} from 'discord.js';
 import moment from 'moment';
 
 export default class CaseCommand extends BaseCommand {
@@ -314,4 +319,5 @@ export default class CaseCommand extends BaseCommand {
 
 		return message.channel.send({ embeds: [embed] });
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

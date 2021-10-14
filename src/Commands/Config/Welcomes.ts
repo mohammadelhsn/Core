@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, AwaitMessagesOptions } from 'discord.js';
+import { Message, AwaitMessagesOptions, CommandInteraction } from 'discord.js';
 
 export default class WelcomeCommand extends BaseCommand {
 	constructor() {
@@ -101,9 +101,7 @@ export default class WelcomeCommand extends BaseCommand {
 
 			await message.channel.send({ embeds: [tEmbed] });
 
-			const firstColl = await message.channel.awaitMessages(
-				options
-			);
+			const firstColl = await message.channel.awaitMessages(options);
 
 			if (firstColl.size == 0 || !firstColl.first().content) timedOut = true;
 
@@ -153,9 +151,7 @@ export default class WelcomeCommand extends BaseCommand {
 
 			await message.channel.send({ embeds: [mEmbed] });
 
-			const secondColl = await message.channel.awaitMessages(
-				options
-			);
+			const secondColl = await message.channel.awaitMessages(options);
 
 			if (secondColl.size == 0 || !secondColl.first().content) timedOut = true;
 
@@ -186,9 +182,7 @@ export default class WelcomeCommand extends BaseCommand {
 
 			await message.channel.send({ embeds: [cEmbed] });
 
-			const thirdColl = await message.channel.awaitMessages(
-				options
-			);
+			const thirdColl = await message.channel.awaitMessages(options);
 
 			if (thirdColl.size == 0 || !thirdColl.first().content) timedOut = true;
 
@@ -331,9 +325,7 @@ export default class WelcomeCommand extends BaseCommand {
 
 				await message.channel.send({ embeds: [tEmbed] });
 
-				const firstColl = await message.channel.awaitMessages(
-					options
-				);
+				const firstColl = await message.channel.awaitMessages(options);
 
 				if (firstColl.size == 0 || !firstColl.first().content) timedOut = true;
 
@@ -348,7 +340,7 @@ export default class WelcomeCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				if (
@@ -365,7 +357,7 @@ export default class WelcomeCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				if (timedOut == false) data.data.media = media;
@@ -379,7 +371,7 @@ export default class WelcomeCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				const con = await this.con.connect();
@@ -416,7 +408,7 @@ export default class WelcomeCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				let timedOut = false;
@@ -438,9 +430,7 @@ export default class WelcomeCommand extends BaseCommand {
 
 				await message.channel.send({ embeds: [cEmbed] });
 
-				const firstColl = await message.channel.awaitMessages(
-					options
-				);
+				const firstColl = await message.channel.awaitMessages(options);
 
 				if (firstColl.size == 0 || !firstColl.first().content) timedOut = true;
 
@@ -455,7 +445,7 @@ export default class WelcomeCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				if (timedOut == false) {
@@ -492,7 +482,7 @@ export default class WelcomeCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 				const embed = await this.SuccessEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -514,7 +504,7 @@ export default class WelcomeCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				let timedOut = false;
@@ -540,9 +530,7 @@ export default class WelcomeCommand extends BaseCommand {
 
 				await message.channel.send({ embeds: [mEmbed] });
 
-				const firstColl = await message.channel.awaitMessages(
-					options
-				);
+				const firstColl = await message.channel.awaitMessages(options);
 
 				if (firstColl.size == 0 || !firstColl.first().content) timedOut = true;
 
@@ -557,7 +545,7 @@ export default class WelcomeCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				if (timedOut == false) {
@@ -587,7 +575,7 @@ export default class WelcomeCommand extends BaseCommand {
 					});
 
 					const msg = await message.channel.send({ embeds: [embed] });
-					return this.Utils.Delete(msg)
+					return this.Utils.Delete(msg);
 				}
 
 				const embed = await this.SuccessEmbed.Base({
@@ -606,7 +594,8 @@ export default class WelcomeCommand extends BaseCommand {
 			});
 
 			const msg = await message.channel.send({ embeds: [embed] });
-			return this.Utils.Delete(msg)
+			return this.Utils.Delete(msg);
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

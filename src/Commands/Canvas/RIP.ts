@@ -1,6 +1,11 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { AwaitMessagesOptions, Message, MessageAttachment } from 'discord.js';
+import {
+	AwaitMessagesOptions,
+	CommandInteraction,
+	Message,
+	MessageAttachment,
+} from 'discord.js';
 import { Rip } from 'discord-image-generation';
 
 export default class RIPCommand extends BaseCommand {
@@ -154,9 +159,7 @@ export default class RIPCommand extends BaseCommand {
 		});
 		await message.channel.send({ embeds: [tEmbed] });
 
-		const firstColl = await message.channel.awaitMessages(
-			options
-		);
+		const firstColl = await message.channel.awaitMessages(options);
 
 		if (firstColl.size > 0) {
 			if (firstColl.first()?.content == 'cancel') {
@@ -204,4 +207,5 @@ export default class RIPCommand extends BaseCommand {
 			return this.Utils.Delete(msg);
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

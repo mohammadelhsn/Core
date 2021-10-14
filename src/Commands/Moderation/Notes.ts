@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, Permissions } from 'discord.js';
+import { CommandInteraction, Message, Permissions } from 'discord.js';
 
 export default class NotesCommand extends BaseCommand {
 	constructor() {
@@ -160,4 +160,5 @@ export default class NotesCommand extends BaseCommand {
 			timeout: 600000,
 		});
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

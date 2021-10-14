@@ -1,6 +1,11 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, TextChannel, Permissions } from 'discord.js';
+import {
+	Message,
+	TextChannel,
+	Permissions,
+	CommandInteraction,
+} from 'discord.js';
 
 export default class KickCommand extends BaseCommand {
 	constructor() {
@@ -206,4 +211,5 @@ export default class KickCommand extends BaseCommand {
 		);
 		return;
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 import Giphy from 'giphy-api';
 
 export default class GiphyCommand extends BaseCommand {
@@ -163,4 +163,5 @@ export default class GiphyCommand extends BaseCommand {
 			}
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

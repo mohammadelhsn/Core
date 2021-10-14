@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, MessageAttachment } from 'discord.js';
+import { CommandInteraction, Message, MessageAttachment } from 'discord.js';
 
 export default class ClydeCommand extends BaseCommand {
 	constructor() {
@@ -77,4 +77,5 @@ export default class ClydeCommand extends BaseCommand {
 			return m.delete();
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

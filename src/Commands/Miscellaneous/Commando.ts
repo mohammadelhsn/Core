@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { AwaitReactionsOptions, Message } from 'discord.js';
+import { AwaitReactionsOptions, CommandInteraction, Message } from 'discord.js';
 import axios from 'axios';
 
 export default class CommandoCommand extends BaseCommand {
@@ -78,4 +78,5 @@ export default class CommandoCommand extends BaseCommand {
 
 		if (react && react.first()) msg.delete();
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

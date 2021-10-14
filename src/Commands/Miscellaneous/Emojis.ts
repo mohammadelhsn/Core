@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 import axios from 'axios';
 
 export default class EmojisCommand extends BaseCommand {
@@ -170,4 +170,5 @@ export default class EmojisCommand extends BaseCommand {
 			}
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

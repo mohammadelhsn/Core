@@ -1,6 +1,11 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, MessageCollectorOptions, MessageEmbed } from 'discord.js';
+import {
+	CommandInteraction,
+	Message,
+	MessageCollectorOptions,
+	MessageEmbed,
+} from 'discord.js';
 import axios from 'axios';
 import moment from 'moment';
 import { cpuUsage } from 'process';
@@ -854,4 +859,5 @@ export default class CovidCommand extends BaseCommand {
 			return this.Utils.Delete(msg);
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

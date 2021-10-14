@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 import fun from 'fun-responses';
 
 export default class PickupCommand extends BaseCommand {
@@ -68,4 +68,5 @@ export default class PickupCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

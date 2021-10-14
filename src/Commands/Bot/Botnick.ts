@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, Permissions } from 'discord.js';
+import { CommandInteraction, Message, Permissions } from 'discord.js';
 
 export default class BotnickCommand extends BaseCommand {
 	constructor() {
@@ -90,4 +90,5 @@ export default class BotnickCommand extends BaseCommand {
 			return message.channel.send({ embeds: [embed] });
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

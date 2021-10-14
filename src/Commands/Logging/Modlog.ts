@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, Permissions } from 'discord.js';
+import { CommandInteraction, Message, Permissions } from 'discord.js';
 
 export default class ModlogCommand extends BaseCommand {
 	constructor() {
@@ -23,7 +23,11 @@ export default class ModlogCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		if (!message.member.permissions.has([Permissions.FLAGS.MANAGE_GUILD || Permissions.FLAGS.ADMINISTRATOR])) {
+		if (
+			!message.member.permissions.has([
+				Permissions.FLAGS.MANAGE_GUILD || Permissions.FLAGS.ADMINISTRATOR,
+			])
+		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				id: message.guild.id,
@@ -72,7 +76,7 @@ export default class ModlogCommand extends BaseCommand {
 				});
 
 				const msg = await message.channel.send({ embeds: [embed] });
-				return this.Utils.Delete(msg)
+				return this.Utils.Delete(msg);
 			}
 
 			if (modlog != null) {
@@ -85,7 +89,7 @@ export default class ModlogCommand extends BaseCommand {
 				});
 
 				const msg = await message.channel.send({ embeds: [embed] });
-				return this.Utils.Delete(msg)
+				return this.Utils.Delete(msg);
 			}
 
 			const con = await this.con.connect();
@@ -145,7 +149,7 @@ export default class ModlogCommand extends BaseCommand {
 				});
 
 				const msg = await message.channel.send({ embeds: [embed] });
-				return this.Utils.Delete(msg)
+				return this.Utils.Delete(msg);
 			}
 
 			const con = await this.con.connect();
@@ -205,7 +209,7 @@ export default class ModlogCommand extends BaseCommand {
 				});
 
 				const msg = await message.channel.send({ embeds: [embed] });
-				return this.Utils.Delete(msg)
+				return this.Utils.Delete(msg);
 			}
 			const mention = message.mentions.channels.first();
 
@@ -218,7 +222,7 @@ export default class ModlogCommand extends BaseCommand {
 				});
 
 				const msg = await message.channel.send({ embeds: [embed] });
-				return this.Utils.Delete(msg)
+				return this.Utils.Delete(msg);
 			}
 
 			const con = await this.con.connect();
@@ -274,4 +278,5 @@ export default class ModlogCommand extends BaseCommand {
 			command: this,
 		});
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

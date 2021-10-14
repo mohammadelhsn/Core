@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 
 export default class FoxgirlCommand extends BaseCommand {
 	constructor() {
@@ -78,4 +78,5 @@ export default class FoxgirlCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errorEmbed] });
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

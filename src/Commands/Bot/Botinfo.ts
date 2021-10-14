@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import discord, { Message } from 'discord.js';
+import discord, { Message, CommandInteraction } from 'discord.js';
 
 export default class BotinfoCommand extends BaseCommand {
 	constructor() {
@@ -91,4 +91,5 @@ export default class BotinfoCommand extends BaseCommand {
 			con.release();
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

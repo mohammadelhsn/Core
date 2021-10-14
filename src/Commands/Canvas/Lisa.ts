@@ -1,6 +1,11 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { AwaitMessagesOptions, Message, MessageAttachment } from 'discord.js';
+import {
+	AwaitMessagesOptions,
+	CommandInteraction,
+	Message,
+	MessageAttachment,
+} from 'discord.js';
 import { LisaPresentation } from 'discord-image-generation';
 
 export default class LisaCommand extends BaseCommand {
@@ -116,4 +121,5 @@ export default class LisaCommand extends BaseCommand {
 			return this.Utils.Delete(msg);
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

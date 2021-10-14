@@ -1,6 +1,10 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, MessageCollectorOptions } from 'discord.js';
+import {
+	CommandInteraction,
+	Message,
+	MessageCollectorOptions,
+} from 'discord.js';
 import { find } from 'weather-js';
 
 export default class WeatherCommand extends BaseCommand {
@@ -168,4 +172,5 @@ export default class WeatherCommand extends BaseCommand {
 			}
 		});
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

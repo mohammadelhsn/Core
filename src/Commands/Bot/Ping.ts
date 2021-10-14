@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 
 export default class PingCommand extends BaseCommand {
 	constructor() {
@@ -55,4 +55,5 @@ export default class PingCommand extends BaseCommand {
 
 		return m.edit({ embeds: [newEmbed] });
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

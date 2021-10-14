@@ -1,6 +1,11 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { HexColorString, Message, UserFlags } from 'discord.js';
+import {
+	CommandInteraction,
+	HexColorString,
+	Message,
+	UserFlags,
+} from 'discord.js';
 
 export default class RoleinfoCommand extends BaseCommand {
 	constructor() {
@@ -64,4 +69,5 @@ export default class RoleinfoCommand extends BaseCommand {
 			message: message,
 		});
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

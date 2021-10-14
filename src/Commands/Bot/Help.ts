@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, MessageEmbed } from 'discord.js';
+import { CommandInteraction, Message, MessageEmbed } from 'discord.js';
 
 export default class HelpCommand extends BaseCommand {
 	constructor() {
@@ -590,4 +590,5 @@ export default class HelpCommand extends BaseCommand {
 			});
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

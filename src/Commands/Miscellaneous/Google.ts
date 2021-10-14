@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 import axios from 'axios';
 
 export default class GoogleCommand extends BaseCommand {
@@ -80,4 +80,5 @@ export default class GoogleCommand extends BaseCommand {
 			return data.items[0];
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

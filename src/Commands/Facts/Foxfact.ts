@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 
 export default class FoxfactCommand extends BaseCommand {
 	constructor() {
@@ -66,4 +66,5 @@ export default class FoxfactCommand extends BaseCommand {
 			}
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

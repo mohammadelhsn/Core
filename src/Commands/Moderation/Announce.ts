@@ -6,6 +6,7 @@ import {
 	TextChannel,
 	Permissions,
 	AwaitMessagesOptions,
+	CommandInteraction,
 } from 'discord.js';
 
 export default class AnnounceCommand extends BaseCommand {
@@ -134,4 +135,5 @@ export default class AnnounceCommand extends BaseCommand {
 			return this.Utils.Delete(msg);
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

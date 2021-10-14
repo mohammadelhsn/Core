@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 
 export default class UptimeCommand extends BaseCommand {
 	constructor() {
@@ -40,4 +40,5 @@ export default class UptimeCommand extends BaseCommand {
 		});
 		return message.channel.send({ embeds: [uptimeEmbed] });
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

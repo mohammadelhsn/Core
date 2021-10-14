@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, Permissions } from 'discord.js';
+import { CommandInteraction, Message, Permissions } from 'discord.js';
 import iso from 'iso-639-1';
 
 export default class LanguageCommand extends BaseCommand {
@@ -85,4 +85,5 @@ export default class LanguageCommand extends BaseCommand {
 			con.release();
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

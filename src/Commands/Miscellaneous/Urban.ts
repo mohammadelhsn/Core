@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 import urban from 'urban';
 
 export default class UrbanCommand extends BaseCommand {
@@ -98,4 +98,5 @@ export default class UrbanCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errorEmbed] });
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

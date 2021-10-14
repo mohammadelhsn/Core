@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, Permissions } from 'discord.js';
+import { CommandInteraction, Message, Permissions } from 'discord.js';
 
 export default class PublicModlogCommand extends BaseCommand {
 	constructor() {
@@ -286,4 +286,5 @@ export default class PublicModlogCommand extends BaseCommand {
 			command: this,
 		});
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }
