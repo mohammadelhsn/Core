@@ -73,5 +73,5 @@ export default class AlpacaCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
-	async slash(interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { Message, CommandInteraction } from 'discord.js';
 
 export default class SealCommand extends BaseCommand {
 	constructor() {
@@ -73,4 +73,5 @@ export default class SealCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }
