@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 
 export default class AlpacaCommand extends BaseCommand {
 	constructor() {
@@ -73,4 +73,5 @@ export default class AlpacaCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
+	async slash(interaction: CommandInteraction) {}
 }

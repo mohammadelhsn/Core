@@ -13,6 +13,12 @@ import {
 	Permissions,
 	PermissionResolvable,
 	ReactionCollectorOptions,
+	PresenceStatus,
+	UserFlags,
+	Channel,
+	GuildChannel,
+	ThreadChannel,
+	TextBasedChannels,
 } from 'discord.js';
 import CachedGuild from './Structures/CachedGuild';
 import Colours from '../../Colours.json';
@@ -22,6 +28,11 @@ import CachedGuildTypes from './Structures/Interfaces/CachedGuild';
 import Emojis from '../../Emojis.json';
 import Schemas from './Schemas';
 import moment from 'moment';
+import { ChannelTypes } from 'discord.js/typings/enums';
+import {
+	APIInteractionDataResolvedChannel,
+	ChannelType,
+} from 'discord-api-types';
 
 namespace Functions {
 	export class Colour {
@@ -158,6 +169,7 @@ namespace Functions {
 		con: Pool;
 		client: DiscordClient;
 		cache: Collection<Snowflake, CachedGuild>;
+		Emojis = Emojis;
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -187,7 +199,7 @@ namespace Functions {
 		}
 		async Pagination(msg, pages, emojiList = ['⏪', '⏩'], timeout = 120000) {
 			// THIS IS NOT MY FUNCTION BUT I'VE UDPATED THE CODE BECAUSE IT BROKE IN DJS V13
-			// IF THE ORGINAL OWNER WOULD LIKE ME TO REMOVE THIS I CAN Contact me here: ProcessVersion#4472 
+			// IF THE ORGINAL OWNER WOULD LIKE ME TO REMOVE THIS I CAN Contact me here: ProcessVersion#4472
 
 			if (!msg && !msg.channel) throw new Error('Channel is inaccessible.');
 			if (!pages) throw new Error('Pages are not given.');
@@ -308,30 +320,67 @@ namespace Functions {
 
 			return newPermissions;
 		}
-		// async TestPaginate(msg: Message, pages: MessageEmbed[], emojiList: string[] = ['⏪', '⏩'], timeout: number = 120000) {
-		// 	if (!msg && !msg.channel) throw new Error("No provided message")
-		// 	if (!pages) throw new Error("No provided pages")
-		// 	if (!emojiList) throw new Error("No provided emoji list")
+		StatusEmoji(status: PresenceStatus) {
+			if (status == 'dnd') return this.Emojis.dnd_emoji;
+			if (status == 'idle') return this.Emojis.idle_emoji;
+			if (status == 'online') return this.Emojis.online_emoji;
+			return this.Emojis.offline_emoji;
+		}
+		StatusText(status: PresenceStatus) {
+			if (status == 'dnd') return 'DND';
+			if (status == 'idle') return 'Idle';
+			if (status == 'online') return 'Online';
+			return 'Offline / Invisible';
+		}
+		ToCodeBlock(string: string) {
+			return `\`${string}\``;
+		}
+		GetFlags(uFlags: Readonly<UserFlags> | UserFlags) {
+			const userflag = {
+				DISCORD_EMPLOYEE: this.Emojis.discord_staff,
+				DISCORD_PARTNER: this.Emojis.discord_partner,
+				BUGHUNTER_LEVEL_1: this.Emojis.bug_hunter,
+				BUGHUNTER_LEVEL_2: this.Emojis.bug_hunter_2,
+				HYPESQUAD_EVENTS: this.Emojis.hypesquad_events,
+				HOUSE_BRAVERY: this.Emojis.hypesquad_bravery,
+				HOUSE_BRILLIANCE: this.Emojis.hypesquad_brilliance,
+				HOUSE_BALANCE: this.Emojis.hypesquad_balance,
+				EARLY_SUPPORTER: this.Emojis.earlysupporter,
+				TEAM_USER: 'Team User',
+				SYSTEM: this.Emojis.system,
+				VERIFIED_BOT: this.Emojis.bot_emoji,
+				VERIFIED_DEVELOPER: this.Emojis.discord_bot_dev,
+			};
 
-		// 	let page = 0;
-
-		// 	const currentPage = await msg.channel.send({ embeds: [pages[page].setFooter(`Page ${page + 1} / ${pages.length}`)]})
-
-		// 	for (const emoji of emojiList) await currentPage.react(emoji);
-
-		// 	const options: ReactionCollectorOptions = {
-		// 		filter: (reaction, user) => emojiList.includes(reaction.emoji.name) && !user.bot,
-		// 		time: timeout,
-		// 	}
-
-		// 	const reactionCollector = currentPage.createReactionCollector(options);
-
-		// 	reactionCollector.on('collect', (reaction) => {
-		// 		reaction.users.remove(msg.author)
-		// 		if (reaction.emoji.name == emojiList[0]) {
-		// 			page = page = page > 0 ? --page : pages.length - 1;
-		// 		}
-		// 	})
+			if (uFlags !== null) {
+				const flags = new UserFlags(uFlags);
+				const flag = flags.toArray();
+				return `${
+					flag.length > 0 ? flag.map((f) => userflag[f]).join(' ') : 'N/A'
+				}`;
+			}
+		}
+		ChannelType(
+			channel:
+				| Channel
+				| GuildChannel
+				| APIInteractionDataResolvedChannel
+				| ThreadChannel
+				| TextBasedChannels
+		) {
+			if (channel.type == 'DM') return 'DM';
+			if (channel.type == 'GROUP_DM') return 'Group DM';
+			if (channel.type == 'GUILD_CATEGORY') return 'Category';
+			if (channel.type == 'GUILD_NEWS') return 'News';
+			if (channel.type == 'GUILD_NEWS_THREAD') return 'News thread';
+			if (channel.type == 'GUILD_PRIVATE_THREAD') return 'Private thread';
+			if (channel.type == 'GUILD_PUBLIC_THREAD') return 'Public thread';
+			if (channel.type == 'GUILD_STAGE_VOICE') return 'Stage channel';
+			if (channel.type == 'GUILD_STORE') return 'Store channel';
+			if (channel.type == 'GUILD_TEXT') return 'Text';
+			if (channel.type == 'GUILD_VOICE') return 'Voice';
+			return 'Unknown';
+		}
 	}
 
 	export class Channels {

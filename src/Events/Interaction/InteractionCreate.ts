@@ -10,7 +10,7 @@ export default class Event extends BaseEvent {
 		if (interaction.isCommand()) {
 			const command = client.commands.get(interaction.commandName);
 			// @ts-ignore
-			await command.slash(interaction);
+			await command.slash(client, interaction);
 		}
 	}
 }

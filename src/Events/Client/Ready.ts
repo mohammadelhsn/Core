@@ -21,8 +21,60 @@ export default class ReadyEvent extends BaseEvent {
 
 		// const commands = [
 		// 	new SlashCommandBuilder()
-		// 		.setName('tesst')
-		// 		.setDescription('This is just a test'),
+		// 		.setName('cool')
+		// 		.setDescription('This is just a test')
+		// 		.addStringOption((option) =>
+		// 			option
+		// 				.setName('test')
+		// 				.setDescription('Cool description')
+		// 				.addChoice('Funny', 'gif_funny')
+		// 				.addChoice('Meme', 'gif_meme')
+		// 				.addChoice('Movie', 'gif_movie')
+		// 		),
+
+		// 	new SlashCommandBuilder()
+		// 		.setName('info')
+		// 		.setDescription(
+		// 			'Get the information on a server, user, channel or role'
+		// 		)
+		// 		.addSubcommand((sub) =>
+		// 			sub
+		// 				.setName('user')
+		// 				.setDescription('Info about a user')
+		// 				.addUserOption((opt) =>
+		// 					opt
+		// 						.setName('user')
+		// 						.setDescription('The user you want to get info on')
+		// 						.setRequired(false)
+		// 				)
+		// 		)
+		// 		.addSubcommand((sub) =>
+		// 			sub
+		// 				.setName('server')
+		// 				.setDescription('Get information on the current server')
+		// 		)
+		// 		.addSubcommand((sub) =>
+		// 			sub
+		// 				.setName('role')
+		// 				.setDescription('Information about a role')
+		// 				.addRoleOption((role) =>
+		// 					role
+		// 						.setName('role')
+		// 						.setDescription('Role you want info about')
+		// 						.setRequired(true)
+		// 				)
+		// 		)
+		// 		.addSubcommand((sub) =>
+		// 			sub
+		// 				.setName('channel')
+		// 				.setDescription('Get information on a channel')
+		// 				.addChannelOption((chnl) =>
+		// 					chnl
+		// 						.setName('channel')
+		// 						.setDescription('The channel you want information about')
+		// 						.setRequired(false)
+		// 				)
+		// 		),
 		// ].map((cmd) => cmd.toJSON());
 
 		// const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
