@@ -19,6 +19,7 @@ import {
 	GuildChannel,
 	ThreadChannel,
 	TextBasedChannels,
+	PermissionString
 } from 'discord.js';
 import CachedGuild from './Structures/CachedGuild';
 import Colours from '../../Colours.json';
@@ -198,8 +199,8 @@ namespace Functions {
 			)} seconds`;
 		}
 		async Pagination(msg, pages, emojiList = ['⏪', '⏩'], timeout = 120000) {
-			// THIS IS NOT MY FUNCTION BUT I'VE UDPATED THE CODE BECAUSE IT BROKE IN DJS V13
-			// IF THE ORGINAL OWNER WOULD LIKE ME TO REMOVE THIS I CAN Contact me here: ProcessVersion#4472
+			// THIS IS NOT MY FUNCTION BUT I'VE UPDATED THE CODE BECAUSE IT BROKE IN DJS V13
+			// IF THE ORIGINAL OWNER WOULD LIKE ME TO REMOVE THIS I CAN Contact me here: ProcessVersion#4472
 
 			if (!msg && !msg.channel) throw new Error('Channel is inaccessible.');
 			if (!pages) throw new Error('Pages are not given.');
@@ -310,11 +311,11 @@ namespace Functions {
 				message.delete().catch((err) => console.log(err));
 			}, timeout);
 		}
-		ResolvePermission(permissions: PermissionResolvable[]): bigint[] {
-			const newPermissions = [];
+		ResolvePermission(...permissions: PermissionString[]): bigint[] {
+			const newPermissions: bigint[] = [];
 
 			for (const perm of permissions) {
-				const permission = Permissions.FLAGS[perm as string];
+				const permission = Permissions.FLAGS[perm];
 				newPermissions.push(permission);
 			}
 
