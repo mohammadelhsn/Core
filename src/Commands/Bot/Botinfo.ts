@@ -54,7 +54,7 @@ export default class BotinfoCommand extends BaseCommand {
 				return await this.HelpEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					command: this,
-					event: { message: message },
+					accessor: message,
 				});
 			}
 
@@ -81,8 +81,7 @@ export default class BotinfoCommand extends BaseCommand {
 			return message.channel.send({ embeds: [embed] });
 		} catch (error) {
 			const embed = await this.ErrorEmbed.UnexpectedError({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
+				accessor: message,
 				text: this,
 			});
 

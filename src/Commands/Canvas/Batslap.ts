@@ -32,8 +32,7 @@ export default class BatslapCommand extends BaseCommand {
 		const guild = client.database.get(message.guild.id);
 
 		const gEmbed = await this.GeneratingEmbed.DiscordIG({
-			iconURL: message.author.displayAvatarURL({ dynamic: true }),
-			id: message.guild.id,
+			accessor: message,
 			text: this,
 		});
 
@@ -111,7 +110,7 @@ export default class BatslapCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { message: message },
+				accessor: message,
 			});
 		}
 

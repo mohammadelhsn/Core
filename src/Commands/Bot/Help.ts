@@ -408,7 +408,7 @@ export default class HelpCommand extends BaseCommand {
 					);
 
 				return this.Utils.Paginate(
-					{ message: message },
+					{ accessor: message },
 					awwEmbed,
 					botEmbed,
 					cEmbed,
@@ -553,7 +553,7 @@ export default class HelpCommand extends BaseCommand {
 					.setColor(this.Colour.Set());
 
 				return this.Utils.Paginate(
-					{ message: message },
+					{ accessor: message },
 					awwEmbed,
 					botEmbed,
 					cEmbed,
@@ -573,8 +573,7 @@ export default class HelpCommand extends BaseCommand {
 
 			if (!command) {
 				const errorEmbed = await this.ErrorEmbed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					id: message.guild.id,
+					accessor: message,
 					text: this,
 					error_message: "The command you mentioned doesn't exist!",
 				});
@@ -584,7 +583,7 @@ export default class HelpCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: command,
-				event: { message: message },
+				accessor: message,
 			});
 		}
 	}

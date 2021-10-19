@@ -29,13 +29,12 @@ export default class ShibeCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { message: message },
+				accessor: message,
 			});
 		}
 
 		const generatingEmbed = await this.GeneratingEmbed.Base({
-			iconURL: message.author.displayAvatarURL({ dynamic: true }),
-			id: message.guild.id,
+			accessor: message,
 			text: this,
 			provider: 'Shibe Online API',
 		});
@@ -48,8 +47,7 @@ export default class ShibeCommand extends BaseCommand {
 				m.delete();
 
 				const errEmbed = await this.ErrorEmbed.ApiError({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					id: message.guild.id,
+					accessor: message,
 					text: this,
 				});
 				const msg = await message.channel.send({ embeds: [errEmbed] });
@@ -57,7 +55,7 @@ export default class ShibeCommand extends BaseCommand {
 			}
 
 			const embed = await this.ImageEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
 				title: 'Shibe command',
 				description: `${this.Utils.Capitalize(
@@ -71,8 +69,7 @@ export default class ShibeCommand extends BaseCommand {
 			m.delete();
 
 			const errEmbed = await this.ErrorEmbed.UnexpectedError({
-				id: message.guild.id,
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
 			});
 			return message.channel.send({ embeds: [errEmbed] });
@@ -87,14 +84,13 @@ export default class ShibeCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { interaction: interaction },
+				accessor: interaction,
 			});
 		}
 
 		const generatingEmbed = await this.GeneratingEmbed.Base({
-			iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+			accessor: interaction,
 			text: this,
-			id: interaction.guild.id,
 			provider: 'Shibe Online API',
 		});
 
@@ -104,7 +100,7 @@ export default class ShibeCommand extends BaseCommand {
 			const res = await this.Animals.Shibe();
 
 			const embed = await this.ImageEmbed.Base({
-				iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+				accessor: interaction,
 				text: this,
 				title: 'Shibe command',
 				description: `${this.Utils.Capitalize(
@@ -118,8 +114,7 @@ export default class ShibeCommand extends BaseCommand {
 			console.log(error);
 
 			const errEmbed = await this.ErrorEmbed.UnexpectedError({
-				id: interaction.guild.id,
-				iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+				accessor: interaction,
 				text: this,
 			});
 			return interaction.editReply({ embeds: [errEmbed] });

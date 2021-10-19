@@ -75,7 +75,7 @@ export default class AdCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { message: message },
+				accessor: message,
 			});
 		}
 		if (args[0] && args[0].toLowerCase().includes('me')) {
@@ -87,7 +87,7 @@ export default class AdCommand extends BaseCommand {
 				const file = new MessageAttachment(image, 'ad.png');
 
 				const embed = await this.ImageEmbed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					accessor: message,
 					text: this,
 					title: 'Ad command',
 					description: guild.Strings.DiscordIG,
@@ -118,7 +118,7 @@ export default class AdCommand extends BaseCommand {
 				const file = new MessageAttachment(image, 'ad.png');
 
 				const embed = await this.ImageEmbed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					accessor: message,
 					text: this,
 					title: 'Ad command',
 					description: guild.Strings.DiscordIG,
@@ -130,8 +130,7 @@ export default class AdCommand extends BaseCommand {
 			} catch (error) {
 				m.delete();
 				const embed = await this.ErrorEmbed.UnexpectedError({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					id: message.guild.id,
+					accessor: message,
 					text: this,
 				});
 
@@ -150,7 +149,7 @@ export default class AdCommand extends BaseCommand {
 		};
 
 		const tEmbed = await this.Embed.Base({
-			iconURL: message.author.displayAvatarURL({ dynamic: true }),
+			accessor: message,
 			text: this,
 			title: 'Ad command',
 			description: `Please send the first image you want.`,
@@ -164,8 +163,7 @@ export default class AdCommand extends BaseCommand {
 
 		if (timedOut == false && firstColl.first()?.content == 'cancel') {
 			const embed = await this.SuccessEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
+				accessor: message,
 				text: this,
 				success_message: 'Successfully cancelled selection',
 			});
@@ -185,7 +183,7 @@ export default class AdCommand extends BaseCommand {
 				const file = new MessageAttachment(image, 'ad.png');
 
 				const embed = await this.ImageEmbed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					accessor: message,
 					text: this,
 					title: 'Ad command',
 					description: guild.Strings.DiscordIG,
@@ -199,8 +197,7 @@ export default class AdCommand extends BaseCommand {
 
 		if (timedOut == true) {
 			const embed = await this.SuccessEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
+				accessor: message,
 				text: this,
 				success_message: 'Successfully cancelled selection',
 			});

@@ -210,25 +210,21 @@ namespace Functions {
 			pages: MessageEmbed[],
 			emojiList = ['⏪', '⏩'],
 			timeout = 120000,
-			opts: Funcs.PaginationOpts
+			accessor: CommandInteraction | Message
 		) {
 			// THIS IS NOT MY FUNCTION BUT I'VE UPDATED THE CODE BECAUSE IT BROKE IN DJS V13
 			// IF THE ORIGINAL OWNER WOULD LIKE ME TO REMOVE THIS I CAN Contact me here: ProcessVersion#4472
-			console.log(opts);
-			if (!opts) throw new Error('At least one choice must be present!');
-			if (opts.message == null && opts.interaction == null)
-				throw new Error('Channel is inaccessible.');
 			if (!pages) throw new Error('Pages are not given.');
 			if (emojiList.length !== 2) throw new Error('Need two emojis.');
 			let page = 0;
 			const curPage =
-				opts.message == null
-					? await opts.interaction.channel.send({
+				accessor instanceof CommandInteraction
+					? await accessor.channel.send({
 							embeds: [
 								pages[page].setFooter(`Page ${page + 1} / ${pages.length}`),
 							],
 					  })
-					: await opts.message.channel.send({
+					: await accessor.channel.send({
 							embeds: [
 								pages[page].setFooter(`Page ${page + 1} / ${pages.length}`),
 							],
@@ -247,9 +243,9 @@ namespace Functions {
 
 			reactionCollector.on('collect', (reaction, user) => {
 				reaction.users.remove(
-					opts.message == null
-						? opts.interaction.user.id
-						: opts.message.author.id
+					accessor instanceof CommandInteraction
+						? accessor.user.id
+						: accessor.author.id
 				);
 
 				switch (reaction.emoji.name) {
@@ -276,10 +272,6 @@ namespace Functions {
 			return curPage;
 		}
 		Paginate(opts?: Funcs.PaginateOpts, ...args: MessageEmbed[]) {
-			console.log(opts.message);
-
-			if (opts.interaction == null && opts.message == null)
-				throw new Error('Message or Interaction must be passed in!');
 			if (!opts.emojiList) opts.emojiList = ['⏪', '⏩'];
 			if (!opts.timeout) opts.timeout = 120000;
 
@@ -287,27 +279,23 @@ namespace Functions {
 				if (opts.embeds.length <= 1)
 					throw new ReferenceError('Not long enough to paginate!');
 
-				if (opts.message)
-					return this.Pagination(opts.embeds, opts.emojiList, opts.timeout, {
-						message: opts.message,
-					});
-				return this.Pagination(opts.embeds, opts.emojiList, opts.timeout, {
-					interaction: opts.interaction,
-				});
+				return this.Pagination(
+					opts.embeds,
+					opts.emojiList,
+					opts.timeout,
+					opts.accessor
+				);
 			}
 
 			if (args.length <= 1)
 				throw new ReferenceError('Not enough embeds to paginate');
 
-			if (opts.message) {
-				this.Pagination(opts.embeds, opts.emojiList, opts.timeout, {
-					message: opts.message,
-				});
-				return;
-			}
-			return this.Pagination(opts.embeds, opts.emojiList, opts.timeout, {
-				interaction: opts.interaction,
-			});
+			return this.Pagination(
+				opts.embeds,
+				opts.emojiList,
+				opts.timeout,
+				opts.accessor
+			);
 		}
 		Capitalize(string: string): string {
 			return string.charAt(0).toUpperCase() + string.slice(1);
@@ -1532,14 +1520,12 @@ namespace Functions {
 			this.Base = this.Base.bind(this);
 		}
 		async Base(opts: Funcs.HelpEmbedOpts) {
-			const { iconURL, command, event } = opts;
-			const { interaction, message } = event;
-
-			if (message == null && interaction == null)
-				throw new Error('Must pass in an interaction or message');
+			const { iconURL, command, accessor } = opts;
 
 			const { lang, prefix, Strings } = this.cache.get(
-				message == null ? interaction.guild.id : message.guild.id
+				accessor instanceof CommandInteraction
+					? accessor.guild.id
+					: accessor.guild.id
 			);
 
 			const strings = {
@@ -1725,16 +1711,8 @@ namespace Functions {
 				],
 			});
 
-			if (message != null)
-				return this.Paginate(
-					{ message: message },
-					embed,
-					embed2,
-					embed3,
-					embed4
-				);
 			return this.Paginate(
-				{ interaction: interaction },
+				{ accessor: accessor },
 				embed,
 				embed2,
 				embed3,

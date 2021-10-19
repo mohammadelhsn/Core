@@ -49,7 +49,7 @@ export default class AvatarCommand extends BaseCommand {
 				return this.HelpEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					command: this,
-					event: { message: message },
+					accessor: message,
 				});
 			} else {
 				try {

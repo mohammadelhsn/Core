@@ -34,7 +34,7 @@ export default class PhcommentCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { message: message },
+				accessor: message,
 			});
 		}
 

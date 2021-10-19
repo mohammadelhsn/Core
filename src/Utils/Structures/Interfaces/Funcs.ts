@@ -43,16 +43,11 @@ namespace FunctionOpts {
 		emojiList?: ['⏪', '⏩'] | string[],
 		timeout?: number | 120000
 	) => Promise<void>;
-	export interface PaginationOpts {
-		message?: Message;
-		interaction?: CommandInteraction;
-	}
 	export interface PaginateOpts {
 		embeds?: MessageEmbed[];
 		emojiList?: string[];
 		timeout?: number;
-		message?: Message;
-		interaction?: CommandInteraction;
+		accessor: accessor;
 	}
 	export type toFetch =
 		| 'prefix'
@@ -157,7 +152,7 @@ namespace FunctionOpts {
 	export interface HelpEmbedOpts {
 		iconURL: iconURL;
 		command: BaseCommand;
-		event: EventOpts;
+		accessor: accessor;
 	}
 	export interface BaseGeneratingOpts {
 		iconURL?: string;

@@ -27,12 +27,12 @@ export default class PingCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { message: message },
+				accessor: message,
 			});
 		}
 
 		const embed = await this.Embed.Base({
-			iconURL: client.user.displayAvatarURL({ dynamic: true }),
+			accessor: message,
 			text: this,
 			title: `${client.user.tag} ping`,
 			description: '`Pinging...`',
@@ -43,7 +43,7 @@ export default class PingCommand extends BaseCommand {
 		const ping = m.createdTimestamp - message.createdTimestamp;
 
 		const newEmbed = this.Embed.Base({
-			iconURL: client.user.displayAvatarURL({ dynamic: true }),
+			accessor: message,
 			text: this,
 			title: `Ping command`,
 			description: `${client.user.tag} ping`,

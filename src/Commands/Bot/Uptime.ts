@@ -27,11 +27,11 @@ export default class UptimeCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { message: message },
+				accessor: message,
 			});
 		}
 		const uptimeEmbed = await this.Embed.Base({
-			iconURL: message.author.displayAvatarURL({ dynamic: true }),
+			accessor: message,
 			text: this,
 			title: `${client.user.username} uptime`,
 			description: `I have been online for \`${this.Utils.Duration(

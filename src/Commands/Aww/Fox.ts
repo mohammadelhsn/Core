@@ -27,15 +27,14 @@ export default class FoxCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { message: message },
+				accessor: message,
 			});
 		}
 
 		// SWITCH TO SOME RANDOM API (https://some-random-api.ml/img/fox)
 
 		const generatingEmbed = await this.GeneratingEmbed.Duncte123({
-			iconURL: message.author.displayAvatarURL({ dynamic: true }),
-			id: message.guild.id,
+			accessor: message,
 			text: this,
 		});
 		const m = await message.channel.send({ embeds: [generatingEmbed] });
@@ -47,8 +46,7 @@ export default class FoxCommand extends BaseCommand {
 				m.delete();
 
 				const errEmbed = await this.ErrorEmbed.ApiError({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					id: message.guild.id,
+					accessor: message,
 					text: this,
 				});
 				const msg = await message.channel.send({ embeds: [errEmbed] });
@@ -56,7 +54,7 @@ export default class FoxCommand extends BaseCommand {
 			}
 
 			const embed = await this.ImageEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
 				title: 'Fox command',
 				description: client.database.get(message.guild.id).Strings.Duncte123,
@@ -68,8 +66,7 @@ export default class FoxCommand extends BaseCommand {
 			m.delete();
 
 			const errEmbed = await this.ErrorEmbed.UnexpectedError({
-				id: message.guild.id,
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
 			});
 			return message.channel.send({ embeds: [errEmbed] });

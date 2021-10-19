@@ -31,7 +31,7 @@ export default class UrbanCommand extends BaseCommand {
 		if (!args[1] || !['search', 'random'].includes(args[0])) {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				event: { message: message },
+				accessor: message,
 				command: this,
 			});
 		}

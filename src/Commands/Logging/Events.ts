@@ -350,7 +350,7 @@ export default class EventsCommand extends BaseCommand {
 				});
 
 				return await this.Utils.Paginate(
-					{ timeout: 600000, message: message },
+					{ timeout: 600000, accessor: message },
 					channelEvents,
 					emojiEvents,
 					memberEvents,
@@ -2341,7 +2341,7 @@ export default class EventsCommand extends BaseCommand {
 				});
 
 				return await this.Utils.Paginate(
-					{ timeout: 600000, message: message },
+					{ timeout: 600000, accessor: message },
 					channelEvents,
 					emojiEvents,
 					memberEvents,
@@ -2356,7 +2356,7 @@ export default class EventsCommand extends BaseCommand {
 
 		return await this.HelpEmbed.Base({
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),
-			event: { message: message },
+			accessor: message,
 			command: this,
 		});
 	}

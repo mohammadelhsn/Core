@@ -27,7 +27,7 @@ export default class CatCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { message: message },
+				accessor: message,
 			});
 		}
 
@@ -47,8 +47,7 @@ export default class CatCommand extends BaseCommand {
 				m.delete();
 
 				const errEmbed = await this.ErrorEmbed.ApiError({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					id: message.guild.id,
+					accessor: message,
 					text: this,
 				});
 				const msg = await message.channel.send({ embeds: [errEmbed] });
@@ -56,7 +55,7 @@ export default class CatCommand extends BaseCommand {
 			}
 
 			const embed = await this.ImageEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
 				title: 'Cat command',
 				description: client.database.get(message.guild.id).Strings.Duncte123,
@@ -68,8 +67,7 @@ export default class CatCommand extends BaseCommand {
 			m.delete();
 
 			const errEmbed = await this.ErrorEmbed.UnexpectedError({
-				id: message.guild.id,
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
 			});
 			return message.channel.send({ embeds: [errEmbed] });

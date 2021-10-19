@@ -34,9 +34,8 @@ export default class BotClearCommand extends BaseCommand {
 			])
 		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
-				id: message.guild.id,
 				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
 			});
 
@@ -50,9 +49,8 @@ export default class BotClearCommand extends BaseCommand {
 			])
 		) {
 			const embed = await this.ErrorEmbed.ClientPermissions({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
-				id: message.guild.id,
 				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
 			});
 
@@ -64,7 +62,7 @@ export default class BotClearCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { message: message },
+				accessor: message,
 			});
 		}
 
@@ -80,8 +78,7 @@ export default class BotClearCommand extends BaseCommand {
 			await (message.channel as TextChannel).bulkDelete(botmessages);
 
 			const embed = await this.SuccessEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
+				accessor: message,
 				text: this,
 				success_message: `Successfully cleared \`${botmessages.length}\` message(s)`,
 			});
@@ -92,7 +89,7 @@ export default class BotClearCommand extends BaseCommand {
 			console.log(error);
 
 			const embed = await this.ErrorEmbed.UnexpectedError({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
 				id: message.guild.id,
 			});

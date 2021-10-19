@@ -41,7 +41,7 @@ export default class RedditCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { message: message },
+				accessor: message,
 			});
 		}
 		if (type.toLowerCase() === 'user') {

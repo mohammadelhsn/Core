@@ -24,7 +24,7 @@ export default class ChangelogCommand extends BaseCommand {
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const embed = await this.Embed.Base({
-			iconURL: message.author.displayAvatarURL({ dynamic: true }),
+			accessor: message,
 			text: this,
 			title: 'Changelog command',
 			description: `${client.version} changelog`,

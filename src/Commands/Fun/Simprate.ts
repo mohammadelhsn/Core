@@ -47,7 +47,7 @@ export default class SimprateCommand extends BaseCommand {
 					return await this.HelpEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						command: this,
-						event: { message: message },
+						accessor: message,
 					});
 				} else {
 					const rateEmbed = await this.Embed.Base({

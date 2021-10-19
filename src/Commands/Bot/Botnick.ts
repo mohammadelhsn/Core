@@ -29,9 +29,8 @@ export default class BotnickCommand extends BaseCommand {
 			])
 		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
-				id: message.guild.id,
 				perms: ['MANAGE_NICKNAMES', 'ADMINISTRATOR'],
 			});
 
@@ -41,9 +40,8 @@ export default class BotnickCommand extends BaseCommand {
 
 		if (!message.guild.me.permissions.has(Permissions.FLAGS.MANAGE_NICKNAMES)) {
 			const embed = await this.ErrorEmbed.ClientPermissions({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
-				id: message.guild.id,
 				perms: ['MANAGE_NICKNAMES', 'ADMINISTRATOR'],
 			});
 
@@ -59,7 +57,7 @@ export default class BotnickCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { message: message },
+				accessor: message,
 			});
 		}
 
@@ -69,8 +67,7 @@ export default class BotnickCommand extends BaseCommand {
 			await message.guild.me.setNickname(name);
 
 			const embed = await this.SuccessEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
+				accessor: message,
 				text: this,
 				success_message: `Successfully my nickname!`,
 				fields: [
@@ -82,9 +79,8 @@ export default class BotnickCommand extends BaseCommand {
 			return message.channel.send({ embeds: [embed] });
 		} catch (error) {
 			const embed = await this.ErrorEmbed.UnexpectedError({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
-				id: message.guild.id,
 			});
 
 			return message.channel.send({ embeds: [embed] });

@@ -48,7 +48,7 @@ export default class HugCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { message: message },
+				accessor: message,
 			});
 		} else {
 			const generatingEmbed = await this.GeneratingEmbed.NekosFun({

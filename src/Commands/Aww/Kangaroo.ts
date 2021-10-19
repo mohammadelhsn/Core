@@ -27,13 +27,12 @@ export default class KangarooCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				event: { message: message },
+				accessor: message,
 			});
 		}
 
 		const generatingEmbed = await this.GeneratingEmbed.SomeRandomApi({
-			iconURL: message.author.displayAvatarURL({ dynamic: true }),
-			id: message.guild.id,
+			accessor: message,
 			text: this,
 		});
 		const m = await message.channel.send({ embeds: [generatingEmbed] });
@@ -45,8 +44,7 @@ export default class KangarooCommand extends BaseCommand {
 				m.delete();
 
 				const errEmbed = await this.ErrorEmbed.ApiError({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					id: message.guild.id,
+					accessor: message,
 					text: this,
 				});
 				const msg = await message.channel.send({ embeds: [errEmbed] });
@@ -54,7 +52,7 @@ export default class KangarooCommand extends BaseCommand {
 			}
 
 			const embed = await this.ImageEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
 				title: 'Kangaroo command',
 				description: client.database.get(message.guild.id).Strings
@@ -67,8 +65,7 @@ export default class KangarooCommand extends BaseCommand {
 			m.delete();
 
 			const errEmbed = await this.ErrorEmbed.UnexpectedError({
-				id: message.guild.id,
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				accessor: message,
 				text: this,
 			});
 			return message.channel.send({ embeds: [errEmbed] });

@@ -283,7 +283,7 @@ export default class ActionlogCommand extends BaseCommand {
 
 		return await this.HelpEmbed.Base({
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),
-			event: { message: message },
+			accessor: message,
 			command: this,
 		});
 	}

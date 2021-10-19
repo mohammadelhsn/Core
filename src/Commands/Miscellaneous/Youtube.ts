@@ -111,7 +111,7 @@ export default class YoutubeCommand extends BaseCommand {
 				});
 				embeds.push(embed);
 			}
-			return this.Utils.Paginate({ embeds: embeds, message: message });
+			return this.Utils.Paginate({ embeds: embeds, accessor: message });
 		} else {
 			const errorEmbed = await this.ErrorEmbed.InvalidChoice({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
