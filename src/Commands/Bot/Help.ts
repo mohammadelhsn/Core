@@ -408,8 +408,7 @@ export default class HelpCommand extends BaseCommand {
 					);
 
 				return this.Utils.Paginate(
-					message,
-					{},
+					{ message: message },
 					awwEmbed,
 					botEmbed,
 					cEmbed,
@@ -554,8 +553,7 @@ export default class HelpCommand extends BaseCommand {
 					.setColor(this.Colour.Set());
 
 				return this.Utils.Paginate(
-					message,
-					{},
+					{ message: message },
 					awwEmbed,
 					botEmbed,
 					cEmbed,
@@ -586,7 +584,7 @@ export default class HelpCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: command,
-				message: message,
+				event: { message: message },
 			});
 		}
 	}

@@ -1,9 +1,21 @@
+import { Channel } from 'diagnostics_channel';
 import {
 	Snowflake,
 	MessageEmbed,
 	Message,
 	EmbedFieldData,
 	PermissionResolvable,
+	CommandInteraction,
+	Role,
+	GuildChannel,
+	TextChannel,
+	Interaction,
+	GuildEmoji,
+	User,
+	GuildMember,
+	Guild,
+	HexColorString,
+	ColorResolvable,
 } from 'discord.js';
 import BaseCommand from '../BaseCommand';
 
@@ -31,10 +43,16 @@ namespace FunctionOpts {
 		emojiList?: ['⏪', '⏩'] | string[],
 		timeout?: number | 120000
 	) => Promise<void>;
+	export interface PaginationOpts {
+		message?: Message;
+		interaction?: CommandInteraction;
+	}
 	export interface PaginateOpts {
 		embeds?: MessageEmbed[];
 		emojiList?: string[];
 		timeout?: number;
+		message?: Message;
+		interaction?: CommandInteraction;
 	}
 	export type toFetch =
 		| 'prefix'
@@ -44,90 +62,134 @@ namespace FunctionOpts {
 		| 'strings'
 		| 'welcome'
 		| 'leave';
+
+	type iconURL = string;
+	type accessor = CommandInteraction | Message;
+	type colour = ColorResolvable;
+	// if no iconURL iconURL = default
+	// if no ID id is default
+
 	export interface EmbedOpts {
-		iconURL: string;
+		iconURL?: iconURL;
 		description: string;
 		text: string | BaseCommand;
 		title?: string;
 		fields?: EmbedFieldData[];
 		link?: string;
 		image?: string;
+		accessor?: accessor;
+		colour?: colour;
 	}
+
 	export interface BaseErrorOpts {
-		iconURL: string;
-		id: Snowflake;
+		iconURL?: iconURL;
+		id?: Snowflake;
 		error_message: string;
 		text: string | BaseCommand;
 		image?: string;
 		link?: string;
 		fields?: EmbedFieldData[];
+		accessor?: accessor;
+		colour?: colour;
 	}
 	export interface ErrorEmbedOpts {
-		iconURL: string;
-		id: Snowflake;
+		iconURL?: iconURL;
+		id?: Snowflake;
 		text: string | BaseCommand;
 		fields?: EmbedFieldData[];
 		image?: string;
 		link?: string;
+		accessor?: accessor;
+		colour?: colour;
 	}
 	export interface CooldownErrorOpts {
-		iconURL: string;
-		id: Snowflake;
+		iconURL?: iconURL;
+		id?: Snowflake;
 		toUse: string;
 		seconds: string | number;
 		text: string | BaseCommand;
 		fields?: EmbedFieldData[];
 		image?: string;
 		link?: string;
+		accessor?: accessor;
+		colour?: colour;
 	}
 	export interface PermissionsErrorOpts {
-		iconURL: string;
-		id: Snowflake;
+		iconURL?: iconURL;
+		id?: Snowflake;
 		text: string | BaseCommand;
 		perms: PermissionResolvable[];
 		image?: string;
 		link?: string;
 		fields?: EmbedFieldData[];
+		accessor?: accessor;
+		colour?: colour;
 	}
 	export interface SuccessEmbedOpts {
-		iconURL: string;
-		id: Snowflake;
+		iconURL?: iconURL;
+		id?: Snowflake;
 		success_message: string;
 		text: string | BaseCommand;
 		fields?: EmbedFieldData[];
 		image?: string;
 		link?: string;
+		accessor?: accessor;
+		colour?: colour;
+	}
+	export interface GetGuildId {
+		role?: Role;
+		channel?: GuildChannel;
+		interaction?: CommandInteraction | Interaction;
+		message?: Message;
+		emoji?: GuildEmoji;
+	}
+	export interface GetIconURL {
+		interaction?: CommandInteraction;
+		guild?: Guild;
+		message?: Message;
+		guildmember?: GuildMember;
+		user?: User;
+	}
+	interface EventOpts {
+		message?: Message;
+		interaction?: CommandInteraction;
 	}
 	export interface HelpEmbedOpts {
-		iconURL: string;
+		iconURL: iconURL;
 		command: BaseCommand;
-		message: Message;
+		event: EventOpts;
 	}
 	export interface BaseGeneratingOpts {
-		iconURL: string;
-		id: Snowflake;
+		iconURL?: string;
+		id?: Snowflake;
 		provider: string;
 		text: string | BaseCommand;
 		image?: string;
 		link?: string;
 		fields?: EmbedFieldData[];
+		accessor?: accessor;
+		colour?: colour;
 	}
 	export interface GeneratingEmbedOpts {
-		iconURL: string;
-		id: Snowflake;
+		iconURL?: iconURL;
+		id?: Snowflake;
 		text: string | BaseCommand;
 		image?: string;
 		link?: string;
 		fields?: EmbedFieldData[];
+		accessor?: accessor;
+		colour?: colour;
 	}
 	export interface ImageEmbedOpts {
-		iconURL: string;
+		iconURL?: iconURL;
 		title: string;
 		description: string;
 		image: string;
 		text: string | BaseCommand;
 		link?: string;
 		fields?: EmbedFieldData[];
+		accessor?: accessor;
+		colour?: colour;
 	}
 	export interface InsertModerationOpts {
 		reason?: string;

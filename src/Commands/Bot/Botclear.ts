@@ -64,7 +64,7 @@ export default class BotClearCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				message: message,
+				event: { message: message },
 			});
 		}
 

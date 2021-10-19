@@ -107,7 +107,8 @@ export default class NewsCommand extends BaseCommand {
 					});
 					embeds.push(embed);
 				}
-				return this.Utils.Paginate(message, {
+				return this.Utils.Paginate({
+					message: message,
 					embeds: embeds,
 					timeout: 600000,
 				});
@@ -176,7 +177,8 @@ export default class NewsCommand extends BaseCommand {
 					});
 					embeds.push(embed);
 				}
-				return this.Utils.Paginate(message, {
+				return this.Utils.Paginate({
+					message: message,
 					embeds: embeds,
 					timeout: 600000,
 				});
@@ -240,7 +242,8 @@ export default class NewsCommand extends BaseCommand {
 					});
 					embeds.push(embed);
 				}
-				return this.Utils.Paginate(message, {
+				return this.Utils.Paginate({
+					message: message,
 					embeds: embeds,
 					timeout: 600000,
 				});
@@ -259,7 +262,7 @@ export default class NewsCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				message: message,
+				event: { message: message },
 			});
 		} else {
 			const errEmbed = await this.ErrorEmbed.InvalidChoice({

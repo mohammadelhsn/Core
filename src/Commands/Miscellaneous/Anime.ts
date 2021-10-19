@@ -136,7 +136,11 @@ export default class AnimeCommand extends BaseCommand {
 				);
 			}
 
-			return this.Utils.Paginate(message, { embeds: embeds, timeout: 600000 });
+			return this.Utils.Paginate({
+				embeds: embeds,
+				timeout: 600000,
+				message: message,
+			});
 		} catch (error) {
 			console.log(error);
 		}

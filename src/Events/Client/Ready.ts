@@ -19,63 +19,7 @@ export default class ReadyEvent extends BaseEvent {
 			status: 'dnd',
 		});
 
-		// const commands = [
-		// 	new SlashCommandBuilder()
-		// 		.setName('cool')
-		// 		.setDescription('This is just a test')
-		// 		.addStringOption((option) =>
-		// 			option
-		// 				.setName('test')
-		// 				.setDescription('Cool description')
-		// 				.addChoice('Funny', 'gif_funny')
-		// 				.addChoice('Meme', 'gif_meme')
-		// 				.addChoice('Movie', 'gif_movie')
-		// 		),
-
-		// 	new SlashCommandBuilder()
-		// 		.setName('info')
-		// 		.setDescription(
-		// 			'Get the information on a server, user, channel or role'
-		// 		)
-		// 		.addSubcommand((sub) =>
-		// 			sub
-		// 				.setName('user')
-		// 				.setDescription('Info about a user')
-		// 				.addUserOption((opt) =>
-		// 					opt
-		// 						.setName('user')
-		// 						.setDescription('The user you want to get info on')
-		// 						.setRequired(false)
-		// 				)
-		// 		)
-		// 		.addSubcommand((sub) =>
-		// 			sub
-		// 				.setName('server')
-		// 				.setDescription('Get information on the current server')
-		// 		)
-		// 		.addSubcommand((sub) =>
-		// 			sub
-		// 				.setName('role')
-		// 				.setDescription('Information about a role')
-		// 				.addRoleOption((role) =>
-		// 					role
-		// 						.setName('role')
-		// 						.setDescription('Role you want info about')
-		// 						.setRequired(true)
-		// 				)
-		// 		)
-		// 		.addSubcommand((sub) =>
-		// 			sub
-		// 				.setName('channel')
-		// 				.setDescription('Get information on a channel')
-		// 				.addChannelOption((chnl) =>
-		// 					chnl
-		// 						.setName('channel')
-		// 						.setDescription('The channel you want information about')
-		// 						.setRequired(false)
-		// 				)
-		// 		),
-		// ].map((cmd) => cmd.toJSON());
+		// const commands = [].map((cmd) => cmd.toJSON());
 
 		// const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
@@ -85,7 +29,10 @@ export default class ReadyEvent extends BaseEvent {
 		// 		{ body: commands }
 		// 	)
 		// 	.then(() => console.log('Successfully registered application commands.'))
-		// 	.catch((err) => console.log(err));
+		// 	.catch((err) => {
+		// 		console.log(err);
+		// 		console.log(err.errors);
+		// 	});
 
 		for (const g of client.guilds.cache) {
 			const guildId = g[1].id;

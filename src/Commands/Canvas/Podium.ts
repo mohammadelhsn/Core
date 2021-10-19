@@ -34,7 +34,7 @@ export default class PodiumCommand extends BaseCommand {
 		if (args[0]) {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				message: message,
+				event: { message: message },
 				command: this,
 			});
 		}

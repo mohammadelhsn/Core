@@ -31,7 +31,7 @@ export default class WinkCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				message: message,
+				event: { message: message },
 			});
 		} else {
 			const generatingEmbed = await this.GeneratingEmbed.SomeRandomApi({
@@ -78,5 +78,48 @@ export default class WinkCommand extends BaseCommand {
 			}
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const generatingEmbed = await this.GeneratingEmbed.NekosFun({
+			accessor: interaction,
+			text: this,
+		});
+
+		await interaction.reply({ embeds: [generatingEmbed] });
+
+		try {
+			const res = await this.Reactions.Wink();
+
+			if (res.error == true) {
+				const embed = await this.ErrorEmbed.ApiError({
+					accessor: interaction,
+					text: this,
+				});
+
+				return interaction.replied
+					? await interaction.editReply({ embeds: [embed] })
+					: await interaction.reply({ embeds: [embed] });
+			}
+
+			const embed = await this.ImageEmbed.Base({
+				accessor: interaction,
+				text: this,
+				title: 'Wink command',
+				description: `${interaction.user.toString()} winks! ;)`,
+				image: res.file,
+			});
+
+			return await interaction.editReply({ embeds: [embed] });
+		} catch (error) {
+			console.log('Error', error);
+
+			const embed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+
+			return interaction.replied
+				? await interaction.editReply({ embeds: [embed] })
+				: await interaction.reply({ embeds: [embed] });
+		}
+	}
 }

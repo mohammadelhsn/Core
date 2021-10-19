@@ -30,14 +30,5 @@ export default class TesstCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {
-		await interaction.deferReply();
-		const embed = new MessageEmbed();
-		embed.setTitle('Hi');
-		embed.setColor(this.Colour.Set());
-
-		setTimeout(async () => {
-			await interaction.editReply({ embeds: [embed] });
-		}, 13 * 1000);
-	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

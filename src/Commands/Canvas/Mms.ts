@@ -1,6 +1,11 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { AwaitMessagesOptions, CommandInteraction, Message, MessageAttachment } from 'discord.js';
+import {
+	AwaitMessagesOptions,
+	CommandInteraction,
+	Message,
+	MessageAttachment,
+} from 'discord.js';
 import { Mms } from 'discord-image-generation';
 
 export default class MmsCommand extends BaseCommand {
@@ -71,7 +76,7 @@ export default class MmsCommand extends BaseCommand {
 				return await this.HelpEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					command: this,
-					message: message,
+					event: { message: message },
 				});
 			}
 			if (args[0].toLowerCase().includes('me')) {

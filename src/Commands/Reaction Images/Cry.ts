@@ -29,7 +29,7 @@ export default class CryCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				message: message,
+				event: { message: message },
 			});
 		} else {
 			const generatingEmbed = await this.GeneratingEmbed.NekosFun({
@@ -80,5 +80,35 @@ export default class CryCommand extends BaseCommand {
 			}
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const generatingEmbed = await this.GeneratingEmbed.NekosFun({
+			text: this,
+			accessor: interaction,
+		});
+
+		await interaction.reply({ embeds: [generatingEmbed] });
+
+		try {
+			const res = await this.Reactions.Cry();
+
+			const imageEmbed = await this.ImageEmbed.Base({
+				accessor: interaction,
+				text: this,
+				title: `Cry command`,
+				description: `${interaction.user.toString()} is crying :sob:`,
+				image: res.file,
+			});
+
+			return await interaction.editReply({ embeds: [imageEmbed] });
+		} catch (error) {
+			console.log(error);
+
+			const embed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+
+			return await interaction.editReply({ embeds: [embed] });
+		}
+	}
 }

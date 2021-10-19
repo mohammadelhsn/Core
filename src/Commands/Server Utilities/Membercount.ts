@@ -9,7 +9,7 @@ export default class MembercountCommand extends BaseCommand {
 			'server utilities',
 			[],
 			'',
-			'See the guild membercount ',
+			'See the guild membercount',
 			'',
 			[],
 			[],
@@ -97,7 +97,7 @@ export default class MembercountCommand extends BaseCommand {
 		return await this.HelpEmbed.Base({
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),
 			command: this,
-			message: message,
+			event: { message: message },
 		});
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {}

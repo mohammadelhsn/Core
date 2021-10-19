@@ -19,7 +19,14 @@ import {
 	GuildChannel,
 	ThreadChannel,
 	TextBasedChannels,
-	PermissionString
+	PermissionString,
+	CommandInteraction,
+	InteractionCollector,
+	GuildMember,
+	Guild,
+	User,
+	GuildEmoji,
+	Role,
 } from 'discord.js';
 import CachedGuild from './Structures/CachedGuild';
 import Colours from '../../Colours.json';
@@ -34,6 +41,7 @@ import {
 	APIInteractionDataResolvedChannel,
 	ChannelType,
 } from 'discord-api-types';
+import { roleMention } from '@discordjs/builders';
 
 namespace Functions {
 	export class Colour {
@@ -198,17 +206,34 @@ namespace Functions {
 				'0'
 			)} seconds`;
 		}
-		async Pagination(msg, pages, emojiList = ['⏪', '⏩'], timeout = 120000) {
+		async Pagination(
+			pages: MessageEmbed[],
+			emojiList = ['⏪', '⏩'],
+			timeout = 120000,
+			opts: Funcs.PaginationOpts
+		) {
 			// THIS IS NOT MY FUNCTION BUT I'VE UPDATED THE CODE BECAUSE IT BROKE IN DJS V13
 			// IF THE ORIGINAL OWNER WOULD LIKE ME TO REMOVE THIS I CAN Contact me here: ProcessVersion#4472
-
-			if (!msg && !msg.channel) throw new Error('Channel is inaccessible.');
+			console.log(opts);
+			if (!opts) throw new Error('At least one choice must be present!');
+			if (opts.message == null && opts.interaction == null)
+				throw new Error('Channel is inaccessible.');
 			if (!pages) throw new Error('Pages are not given.');
 			if (emojiList.length !== 2) throw new Error('Need two emojis.');
 			let page = 0;
-			const curPage = await msg.channel.send({
-				embeds: [pages[page].setFooter(`Page ${page + 1} / ${pages.length}`)],
-			});
+			const curPage =
+				opts.message == null
+					? await opts.interaction.channel.send({
+							embeds: [
+								pages[page].setFooter(`Page ${page + 1} / ${pages.length}`),
+							],
+					  })
+					: await opts.message.channel.send({
+							embeds: [
+								pages[page].setFooter(`Page ${page + 1} / ${pages.length}`),
+							],
+					  });
+
 			for (const emoji of emojiList) await curPage.react(emoji);
 
 			const options = {
@@ -221,7 +246,11 @@ namespace Functions {
 			const reactionCollector = curPage.createReactionCollector(options);
 
 			reactionCollector.on('collect', (reaction, user) => {
-				reaction.users.remove(msg.author.id);
+				reaction.users.remove(
+					opts.message == null
+						? opts.interaction.user.id
+						: opts.message.author.id
+				);
 
 				switch (reaction.emoji.name) {
 					case emojiList[0]:
@@ -246,11 +275,11 @@ namespace Functions {
 			});
 			return curPage;
 		}
-		Paginate(
-			message: Message,
-			opts?: Funcs.PaginateOpts,
-			...args: MessageEmbed[]
-		): Promise<void> {
+		Paginate(opts?: Funcs.PaginateOpts, ...args: MessageEmbed[]) {
+			console.log(opts.message);
+
+			if (opts.interaction == null && opts.message == null)
+				throw new Error('Message or Interaction must be passed in!');
 			if (!opts.emojiList) opts.emojiList = ['⏪', '⏩'];
 			if (!opts.timeout) opts.timeout = 120000;
 
@@ -258,18 +287,27 @@ namespace Functions {
 				if (opts.embeds.length <= 1)
 					throw new ReferenceError('Not long enough to paginate!');
 
-				return this.Pagination(
-					message,
-					opts.embeds,
-					opts.emojiList,
-					opts.timeout
-				);
+				if (opts.message)
+					return this.Pagination(opts.embeds, opts.emojiList, opts.timeout, {
+						message: opts.message,
+					});
+				return this.Pagination(opts.embeds, opts.emojiList, opts.timeout, {
+					interaction: opts.interaction,
+				});
 			}
 
 			if (args.length <= 1)
 				throw new ReferenceError('Not enough embeds to paginate');
 
-			return this.Pagination(message, args, opts.emojiList, opts.timeout);
+			if (opts.message) {
+				this.Pagination(opts.embeds, opts.emojiList, opts.timeout, {
+					message: opts.message,
+				});
+				return;
+			}
+			return this.Pagination(opts.embeds, opts.emojiList, opts.timeout, {
+				interaction: opts.interaction,
+			});
 		}
 		Capitalize(string: string): string {
 			return string.charAt(0).toUpperCase() + string.slice(1);
@@ -381,6 +419,40 @@ namespace Functions {
 			if (channel.type == 'GUILD_TEXT') return 'Text';
 			if (channel.type == 'GUILD_VOICE') return 'Voice';
 			return 'Unknown';
+		}
+		GetGuildId(
+			toGrab:
+				| Message
+				| GuildEmoji
+				| CommandInteraction
+				| Role
+				| GuildChannel
+				| Guild
+		) {
+			if (toGrab instanceof Guild) return toGrab.id;
+			return toGrab.guild.id;
+		}
+		GetIcon(
+			toGrab: GuildMember | Guild | CommandInteraction | Message | User,
+			type?: 'guild' | 'user',
+			dynamic?: boolean
+		) {
+			if (!dynamic) dynamic = true;
+			if (toGrab instanceof Guild) return toGrab.iconURL({ dynamic: dynamic });
+			if (toGrab instanceof User)
+				return toGrab.displayAvatarURL({ dynamic: dynamic });
+			if (!type) type = 'user';
+			if (toGrab instanceof GuildMember && type == 'guild')
+				return toGrab.guild.iconURL({ dynamic: dynamic });
+			else if (toGrab instanceof GuildMember)
+				return toGrab.user.displayAvatarURL({ dynamic: dynamic });
+			if (toGrab instanceof Message && type == 'guild')
+				return toGrab.guild.iconURL({ dynamic: dynamic });
+			else if (toGrab instanceof Message)
+				return toGrab.author.displayAvatarURL({ dynamic: dynamic });
+			if (toGrab instanceof CommandInteraction && type == 'guild')
+				return toGrab.guild.iconURL({ dynamic: dynamic });
+			else return toGrab.user.displayAvatarURL({ dynamic: dynamic });
 		}
 	}
 
@@ -1132,20 +1204,22 @@ namespace Functions {
 			}
 		}
 	}
-	export class Economy {}
-	export class Xp {}
 	export class Embed {
 		con: Pool;
 		client: DiscordClient;
 		cache: Collection<Snowflake, CachedGuild>;
 		Capitalize: Utils['Capitalize'];
 		Set: Colour['Set'];
+		GetGuildId: Utils['GetGuildId'];
+		GetIcon: Utils['GetIcon'];
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
 			this.cache = this.client.database;
 			this.Capitalize = new Utils().Capitalize;
 			this.Set = new Colour().Set;
+			this.GetGuildId = new Utils().GetGuildId;
+			this.GetIcon = new Utils().GetIcon;
 			this.Base = this.Base.bind(this);
 		}
 		Base(opts: Funcs.EmbedOpts) {
@@ -1153,6 +1227,10 @@ namespace Functions {
 			if (!opts.fields) opts.fields = null;
 			if (!opts.link) opts.link = null;
 			if (!opts.image) opts.image = null;
+			if (!opts.colour) opts.colour = this.Set();
+			if (!opts.iconURL && !opts.accessor) throw new Error('Manual or default');
+			if (!opts.iconURL && opts.accessor)
+				opts.iconURL = this.GetIcon(opts.accessor);
 
 			if (typeof opts.text != 'string')
 				opts.text = `${opts.text.getName()} command`;
@@ -1167,7 +1245,7 @@ namespace Functions {
 				.setDescription(opts.description)
 				.setTimestamp()
 				.setThumbnail(opts.iconURL)
-				.setColor(this.Set())
+				.setColor(opts.colour)
 				.setFooter(footer, opts.iconURL);
 
 			if (opts.fields != null) {
@@ -1195,6 +1273,8 @@ namespace Functions {
 		Getstring: Translator['Getstring'];
 		Getlang: Translator['Getlang'];
 		Embed: Embed['Base'];
+		GetIcon: Utils['GetIcon'];
+		GetGuildId: Utils['GetGuildId'];
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -1205,11 +1285,18 @@ namespace Functions {
 			this.Getstring = new Translator().Getstring;
 			this.Embed = new Embed().Base;
 			this.Base = this.Base.bind(this);
+			this.GetIcon = new Utils().GetIcon;
+			this.GetGuildId = new Utils().GetGuildId;
 		}
 		async Base(opts: Funcs.SuccessEmbedOpts) {
 			if (!opts.fields) opts.fields = null;
 			if (!opts.image) opts.image = null;
 			if (!opts.link) opts.link = null;
+			if (!opts.iconURL && !opts.accessor) throw new Error('Manual or default');
+			if (!opts.iconURL && opts.accessor)
+				opts.iconURL = this.GetIcon(opts.accessor);
+			if (!opts.id && !opts.accessor) throw new Error('Manual or defualt');
+			if (!opts.id && opts.accessor) opts.id = this.GetGuildId(opts.accessor);
 
 			const lang = await this.Getlang(opts.id);
 
@@ -1223,6 +1310,7 @@ namespace Functions {
 				fields: opts.fields,
 				image: opts.image,
 				link: opts.link,
+				colour: opts.colour,
 			});
 
 			return embed;
@@ -1237,6 +1325,8 @@ namespace Functions {
 		Getstring: Translator['Getstring'];
 		Set: Colour['Set'];
 		Embed: Embed['Base'];
+		GetIcon: Utils['GetIcon'];
+		GetGuildId: Utils['GetGuildId'];
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -1255,15 +1345,23 @@ namespace Functions {
 			this.NoResult = this.NoResult.bind(this);
 			this.ClientPermissions = this.ClientPermissions.bind(this);
 			this.UserPermissions = this.UserPermissions.bind(this);
+			this.GetIcon = new Utils().GetIcon;
+			this.GetGuildId = new Utils().GetGuildId;
 		}
 		async Base(opts: Funcs.BaseErrorOpts) {
 			if (!opts.fields) opts.fields = null;
 			if (!opts.image) opts.image = null;
 			if (!opts.link) opts.link = null;
+			if (!opts.iconURL && !opts.accessor) throw new Error('Manual or default');
+			if (!opts.iconURL && opts.accessor)
+				opts.iconURL = this.GetIcon(opts.accessor);
+			if (!opts.id && !opts.accessor) throw new Error('Manual or defualt');
+			if (!opts.id && opts.accessor) opts.id = this.GetGuildId(opts.accessor);
 
 			const lang = await this.Getlang(opts.id);
 
 			const embed = this.Embed({
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				title: `${Emojis.error_emoji} | ${this.Capitalize(
@@ -1275,11 +1373,13 @@ namespace Functions {
 				image: opts.image,
 				fields: opts.fields,
 				link: opts.link,
+				colour: opts.colour,
 			});
 			return embed;
 		}
 		async ApiError(opts: Funcs.ErrorEmbedOpts) {
 			return await this.Base({
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				id: opts.id,
@@ -1287,10 +1387,12 @@ namespace Functions {
 				fields: opts.fields,
 				image: opts.image,
 				link: opts.link,
+				colour: opts.colour,
 			});
 		}
 		async NsfwError(opts: Funcs.ErrorEmbedOpts) {
 			return await this.Base({
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				id: opts.id,
@@ -1298,6 +1400,7 @@ namespace Functions {
 				fields: opts.fields,
 				image: opts.image,
 				link: opts.link,
+				colour: opts.colour,
 			});
 		}
 		async CooldownError(opts: Funcs.CooldownErrorOpts) {
@@ -1309,6 +1412,7 @@ namespace Functions {
 			)}`;
 
 			return await this.Base({
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				id: opts.id,
 				text: opts.text,
@@ -1316,6 +1420,7 @@ namespace Functions {
 				fields: opts.fields,
 				link: opts.link,
 				image: opts.image,
+				colour: opts.colour,
 			});
 		}
 		async UnexpectedError(opts: Funcs.ErrorEmbedOpts) {
@@ -1324,6 +1429,7 @@ namespace Functions {
 			const description = this.Getstring(lang, 'unexpected_error');
 
 			return await this.Base({
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				id: opts.id,
@@ -1331,10 +1437,12 @@ namespace Functions {
 				fields: opts.fields,
 				image: opts.image,
 				link: opts.link,
+				colour: opts.colour,
 			});
 		}
 		async InvalidChoice(opts: Funcs.ErrorEmbedOpts) {
 			return await this.Base({
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				id: opts.id,
 				text: opts.text,
@@ -1342,10 +1450,12 @@ namespace Functions {
 				fields: opts.fields,
 				image: opts.image,
 				link: opts.link,
+				colour: opts.colour,
 			});
 		}
 		async NoResult(opts: Funcs.ErrorEmbedOpts) {
 			return await this.Base({
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				id: opts.id,
 				text: opts.text,
@@ -1353,10 +1463,12 @@ namespace Functions {
 				fields: opts.fields,
 				link: opts.link,
 				image: opts.image,
+				colour: opts.colour,
 			});
 		}
 		async ClientPermissions(opts: Funcs.PermissionsErrorOpts) {
 			return await this.Base({
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				id: opts.id,
 				text: opts.text,
@@ -1370,10 +1482,12 @@ namespace Functions {
 				fields: opts.fields,
 				link: opts.link,
 				image: opts.image,
+				colour: opts.colour,
 			});
 		}
 		async UserPermissions(opts: Funcs.PermissionsErrorOpts) {
 			return await this.Base({
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				id: opts.id,
 				text: opts.text,
@@ -1387,6 +1501,7 @@ namespace Functions {
 				fields: opts.fields,
 				link: opts.link,
 				image: opts.image,
+				colour: opts.colour,
 			});
 		}
 	}
@@ -1417,9 +1532,15 @@ namespace Functions {
 			this.Base = this.Base.bind(this);
 		}
 		async Base(opts: Funcs.HelpEmbedOpts) {
-			const { message, iconURL, command } = opts;
+			const { iconURL, command, event } = opts;
+			const { interaction, message } = event;
 
-			const { lang, prefix, Strings } = this.cache.get(message.guild.id);
+			if (message == null && interaction == null)
+				throw new Error('Must pass in an interaction or message');
+
+			const { lang, prefix, Strings } = this.cache.get(
+				message == null ? interaction.guild.id : message.guild.id
+			);
 
 			const strings = {
 				titles: {
@@ -1604,7 +1725,21 @@ namespace Functions {
 				],
 			});
 
-			return this.Paginate(message, {}, embed, embed2, embed3, embed4);
+			if (message != null)
+				return this.Paginate(
+					{ message: message },
+					embed,
+					embed2,
+					embed3,
+					embed4
+				);
+			return this.Paginate(
+				{ interaction: interaction },
+				embed,
+				embed2,
+				embed3,
+				embed4
+			);
 		}
 	}
 	export class GeneratingEmbed {
@@ -1616,6 +1751,8 @@ namespace Functions {
 		Set: Colour['Set'];
 		Getstring: Translator['Getstring'];
 		Getlang: Translator['Getlang'];
+		GetIcon: Utils['GetIcon'];
+		GetGuildId: Utils['GetGuildId'];
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -1625,6 +1762,8 @@ namespace Functions {
 			this.Set = new Colour().Set;
 			this.Getstring = new Translator().Getstring;
 			this.Getlang = new Translator().Getlang;
+			this.GetIcon = new Utils().GetIcon;
+			this.GetGuildId = new Utils().GetGuildId;
 			this.Base = this.Base.bind(this);
 			this.DogCeoApi = this.DogCeoApi.bind(this);
 			this.NekosLife = this.NekosLife.bind(this);
@@ -1638,6 +1777,11 @@ namespace Functions {
 			if (!opts.image) opts.image = null;
 			if (!opts.fields) opts.fields = null;
 			if (!opts.link) opts.link = null;
+			if (!opts.iconURL && !opts.accessor) throw new Error('Manual or default');
+			if (!opts.iconURL && opts.accessor)
+				opts.iconURL = this.GetIcon(opts.accessor);
+			if (!opts.id && !opts.accessor) throw new Error('Manual or defualt');
+			if (!opts.id && opts.accessor) opts.id = this.GetGuildId(opts.accessor);
 
 			const lang = await this.Getlang(opts.id);
 
@@ -1649,6 +1793,7 @@ namespace Functions {
 			)}: \`${opts.provider}\``;
 
 			return this.Embed({
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				title: title,
@@ -1656,10 +1801,13 @@ namespace Functions {
 				fields: opts.fields,
 				link: opts.link,
 				image: opts.image,
+				colour: opts.colour,
 			});
 		}
 		async DogCeoApi(opts: Funcs.GeneratingEmbedOpts) {
 			return await this.Base({
+				colour: opts.colour,
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				id: opts.id,
@@ -1671,6 +1819,8 @@ namespace Functions {
 		}
 		async NekosLife(opts: Funcs.GeneratingEmbedOpts) {
 			return await this.Base({
+				colour: opts.colour,
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				id: opts.id,
@@ -1682,6 +1832,8 @@ namespace Functions {
 		}
 		async NekosBot(opts: Funcs.GeneratingEmbedOpts) {
 			return await this.Base({
+				colour: opts.colour,
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				id: opts.id,
@@ -1693,6 +1845,8 @@ namespace Functions {
 		}
 		async DiscordIG(opts: Funcs.GeneratingEmbedOpts) {
 			return await this.Base({
+				colour: opts.colour,
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				id: opts.id,
@@ -1704,6 +1858,8 @@ namespace Functions {
 		}
 		async Duncte123(opts: Funcs.GeneratingEmbedOpts) {
 			return await this.Base({
+				colour: opts.colour,
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				id: opts.id,
@@ -1715,6 +1871,8 @@ namespace Functions {
 		}
 		async NekosFun(opts: Funcs.GeneratingEmbedOpts) {
 			return await this.Base({
+				colour: opts.colour,
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				id: opts.id,
@@ -1726,6 +1884,8 @@ namespace Functions {
 		}
 		async SomeRandomApi(opts: Funcs.GeneratingEmbedOpts) {
 			return await this.Base({
+				colour: opts.colour,
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				id: opts.id,
@@ -1743,6 +1903,8 @@ namespace Functions {
 		Embed: Embed['Base'];
 		Capitalize: Utils['Capitalize'];
 		Set: Colour['Set'];
+		GetIcon: Utils['GetIcon'];
+		GetGuildId: Utils['GetGuildId'];
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -1751,12 +1913,19 @@ namespace Functions {
 			this.Capitalize = new Utils().Capitalize;
 			this.Set = new Colour().Set;
 			this.Base = this.Base.bind(this);
+			this.GetIcon = new Utils().GetIcon;
+			this.GetGuildId = new Utils().GetGuildId;
 		}
 		async Base(opts: Funcs.ImageEmbedOpts) {
 			if (!opts.fields) opts.fields = null;
 			if (!opts.link) opts.link = null;
+			if (!opts.iconURL && !opts.accessor) throw new Error('Manual or default');
+			if (!opts.iconURL && opts.accessor)
+				opts.iconURL = this.GetIcon(opts.accessor);
 
 			return await this.Embed({
+				colour: opts.colour,
+				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				title: opts.title,

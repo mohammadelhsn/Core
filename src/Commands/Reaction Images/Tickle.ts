@@ -38,7 +38,7 @@ export default class TickleCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				message: message,
+				event: { message: message },
 			});
 		} else {
 			if (!user) {
@@ -97,5 +97,60 @@ export default class TickleCommand extends BaseCommand {
 			}
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const user = interaction.options.getUser('user');
+
+		if (!user) {
+			const embed = await this.ErrorEmbed.Base({
+				accessor: interaction,
+				text: this,
+				error_message: 'Missing required user mention!',
+			});
+
+			return await interaction.reply({ embeds: [embed] });
+		}
+
+		const generatingEmbed = await this.GeneratingEmbed.NekosFun({
+			accessor: interaction,
+			text: this,
+		});
+
+		await interaction.reply({ embeds: [generatingEmbed] });
+
+		try {
+			const res = await this.Reactions.Tickle();
+
+			if (res.error == true) {
+				const embed = await this.ErrorEmbed.ApiError({
+					accessor: interaction,
+					text: this,
+				});
+
+				return interaction.replied
+					? await interaction.editReply({ embeds: [embed] })
+					: await interaction.reply({ embeds: [embed] });
+			}
+
+			const tickleEmbed = await this.ImageEmbed.Base({
+				accessor: interaction,
+				text: this,
+				title: 'Tickle command',
+				description: `${interaction.user.toString()} has tickled ${user.toString()}!`,
+				image: res.file,
+			});
+
+			return await interaction.editReply({ embeds: [tickleEmbed] });
+		} catch (error) {
+			console.log('Error', error);
+
+			const embed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+
+			return interaction.replied
+				? await interaction.editReply({ embeds: [embed] })
+				: await interaction.reply({ embeds: [embed] });
+		}
+	}
 }

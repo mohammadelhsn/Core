@@ -22,8 +22,6 @@ export default abstract class BaseCommand {
 	Utils = new Functions.Utils();
 	Channels = new Functions.Channels();
 	Settings = new Functions.Settings();
-	Economy = new Functions.Economy();
-	Xp = new Functions.Xp();
 	ErrorEmbed = new Functions.ErrorEmbed();
 	SuccessEmbed = new Functions.SuccessEmbed();
 	Embed = new Functions.Embed();

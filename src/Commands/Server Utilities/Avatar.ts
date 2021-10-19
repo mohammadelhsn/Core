@@ -19,7 +19,7 @@ export default class AvatarCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'working'
+			'debug'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
@@ -49,7 +49,7 @@ export default class AvatarCommand extends BaseCommand {
 				return this.HelpEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					command: this,
-					message: message,
+					event: { message: message },
 				});
 			} else {
 				try {

@@ -106,7 +106,8 @@ export default class EmojisCommand extends BaseCommand {
 						});
 						embeds.push(embed);
 					}
-					return this.Utils.Paginate(message, {
+					return this.Utils.Paginate({
+						message: message,
 						embeds: embeds,
 						timeout: 600000,
 					});
@@ -153,7 +154,8 @@ export default class EmojisCommand extends BaseCommand {
 						});
 						embeds.push(embed);
 					}
-					return this.Utils.Paginate(message, {
+					return this.Utils.Paginate({
+						message: message,
 						embeds: embeds,
 						timeout: 600000,
 					});

@@ -75,7 +75,7 @@ export default class TriggeredCommand extends BaseCommand {
 				return await this.HelpEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					command: this,
-					message: message,
+					event: { message: message },
 				});
 			}
 			if (args[0].toLowerCase().includes('me')) {

@@ -256,7 +256,8 @@ export default class CovidCommand extends BaseCommand {
 								.setThumbnail(c.countryInfo.flag)
 						);
 					});
-					return this.Utils.Paginate(message, {
+					return this.Utils.Paginate({
+						message: message,
 						embeds: embeds,
 						timeout: 600000,
 					});
@@ -560,7 +561,8 @@ export default class CovidCommand extends BaseCommand {
 								)
 						);
 					});
-					return this.Utils.Paginate(message, {
+					return this.Utils.Paginate({
+						message: message,
 						embeds: embeds,
 						timeout: 600000,
 					});
@@ -707,7 +709,8 @@ export default class CovidCommand extends BaseCommand {
 							.setTimestamp()
 					);
 				});
-				return this.Utils.Paginate(message, {
+				return this.Utils.Paginate({
+					message: message,
 					embeds: embeds,
 					timeout: 600000,
 				});

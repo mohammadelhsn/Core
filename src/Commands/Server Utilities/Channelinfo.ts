@@ -19,7 +19,7 @@ export default class ChannelinfoCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'working'
+			'debug'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
@@ -62,7 +62,7 @@ export default class ChannelinfoCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				message: message,
+				event: { message: message },
 			});
 		} else {
 			const channelinfo = {

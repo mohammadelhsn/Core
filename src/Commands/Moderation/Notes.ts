@@ -155,7 +155,8 @@ export default class NotesCommand extends BaseCommand {
 			embeds.push(embed);
 		}
 
-		return await this.Utils.Paginate(message, {
+		return await this.Utils.Paginate({
+			message: message,
 			embeds: embeds,
 			timeout: 600000,
 		});

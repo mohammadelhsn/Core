@@ -88,17 +88,16 @@ export default class CaptchaCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				message: message,
+				event: { message: message },
 			});
 		}
 
 		let timedOut = false;
 
-		const isFromAuthor = (m) => m.author.id == message.author.id;
-
 		const options: AwaitMessagesOptions = {
 			max: 1,
 			time: 60000,
+			filter: (m) => m.author.id == message.author.id,
 		};
 
 		const tEmbed = this.Embed.Base({

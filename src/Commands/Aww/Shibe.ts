@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, CommandInteraction } from 'discord.js';
+import { Message, CommandInteraction, MessageFlags } from 'discord.js';
 
 export default class ShibeCommand extends BaseCommand {
 	constructor() {
@@ -29,7 +29,7 @@ export default class ShibeCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				message: message,
+				event: { message: message },
 			});
 		}
 
@@ -78,5 +78,51 @@ export default class ShibeCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const sub = interaction.options.getSubcommand();
+
+		const lang = await this.Translator.Getlang(interaction.guild.id);
+
+		if (sub == 'help') {
+			return await this.HelpEmbed.Base({
+				iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+				command: this,
+				event: { interaction: interaction },
+			});
+		}
+
+		const generatingEmbed = await this.GeneratingEmbed.Base({
+			iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+			text: this,
+			id: interaction.guild.id,
+			provider: 'Shibe Online API',
+		});
+
+		await interaction.reply({ embeds: [generatingEmbed] });
+
+		try {
+			const res = await this.Animals.Shibe();
+
+			const embed = await this.ImageEmbed.Base({
+				iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+				text: this,
+				title: 'Shibe command',
+				description: `${this.Utils.Capitalize(
+					this.Translator.Getstring(lang, 'provided_by')
+				)}: \`Shibe online API\``,
+				image: res.file,
+			});
+
+			return interaction.editReply({ embeds: [embed] });
+		} catch (error) {
+			console.log(error);
+
+			const errEmbed = await this.ErrorEmbed.UnexpectedError({
+				id: interaction.guild.id,
+				iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+				text: this,
+			});
+			return interaction.editReply({ embeds: [errEmbed] });
+		}
+	}
 }

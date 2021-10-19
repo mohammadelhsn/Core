@@ -29,7 +29,7 @@ export default class LaughCommand extends BaseCommand {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				command: this,
-				message: message,
+				event: { message: message },
 			});
 		} else {
 			const generatingEmbed = await this.GeneratingEmbed.NekosFun({
@@ -77,5 +77,46 @@ export default class LaughCommand extends BaseCommand {
 			}
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const generatingEmbed = await this.GeneratingEmbed.NekosFun({
+			accessor: interaction,
+			text: this,
+		});
+
+		await interaction.reply({ embeds: [generatingEmbed] });
+
+		try {
+			const res = await this.Reactions.Laugh();
+
+			if (res.error == true) {
+				const errEmbed = await this.ErrorEmbed.ApiError({
+					accessor: interaction,
+					text: this,
+				});
+
+				return await interaction.editReply({ embeds: [errEmbed] });
+			}
+
+			const imageEmbed = await this.ImageEmbed.Base({
+				accessor: interaction,
+				text: this,
+				title: 'Laugh command',
+				description: `${interaction.user.toString()} laughs!`,
+				image: res.file,
+			});
+
+			return await interaction.editReply({ embeds: [imageEmbed] });
+		} catch (error) {
+			console.log(error);
+
+			const errEmbed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+
+			return interaction.replied
+				? interaction.editReply({ embeds: [errEmbed] })
+				: interaction.reply({ embeds: [errEmbed] });
+		}
+	}
 }

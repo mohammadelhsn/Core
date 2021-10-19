@@ -54,7 +54,7 @@ export default class BotinfoCommand extends BaseCommand {
 				return await this.HelpEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					command: this,
-					message: message,
+					event: { message: message },
 				});
 			}
 
@@ -91,5 +91,14 @@ export default class BotinfoCommand extends BaseCommand {
 			con.release();
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const con = await this.con.connect();
+
+		try {
+			const prefix = this.Settings.Prefix(interaction.guild.id);
+		} catch (e) {
+		} finally {
+			con.release();
+		}
+	}
 }
