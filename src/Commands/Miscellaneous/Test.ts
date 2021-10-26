@@ -8,6 +8,9 @@ import {
 	CommandInteraction,
 	MessageEmbed,
 } from 'discord.js';
+import BaseObj from '../../Utils/Structures/BaseObj';
+import axios from 'axios';
+import Responses from '../../Utils/Structures/Interfaces/Response';
 
 export default class TesstCommand extends BaseCommand {
 	constructor() {

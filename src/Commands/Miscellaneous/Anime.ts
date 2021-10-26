@@ -71,9 +71,7 @@ export default class AnimeCommand extends BaseCommand {
 							: '`N/A`',
 						fields: [
 							{
-								name: `${
-									d.attributes.abbreviatedTitles.length > 0 ? 'AKA' : '\u200B'
-								}`,
+								name: `Names`,
 								value: names,
 							},
 							{ name: 'ID', value: `\`${d.id}\`` },
@@ -145,5 +143,88 @@ export default class AnimeCommand extends BaseCommand {
 			console.log(error);
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const query = interaction.options.getString('query');
+
+		try {
+			const res = await this.Miscellaneous.Anime(query);
+
+			if (!Array.isArray(res)) {
+				const errEmbed = await this.ErrorEmbed.ApiError({
+					accessor: interaction,
+					text: this,
+				});
+
+				return await interaction.reply({ embeds: [errEmbed] });
+			}
+
+			const embeds = [];
+			for (let anime of res) {
+				console.log(anime);
+
+				const embed = this.Embed.Base({
+					iconURL: anime.file,
+					link: anime.link,
+					text: this,
+					title: anime.title,
+					description: anime.text,
+					fields: [
+						{
+							name: 'Names?',
+							value: anime.misc.names.length == 0 ? 'N/A' : anime.misc.names,
+						},
+						{ name: 'ID', value: `\`${anime.id}}\`` },
+						{
+							name: 'Average rating',
+							value: `\`${anime.misc.averageRating}\``,
+						},
+						{
+							name: 'User count',
+							value: `\`${anime.misc.userCount}\``,
+						},
+						{
+							name: 'Favourite count',
+							value: `\`${anime.misc.favouriteCount}\``,
+						},
+						{
+							name: 'Status',
+							value: `\`${anime.misc.status}\``,
+						},
+						{ name: 'Start date', value: `\`${anime.misc.startDate}\`` },
+						{
+							name: 'End date',
+							value: `\`${anime.misc.endDate}\``,
+						},
+						{
+							name: 'Next release',
+							value: `\`${anime.misc.nextRelease}\``,
+						},
+						{
+							name: 'Age rating',
+							value: `\`${anime.misc.ageRating}\``,
+						},
+						{
+							name: 'Age rating guide',
+							value: `\`${anime.misc.ageRatingGuide}\``,
+						},
+						{
+							name: 'Episode count',
+							value: `\`${anime.misc.episodeCount}\``,
+						},
+					],
+				});
+
+				embeds.push(embed);
+			}
+
+			console.log(embeds);
+
+			return await this.Utils.Paginate({
+				embeds: embeds,
+				accessor: interaction,
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	}
 }

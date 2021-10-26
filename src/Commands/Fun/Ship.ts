@@ -88,5 +88,39 @@ export default class ShipCommand extends BaseCommand {
 			return message.channel.send({ embeds: [match] });
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const user1 = interaction.options.getUser('user1');
+		const user2 = interaction.options.getUser('user2') || interaction.user;
+
+		const ship = Math.floor(Math.random() * 100) + 1;
+
+		if (ship == 100) {
+			const perfectMatch = await this.Embed.Base({
+				accessor: interaction,
+				text: this,
+				title: `${user1.username} and ${user2.username} are meant for each other! :eyes:`,
+				description: `:heart_eyes: \`${ship}\`% :heart_eyes:`,
+			});
+
+			return await interaction.reply({ embeds: [perfectMatch] });
+		}
+		if (ship <= 50) {
+			const badmatch = await this.Embed.Base({
+				accessor: interaction,
+				text: this,
+				title: `${user1.username} and ${user2.username} dont ship well. Oof`,
+				description: `:broken_heart: \`${ship}\`% :broken_heart:`,
+			});
+			return interaction.reply({ embeds: [badmatch] });
+		}
+
+		const match = await this.Embed.Base({
+			accessor: interaction,
+			text: this,
+			title: `${user1.username} and ${user2.username} match well`,
+			description: `:heart: \`${ship}\`% :heart:`,
+		});
+
+		return await interaction.reply({ embeds: [match] });
+	}
 }

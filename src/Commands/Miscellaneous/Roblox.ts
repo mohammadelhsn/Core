@@ -78,5 +78,49 @@ export default class RobloxCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const query = interaction.options.getString('query');
+
+		try {
+			const api = new API(process.env.MY_API);
+			const { data } = await api.Roblox(query);
+
+			await interaction.deferReply({ ephemeral: true });
+
+			if (data.isBanned == true) {
+				const embed = this.Embed.Base({
+					iconURL: data.thumbnail,
+					title: `${data.username} | Account status: Banned`,
+					description: data.bio,
+					text: this,
+					fields: [{ name: 'Join date', value: data.joinDate }],
+				});
+
+				return interaction.editReply({ embeds: [embed] });
+			}
+
+			const embed = this.Embed.Base({
+				iconURL: data.thumbnail,
+				title: `${data.username} | Status: Not banned`,
+				description: data.bio,
+				text: this,
+				fields: [
+					{ name: 'Past usernames', value: data.pastNames.toString() },
+					{ name: 'Friends', value: data.friends.toString() },
+					{ name: 'Followers', value: data.followers },
+					{ name: 'Following', value: data.following },
+					{ name: 'Age', value: data.age },
+					{ name: 'Join date', value: data.joinDate },
+				],
+				link: data.profile_url,
+			});
+			return interaction.editReply({ embeds: [embed] });
+		} catch (e) {
+			const errEmbed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+			return interaction.editReply({ embeds: [errEmbed] });
+		}
+	}
 }

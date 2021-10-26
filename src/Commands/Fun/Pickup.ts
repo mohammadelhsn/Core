@@ -68,5 +68,35 @@ export default class PickupCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const lang = await this.Translator.Getlang(interaction.guild.id);
+
+		const gEmbed = await this.GeneratingEmbed.Base({
+			accessor: interaction,
+			text: this,
+			provider: 'Fun-responses',
+		});
+
+		await interaction.reply({ embeds: [gEmbed] });
+
+		try {
+			const embed = await this.Embed.Base({
+				accessor: interaction,
+				text: this,
+				description: `${this.Utils.Capitalize(
+					this.Translator.Getstring(lang, 'provided_by')
+				)}: \`Fun-responses\``,
+				fields: [{ name: 'Pickup line', value: `"\`${await fun.pickup()}\`"` }],
+			});
+
+			return await interaction.editReply({ embeds: [embed] })
+		} catch (error) {
+			const errEmbed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+
+			return interaction.editReply({ embeds: [errEmbed] });
+		}
+	}
 }

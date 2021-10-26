@@ -368,9 +368,11 @@ export default class InfoCommand extends BaseCommand {
 					const kickable = (member as GuildMember).kickable ? 'Yes' : 'No';
 					const bannable = (member as GuildMember).bannable ? 'Yes' : 'No';
 					const joinedAt = (member as GuildMember).joinedAt;
-					const presence = `${this.Utils.StatusEmoji(
-						(member as GuildMember).presence.status
-					)} | ${(member as GuildMember).presence.status.toUpperCase()}`;
+					const presence = (member as GuildMember).presence
+						? `${this.Utils.StatusEmoji(
+								(member as GuildMember).presence.status
+						  )} | ${(member as GuildMember).presence.status.toUpperCase()}`
+						: 'N/A';
 					const nickname = (member as GuildMember).nickname
 						? `${(member as GuildMember).nickname} AKA ${user.username}`
 						: user.username;

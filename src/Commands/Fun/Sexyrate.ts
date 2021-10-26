@@ -69,5 +69,19 @@ export default class SexyrateCommand extends BaseCommand {
 			}
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const user = interaction.options.getUser('user') || interaction.user;
+
+		const rating = Math.floor(Math.random() * 100);
+
+		const embed = await this.Embed.Base({
+			accessor: interaction,
+			description: `❤️ Sexy rate ❤️ I rate ${
+				user.id == interaction.user.id ? 'you' : user.toString()
+			} a \`${rating}/100\` on the sexy rate scale`,
+			text: this,
+		});
+
+		return await interaction.reply({ embeds: [embed] });
+	}
 }

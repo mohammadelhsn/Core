@@ -257,7 +257,7 @@ export default class CovidCommand extends BaseCommand {
 						);
 					});
 					return this.Utils.Paginate({
-						message: message,
+						accessor: message,
 						embeds: embeds,
 						timeout: 600000,
 					});
@@ -562,7 +562,7 @@ export default class CovidCommand extends BaseCommand {
 						);
 					});
 					return this.Utils.Paginate({
-						message: message,
+						accessor: message,
 						embeds: embeds,
 						timeout: 600000,
 					});
@@ -710,7 +710,7 @@ export default class CovidCommand extends BaseCommand {
 					);
 				});
 				return this.Utils.Paginate({
-					message: message,
+					accessor: message,
 					embeds: embeds,
 					timeout: 600000,
 				});

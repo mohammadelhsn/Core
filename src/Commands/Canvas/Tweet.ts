@@ -105,6 +105,8 @@ export default class TweetCommand extends BaseCommand {
 					const image = await this.Canvas.Tweet(username, comment);
 					const file = new MessageAttachment(image.file, 'tweet.png');
 
+					console.log(file);
+
 					const embed = await this.Embed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,

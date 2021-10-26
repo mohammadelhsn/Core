@@ -74,5 +74,40 @@ export default class JokeCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const gEmbed = await this.GeneratingEmbed.SomeRandomApi({
+			accessor: interaction,
+			text: this,
+		});
+
+		await interaction.reply({ embeds: [gEmbed] });
+
+		try {
+			const res = await this.Fun.Joke();
+
+			if (res.error == true) {
+				const errEmbed = await this.ErrorEmbed.NoResult({
+					text: this,
+					accessor: interaction,
+				});
+
+				return await interaction.editReply({ embeds: [errEmbed] });
+			}
+
+			const embed = await this.Embed.Base({
+				accessor: interaction,
+				text: this,
+				description: res.text,
+			});
+
+			return await interaction.editReply({ embeds: [embed] });
+		} catch (error) {
+			const errEmbed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+
+			return interaction.editReply({ embeds: [errEmbed] });
+		}
+	}
 }

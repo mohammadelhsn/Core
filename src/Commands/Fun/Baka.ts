@@ -77,5 +77,44 @@ export default class BakaCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errEmbed] });
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const guild = client.database.get(interaction.guild.id);
+
+		const gEmbed = await this.GeneratingEmbed.NekosFun({
+			accessor: interaction,
+			text: this,
+		});
+
+		await interaction.reply({ embeds: [gEmbed] });
+
+		try {
+			const res = await this.Fun.Baka();
+
+			if (res.error == true) {
+				const errEmbed = await this.ErrorEmbed.NoResult({
+					text: this,
+					accessor: interaction,
+				});
+
+				return await interaction.editReply({ embeds: [errEmbed] });
+			}
+
+			const embed = await this.ImageEmbed.Base({
+				accessor: interaction,
+				text: this,
+				title: 'Baka command',
+				description: guild.Strings.NekosFun,
+				image: res.file,
+			});
+
+			return await interaction.editReply({ embeds: [embed] });
+		} catch (error) {
+			const errEmbed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+
+			return interaction.editReply({ embeds: [errEmbed] });
+		}
+	}
 }

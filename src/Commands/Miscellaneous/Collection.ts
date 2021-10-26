@@ -78,5 +78,19 @@ export default class CollectionCommand extends BaseCommand {
 
 		if (react && react.first()) msg.delete();
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const query = interaction.options.getString('query');
+
+		if (!query)
+			return interaction.reply({ content: 'You must include a query!' });
+
+		const url = `https://djsdocs.sorta.moe/v2/embed?src=collection&q=${encodeURIComponent(
+			query
+		)}`;
+
+		const docFetch = await axios.get(url);
+		const embed = docFetch.data;
+
+		return interaction.reply({ embeds: [embed] });
+	}
 }

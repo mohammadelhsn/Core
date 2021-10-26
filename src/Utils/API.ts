@@ -406,7 +406,7 @@ namespace API {
 		async Blurpify(image: string) {
 			try {
 				const res = await axios.get(
-					`https://nekobot.xyz/api/imagegen?type=blurpify&url=${image}`
+					`https://nekobot.xyz/api/imagegen?type=blurpify&image=${image}`
 				);
 				const data = <Responses.NekoBotCanvas>res.data;
 
@@ -435,7 +435,9 @@ namespace API {
 		async Captcha(image: string, text: string) {
 			try {
 				const res = await axios.get(
-					`https://nekobot.xyz/api/imagegen?type=captcha&url=${image}`
+					encodeURI(
+						`https://nekobot.xyz/api/imagegen?type=captcha&url=${image}&username=${text}`
+					)
 				);
 				const data = <Responses.NekoBotCanvas>res.data;
 
@@ -577,7 +579,7 @@ namespace API {
 		async Phcomment(image: string, username: string, comment: string) {
 			try {
 				const res = await axios.get(
-					`https://nekobot.xyz/api/imagegen?type=phcomment&image=${image}&comment=${comment}&username=${username}`
+					`https://nekobot.xyz/api/imagegen?type=phcomment&image=${image}&text=${comment}&username=${username}`
 				);
 				const data = <Responses.NekoBotCanvas>res.data;
 
@@ -623,7 +625,7 @@ namespace API {
 		async Tweet(username: string, comment: string) {
 			try {
 				const res = await axios.get(
-					`https://nekobot.xyz/api/imagegen?tweet=iphonex&username=${username}&comment=${comment}`
+					`https://nekobot.xyz/api/imagegen?type=tweet&username=${username}&text=${comment}`
 				);
 				const data = <Responses.NekoBotCanvas>res.data;
 
@@ -1315,8 +1317,8 @@ namespace API {
 				const animes = [];
 				for (let anime of data) {
 					const names = anime.attributes.abbreviatedTitles
-						? anime.attributes.abbreviatedTitles.map((a) => a).join(' ')
-						: 'N/A';
+						? anime.attributes.abbreviatedTitles.map((a) => `${a}`).join(' ')
+						: '\u200B';
 
 					const obj = new BaseObj({
 						error: false,
@@ -1333,7 +1335,9 @@ namespace API {
 							userCount: FormatNumber(anime.attributes.userCount),
 							favouriteCount: FormatNumber(anime.attributes.favoritesCount),
 							status: Capitalize(anime.attributes.status),
-							startDate: anime.attributes.startDate,
+							startDate: anime.attributes.startDate
+								? anime.attributes.endDate
+								: 'N/A',
 							endDate: anime.attributes.endDate
 								? anime.attributes.endDate
 								: 'N/A',

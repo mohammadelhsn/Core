@@ -83,5 +83,48 @@ export default class AdviceCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errorEmbed] });
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const lang = await this.Translator.Getlang(interaction.guild.id);
+		const gEmbed = await this.GeneratingEmbed.Base({
+			accessor: interaction,
+			text: this,
+			provider: 'Advice slip API',
+		});
+
+		await interaction.reply({ embeds: [gEmbed] });
+
+		try {
+			const res = await this.Fun.Advice();
+
+			if (res.error == true) {
+				const errEmbed = await this.ErrorEmbed.NoResult({
+					text: this,
+					accessor: interaction,
+				});
+
+				return await interaction.editReply({ embeds: [errEmbed] });
+			}
+
+			const embed = await this.Embed.Base({
+				accessor: interaction,
+				text: this,
+				description: `${this.Utils.Capitalize(
+					this.Translator.Getstring(lang, 'provided_by')
+				)}: \`Advice slip API\``,
+				fields: [
+					{ name: 'Advice', value: `\`${res.text}\`` },
+					{ name: 'ID:', value: `\`${res.id}\`` },
+				],
+			});
+
+			return await interaction.editReply({ embeds: [embed] });
+		} catch (error) {
+			const errEmbed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+
+			return interaction.editReply({ embeds: [errEmbed] });
+		}
+	}
 }

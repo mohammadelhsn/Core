@@ -23,8 +23,10 @@ export default class GuildCreateEvent extends BaseEvent {
 
 		const logs = client.channels.cache.get('774251956184416258') as TextChannel;
 
-		const embed = await this.Embed.Base({
-			iconURL: guild.iconURL({ dynamic: true }),
+		const embed = this.Embed.Base({
+			iconURL: guild.icon
+				? guild.iconURL({ dynamic: true })
+				: client.user.displayAvatarURL({ dynamic: true }),
 			text: 'Core guilds',
 			title: 'Core guilds',
 			description: `New guild added`,
@@ -38,6 +40,7 @@ export default class GuildCreateEvent extends BaseEvent {
 				{ name: 'Guild owner ID', value: `\`${guild.ownerId}\`` },
 				{ name: 'Guild membercount', value: `\`${guild.memberCount}\`` },
 			],
+			accessor: null,
 		});
 
 		return logs.send({ embeds: [embed] });

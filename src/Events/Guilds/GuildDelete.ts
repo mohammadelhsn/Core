@@ -22,7 +22,9 @@ export default class GuildDeleteEvent extends BaseEvent {
 		const logs = client.channels.cache.get('774251956184416258') as TextChannel;
 
 		const embed = await this.Embed.Base({
-			iconURL: guild.iconURL({ dynamic: true }),
+			iconURL: guild.icon
+				? guild.iconURL({ dynamic: true })
+				: client.user.displayAvatarURL({ dynamic: true }),
 			text: 'Core guilds',
 			title: 'Core guilds',
 			description: `Guild removed :(`,
@@ -36,6 +38,7 @@ export default class GuildDeleteEvent extends BaseEvent {
 				{ name: 'Guild owner ID', value: `\`${guild.ownerId}\`` },
 				{ name: 'Guild membercount', value: `\`${guild.memberCount}\`` },
 			],
+			accessor: null,
 		});
 
 		return logs.send({ embeds: [embed] });

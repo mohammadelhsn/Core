@@ -19,7 +19,7 @@ export default class WallpaperCommand extends BaseCommand {
 			false,
 			true,
 			3000,
-			'working'
+			'WIP'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
@@ -80,5 +80,46 @@ export default class WallpaperCommand extends BaseCommand {
 			}
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const lang = await this.Translator.Getlang(interaction.guild.id);
+
+		const gEmbed = await this.GeneratingEmbed.NekosFun({
+			accessor: interaction,
+			text: this,
+		});
+
+		await interaction.reply({ embeds: [gEmbed], ephemeral: true });
+
+		try {
+			const res = await this.Fun.Wallpaper();
+
+			if (res.error == true) {
+				const errEmbed = await this.ErrorEmbed.NoResult({
+					text: this,
+					accessor: interaction,
+				});
+
+				return await interaction.editReply({ embeds: [errEmbed] });
+			}
+
+			const embed = await this.ImageEmbed.Base({
+				accessor: interaction,
+				text: this,
+				title: `Wallpaper command`,
+				description: `${this.Utils.Capitalize(
+					this.Translator.Getstring(lang, 'provided_by')
+				)}: \`Nekos Fun API\``,
+				image: res.file,
+			});
+
+			return await interaction.editReply({ embeds: [embed] });
+		} catch (error) {
+			const errEmbed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+
+			return interaction.editReply({ embeds: [errEmbed] });
+		}
+	}
 }

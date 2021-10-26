@@ -47,7 +47,10 @@ export default class CaptchaCommand extends BaseCommand {
 
 			const avatar = user.user.displayAvatarURL({ format: 'png' });
 			const image = await this.Canvas.Captcha(avatar, text);
-			const file = new MessageAttachment(image.file, 'captcha.png');
+			const file = await new MessageAttachment(image.file, 'captcha.png');
+
+			console.log(file);
+			console.log(image);
 
 			const embed = await this.ImageEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -58,7 +61,7 @@ export default class CaptchaCommand extends BaseCommand {
 			});
 
 			m.delete();
-			return message.channel.send({ files: [file], embeds: embed });
+			return await message.channel.send({ files: [file], embeds: [embed] });
 		}
 
 		if (args[0] && args[0].toLowerCase().includes('me')) {

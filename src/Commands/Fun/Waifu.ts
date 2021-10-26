@@ -79,5 +79,46 @@ export default class WaifuCommand extends BaseCommand {
 			}
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const lang = await this.Translator.Getlang(interaction.guild.id);
+
+		const generatingEmbed = await this.GeneratingEmbed.NekosFun({
+			accessor: interaction,
+			text: this,
+		});
+
+		await interaction.reply({ embeds: [generatingEmbed], ephemeral: true });
+
+		try {
+			const res = await this.Fun.Waifu();
+
+			if (res.error == true) {
+				const errEmbed = await this.ErrorEmbed.NoResult({
+					text: this,
+					accessor: interaction,
+				});
+
+				return await interaction.editReply({ embeds: [errEmbed] });
+			}
+
+			const waifuEmbed = await this.ImageEmbed.Base({
+				accessor: interaction,
+				text: this,
+				title: `Waifu command`,
+				description: `${this.Utils.Capitalize(
+					this.Translator.Getstring(lang, 'provided_by')
+				)}: \`Nekos Fun API\``,
+				image: res.file,
+			});
+
+			return await interaction.editReply({ embeds: [waifuEmbed] });
+		} catch (error) {
+			const errEmbed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+
+			return interaction.editReply({ embeds: [errEmbed] });
+		}
+	}
 }

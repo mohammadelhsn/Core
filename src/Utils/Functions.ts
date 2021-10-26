@@ -290,12 +290,7 @@ namespace Functions {
 			if (args.length <= 1)
 				throw new ReferenceError('Not enough embeds to paginate');
 
-			return this.Pagination(
-				opts.embeds,
-				opts.emojiList,
-				opts.timeout,
-				opts.accessor
-			);
+			return this.Pagination(args, opts.emojiList, opts.timeout, opts.accessor);
 		}
 		Capitalize(string: string): string {
 			return string.charAt(0).toUpperCase() + string.slice(1);

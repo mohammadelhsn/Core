@@ -80,5 +80,35 @@ export default class GoogleCommand extends BaseCommand {
 			return data.items[0];
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const key = process.env.GOOGLE_KEY;
+		const csx = process.env.GOOGLE_CSX;
+
+		const query = interaction.options.getString('query');
+
+		await interaction.deferReply({ ephemeral: true });
+
+		const href = await search(query);
+
+		const embed = await this.Embed.Base({
+			iconURL: href.pagemap.cse_thumbnail
+				? href.pagemap.cse_thumbnail[0].src
+				: interaction.user.displayAvatarURL({ dynamic: true }),
+			text: this,
+			title: href.title,
+			description: href.snippet,
+			link: href.link,
+		});
+
+		return interaction.editReply({ embeds: [embed] });
+
+		async function search(query) {
+			const { data } = await axios.get(
+				`https://www.googleapis.com/customsearch/v1?key=${key}&cx=${csx}&q=${query}&safe=off`
+			);
+
+			if (!data.items) return null;
+			return data.items[0];
+		}
+	}
 }

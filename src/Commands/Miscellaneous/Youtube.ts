@@ -91,7 +91,6 @@ export default class YoutubeCommand extends BaseCommand {
 
 			const embeds = [];
 			for (const v of results) {
-				console.log(v);
 				const embed = await this.ImageEmbed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
@@ -122,5 +121,107 @@ export default class YoutubeCommand extends BaseCommand {
 			return this.Utils.Delete(msg);
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const sub = interaction.options.getSubcommand();
+		const query = interaction.options.getString('query');
+
+		if (!query) return;
+
+		await interaction.deferReply();
+
+		try {
+			if (sub == 'channel') {
+				const res = await youtube(query);
+
+				const results = res.items.filter((item) => item.type == 'channel');
+
+				const embeds = [];
+
+				for (let result of results) {
+					if (result.type == 'channel') {
+						const embed = await this.ImageEmbed.Base({
+							iconURL: result.bestAvatar.url,
+							text: this,
+							title: result.name,
+							description: `${
+								result.descriptionShort == null ? '' : result.descriptionShort
+							}`,
+							fields: [
+								{ name: 'Subscribers', value: `\`${result.subscribers}\`` },
+								{ name: 'Videos', value: `\`${result.videos}\`` },
+								{
+									name: 'Verified',
+									value: result.verified ? this.Emojis.verified : 'No',
+								},
+							],
+							link: result.url,
+							image: result.bestAvatar.url,
+						});
+
+						embeds.push(embed);
+					}
+				}
+
+				if (embeds.length > 1) {
+					return await this.Utils.Paginate({
+						accessor: interaction,
+						embeds: embeds,
+					});
+				}
+				return await interaction.editReply({ embeds: embeds });
+			}
+
+			if (sub == 'video') {
+				const res = await youtube(query);
+
+				const results = res.items.filter((item) => item.type == 'video');
+
+				const embeds = [];
+
+				for (let result of results) {
+					if (result.type == 'video') {
+						const embed = await this.ImageEmbed.Base({
+							iconURL: result.bestThumbnail.url,
+							text: this,
+							title: `${result.title}`,
+							description: `${result.description ? result.description : 'N/A'}`,
+							image: result.bestThumbnail.url,
+							fields: [
+								{
+									name: 'Views',
+									value: `\`${this.Utils.FormatNumber(result.views)}\``,
+								},
+								{ name: 'Duration', value: `\`${result.duration}\`` },
+								{
+									name: 'Uploaded',
+									value: `\`${
+										result.uploadedAt == null ? 'N/A' : result.uploadedAt
+									}\``,
+								},
+								{
+									name: 'Author',
+									value: `[${result.author.name}](${result.author.url})`,
+								},
+							],
+							link: result.url,
+						});
+						embeds.push(embed);
+					}
+				}
+
+				if (embeds.length == 0)
+					return interaction.editReply({ content: 'No results!' });
+				if (embeds.length == 1)
+					return interaction.editReply({ embeds: embeds });
+				await interaction.editReply({ content: 'Here are you result(s)' });
+				return await this.Utils.Paginate({
+					accessor: interaction,
+					embeds: embeds,
+					timeout: 60 * 1000,
+				});
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	}
 }
