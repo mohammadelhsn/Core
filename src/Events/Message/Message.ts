@@ -8,12 +8,15 @@ export default class MessageEvent extends BaseEvent {
 	}
 
 	async run(client: DiscordClient, message: Message) {
+		console.log('hi');
 		if (message.author.bot) return;
 		if (message.channel.type == 'DM') return;
 
 		const con = await this.con.connect();
 
 		const prefix = await this.Settings.Prefix(message.guild.id);
+
+		console.log(prefix);
 
 		if (message.content.startsWith(prefix)) {
 			const [cmdName, ...cmdArgs] = message.content

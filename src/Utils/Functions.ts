@@ -313,7 +313,9 @@ namespace Functions {
 				if (toFetch == 'welcome') return guild.welcome;
 
 				return guild;
-			} catch (error) {}
+			} catch (error) {
+				console.log(error);
+			}
 		}
 		Mentionrole(id: Snowflake): string {
 			return `<@&${id}>`;

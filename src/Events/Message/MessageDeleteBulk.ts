@@ -6,5 +6,7 @@ export default class MessageDeleteBulkEvent extends BaseEvent {
 	constructor() {
 		super('messageDeleteBulk');
 	}
-	async run(client: DiscordClient, messages: Collection<Message, Message>) {}
+	async run(client: DiscordClient, messages: Collection<Message, Message>) {
+		console.log(messages);
+	}
 }

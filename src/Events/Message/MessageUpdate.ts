@@ -6,5 +6,8 @@ export default class MessageUpdateEvent extends BaseEvent {
 	constructor() {
 		super('messageUpdate');
 	}
-	async run(client: DiscordClient, message: Message) {}
+	async run(client: DiscordClient, oldMessage: Message, newMessage: Message) {
+		console.log(newMessage);
+		console.log(oldMessage);
+	}
 }

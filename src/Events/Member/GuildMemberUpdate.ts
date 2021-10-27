@@ -10,5 +10,8 @@ export default class GuildMemberUpdateEvent extends BaseEvent {
 		client: DiscordClient,
 		oldMember: GuildMember,
 		newMember: GuildMember
-	) {}
+	) {
+		console.log(oldMember);
+		console.log(newMember);
+	}
 }
