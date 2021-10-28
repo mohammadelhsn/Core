@@ -5,6 +5,7 @@ import {
 	GuildMember,
 	Message,
 	UserFlags,
+	Util,
 } from 'discord.js';
 import {
 	APIInteractionGuildMember,
@@ -170,6 +171,7 @@ export default class InfoCommand extends BaseCommand {
 			return message.channel.send({ embeds: [embed] });
 		}
 		if (sub == 'user') {
+			const user = args[0];
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {

@@ -7,6 +7,6 @@ export default class InviteCreateEvent extends BaseEvent {
 		super('inviteCreate');
 	}
 	async run(client: DiscordClient, invite: Invite) {
-		console.log(invite);
+		//	console.log(invite);
 	}
 }

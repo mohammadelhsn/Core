@@ -7,6 +7,6 @@ export default class DisconnectEvent extends BaseEvent {
 		super('disconnect');
 	}
 	async run(client: DiscordClient) {
-		console.log('Client disconnected from the websocket');
+		//	console.log('Client disconnected from the websocket');
 	}
 }

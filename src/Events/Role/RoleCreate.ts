@@ -7,6 +7,6 @@ export default class RoleCreateEvent extends BaseEvent {
 		super('roleCreate');
 	}
 	async run(client: DiscordClient, role: Role) {
-		console.log(role);
+		//	console.log(role);
 	}
 }

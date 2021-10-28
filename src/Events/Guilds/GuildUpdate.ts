@@ -7,7 +7,7 @@ export default class GuildUpdateEvent extends BaseEvent {
 		super('guildUpdate');
 	}
 	async run(client: DiscordClient, oldGuild: Guild, newGuild: Guild) {
-		console.log(oldGuild);
-		console.log(newGuild);
+		//	console.log(oldGuild);
+		//	console.log(newGuild);
 	}
 }

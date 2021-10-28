@@ -7,6 +7,6 @@ export default class Event extends BaseEvent {
 		super('debug');
 	}
 	async run(client: DiscordClient, info: string) {
-		console.log(info);
+		//	console.log(info);
 	}
 }

@@ -7,7 +7,7 @@ export default class GuildBanAddEvent extends BaseEvent {
 		super('guildBanAdd');
 	}
 	async run(client: DiscordClient, guild: Guild, user: User) {
-		console.log(guild);
-		console.log(user);
+		//	console.log(guild);
+		//	console.log(user);
 	}
 }

@@ -7,6 +7,6 @@ export default class InviteDeleteEvent extends BaseEvent {
 		super('inviteDelete');
 	}
 	async run(client: DiscordClient, invite: Invite) {
-		console.log(invite);
+		//	console.log(invite);
 	}
 }
