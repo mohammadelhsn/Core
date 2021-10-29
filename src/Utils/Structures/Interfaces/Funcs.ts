@@ -1,4 +1,5 @@
 import { Channel } from 'diagnostics_channel';
+import { APIApplicationCommandOption } from 'discord-api-types/v9';
 import {
 	Snowflake,
 	MessageEmbed,

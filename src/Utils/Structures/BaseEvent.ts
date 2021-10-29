@@ -6,22 +6,22 @@ import Colours from '../../../Colours.json';
 import Schemas from '../Schemas';
 
 export default abstract class BaseEvent {
-	con = StateManager.con;
-	Colour = new Functions.Colour();
-	Translator = new Functions.Translator();
-	Utils = new Functions.Utils();
-	Channels = new Functions.Channels();
-	Settings = new Functions.Settings();
-	ErrorEmbed = new Functions.ErrorEmbed();
-	SuccessEmbed = new Functions.SuccessEmbed();
-	Embed = new Functions.Embed();
-	HelpEmbed = new Functions.HelpEmbed();
-	GeneratingEmbed = new Functions.GeneratingEmbed();
-	ImageEmbed = new Functions.ImageEmbed();
-	Moderation = new Functions.Moderation();
-	Emojis = Emojis;
-	Colours = Colours;
-	Schemas = Schemas;
+	protected con = StateManager.con;
+	protected Colour = new Functions.Colour();
+	protected Translator = new Functions.Translator();
+	protected Utils = new Functions.Utils();
+	protected Channels = new Functions.Channels();
+	protected Settings = new Functions.Settings();
+	protected ErrorEmbed = new Functions.ErrorEmbed();
+	protected SuccessEmbed = new Functions.SuccessEmbed();
+	protected Embed = new Functions.Embed();
+	protected HelpEmbed = new Functions.HelpEmbed();
+	protected GeneratingEmbed = new Functions.GeneratingEmbed();
+	protected ImageEmbed = new Functions.ImageEmbed();
+	protected Moderation = new Functions.Moderation();
+	protected Emojis = Emojis;
+	protected Colours = Colours;
+	protected Schemas = Schemas;
 	constructor(private name: string) {}
 
 	getName(): string {

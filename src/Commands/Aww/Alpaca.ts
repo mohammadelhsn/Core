@@ -30,7 +30,6 @@ export default class AlpacaCommand extends BaseCommand {
 				accessor: message,
 			});
 		}
-
 		const generatingEmbed = await this.GeneratingEmbed.Duncte123({
 			accessor: message,
 			text: this,

@@ -38,10 +38,14 @@ import Schemas from './Schemas';
 import moment from 'moment';
 import { ChannelTypes } from 'discord.js/typings/enums';
 import {
+	APIApplicationCommandOption,
 	APIInteractionDataResolvedChannel,
-	ChannelType,
 } from 'discord-api-types';
-import { roleMention } from '@discordjs/builders';
+import {
+	SlashCommandBuilder,
+	SlashCommandSubcommandsOnlyBuilder,
+} from '@discordjs/builders';
+import types from 'discord-api-types/v9';
 
 namespace Functions {
 	export class Colour {
@@ -106,9 +110,9 @@ namespace Functions {
 		}
 	}
 	export class Translator {
-		con: Pool;
-		client: DiscordClient;
-		cache: Collection<Snowflake, CachedGuild>;
+		protected con: Pool;
+		protected client: DiscordClient;
+		protected cache: Collection<Snowflake, CachedGuild>;
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -175,9 +179,9 @@ namespace Functions {
 		}
 	}
 	export class Utils {
-		con: Pool;
-		client: DiscordClient;
-		cache: Collection<Snowflake, CachedGuild>;
+		protected con: Pool;
+		protected client: DiscordClient;
+		protected cache: Collection<Snowflake, CachedGuild>;
 		Emojis = Emojis;
 		constructor() {
 			this.con = StateManager.con;
@@ -442,9 +446,9 @@ namespace Functions {
 	}
 
 	export class Channels {
-		con: Pool;
-		client: DiscordClient;
-		cache: Collection<Snowflake, CachedGuild>;
+		protected con: Pool;
+		protected client: DiscordClient;
+		protected cache: Collection<Snowflake, CachedGuild>;
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -721,9 +725,9 @@ namespace Functions {
 		}
 	}
 	export class Settings {
-		con: Pool;
-		client: DiscordClient;
-		cache: Collection<Snowflake, CachedGuild>;
+		protected con: Pool;
+		protected client: DiscordClient;
+		protected cache: Collection<Snowflake, CachedGuild>;
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -1190,13 +1194,13 @@ namespace Functions {
 		}
 	}
 	export class Embed {
-		con: Pool;
-		client: DiscordClient;
-		cache: Collection<Snowflake, CachedGuild>;
-		Capitalize: Utils['Capitalize'];
-		Set: Colour['Set'];
-		GetGuildId: Utils['GetGuildId'];
-		GetIcon: Utils['GetIcon'];
+		protected con: Pool;
+		protected client: DiscordClient;
+		protected cache: Collection<Snowflake, CachedGuild>;
+		protected Capitalize: Utils['Capitalize'];
+		protected Set: Colour['Set'];
+		protected GetGuildId: Utils['GetGuildId'];
+		protected GetIcon: Utils['GetIcon'];
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -1250,16 +1254,16 @@ namespace Functions {
 		}
 	}
 	export class SuccessEmbed {
-		con: Pool;
-		client: DiscordClient;
-		cache: Collection<Snowflake, CachedGuild>;
-		Capitalize: Utils['Capitalize'];
-		Set: Colour['Set'];
-		Getstring: Translator['Getstring'];
-		Getlang: Translator['Getlang'];
-		Embed: Embed['Base'];
-		GetIcon: Utils['GetIcon'];
-		GetGuildId: Utils['GetGuildId'];
+		protected con: Pool;
+		protected client: DiscordClient;
+		protected cache: Collection<Snowflake, CachedGuild>;
+		protected Capitalize: Utils['Capitalize'];
+		protected Set: Colour['Set'];
+		protected Getstring: Translator['Getstring'];
+		protected Getlang: Translator['Getlang'];
+		protected Embed: Embed['Base'];
+		protected GetIcon: Utils['GetIcon'];
+		protected GetGuildId: Utils['GetGuildId'];
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -1302,16 +1306,16 @@ namespace Functions {
 		}
 	}
 	export class ErrorEmbed {
-		con: Pool;
-		client: DiscordClient;
-		cache: Collection<Snowflake, CachedGuild>;
-		Capitalize: Utils['Capitalize'];
-		Getlang: Translator['Getlang'];
-		Getstring: Translator['Getstring'];
-		Set: Colour['Set'];
-		Embed: Embed['Base'];
-		GetIcon: Utils['GetIcon'];
-		GetGuildId: Utils['GetGuildId'];
+		protected con: Pool;
+		protected client: DiscordClient;
+		protected cache: Collection<Snowflake, CachedGuild>;
+		protected Capitalize: Utils['Capitalize'];
+		protected Getlang: Translator['Getlang'];
+		protected Getstring: Translator['Getstring'];
+		protected Set: Colour['Set'];
+		protected Embed: Embed['Base'];
+		protected GetIcon: Utils['GetIcon'];
+		protected GetGuildId: Utils['GetGuildId'];
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -1491,17 +1495,17 @@ namespace Functions {
 		}
 	}
 	export class HelpEmbed {
-		con: Pool;
-		client: DiscordClient;
-		cache: Collection<Snowflake, CachedGuild>;
-		Getlang: Translator['Getlang'];
-		Getstring: Translator['Getstring'];
-		Translate: Translator['Translate'];
-		Set: Colour['Set'];
-		Paginate: Utils['Paginate'];
-		Capitalize: Utils['Capitalize'];
-		Prefix: Settings['Prefix'];
-		Embed: Embed['Base'];
+		protected con: Pool;
+		protected client: DiscordClient;
+		protected cache: Collection<Snowflake, CachedGuild>;
+		protected Getlang: Translator['Getlang'];
+		protected Getstring: Translator['Getstring'];
+		protected Translate: Translator['Translate'];
+		protected Set: Colour['Set'];
+		protected Paginate: Utils['Paginate'];
+		protected Capitalize: Utils['Capitalize'];
+		protected Prefix: Settings['Prefix'];
+		protected Embed: Embed['Base'];
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -1718,16 +1722,16 @@ namespace Functions {
 		}
 	}
 	export class GeneratingEmbed {
-		con: Pool;
-		client: DiscordClient;
-		cache: Collection<Snowflake, CachedGuild>;
-		Embed: Embed['Base'];
-		Capitalize: Utils['Capitalize'];
-		Set: Colour['Set'];
-		Getstring: Translator['Getstring'];
-		Getlang: Translator['Getlang'];
-		GetIcon: Utils['GetIcon'];
-		GetGuildId: Utils['GetGuildId'];
+		protected con: Pool;
+		protected client: DiscordClient;
+		protected cache: Collection<Snowflake, CachedGuild>;
+		protected Embed: Embed['Base'];
+		protected Capitalize: Utils['Capitalize'];
+		protected Set: Colour['Set'];
+		protected Getstring: Translator['Getstring'];
+		protected Getlang: Translator['Getlang'];
+		protected GetIcon: Utils['GetIcon'];
+		protected GetGuildId: Utils['GetGuildId'];
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -1872,14 +1876,14 @@ namespace Functions {
 		}
 	}
 	export class ImageEmbed {
-		con: Pool;
-		client: DiscordClient;
-		cache: Collection<Snowflake, CachedGuild>;
-		Embed: Embed['Base'];
-		Capitalize: Utils['Capitalize'];
-		Set: Colour['Set'];
-		GetIcon: Utils['GetIcon'];
-		GetGuildId: Utils['GetGuildId'];
+		protected con: Pool;
+		protected client: DiscordClient;
+		protected cache: Collection<Snowflake, CachedGuild>;
+		protected Embed: Embed['Base'];
+		protected Capitalize: Utils['Capitalize'];
+		protected Set: Colour['Set'];
+		protected GetIcon: Utils['GetIcon'];
+		protected GetGuildId: Utils['GetGuildId'];
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -1912,9 +1916,9 @@ namespace Functions {
 		}
 	}
 	export class Moderation {
-		con: Pool;
-		client: DiscordClient;
-		cache: Collection<Snowflake, CachedGuild>;
+		protected con: Pool;
+		protected client: DiscordClient;
+		protected cache: Collection<Snowflake, CachedGuild>;
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -1995,6 +1999,664 @@ namespace Functions {
 			} finally {
 				con.release();
 			}
+		}
+	}
+
+	export class SlashCommands {
+		protected _Advice: SlashCommandBuilder;
+		protected _Baka: SlashCommandBuilder;
+		protected _Foxgirl: SlashCommandBuilder;
+		protected _Joke: SlashCommandBuilder;
+		protected _Neko: SlashCommandBuilder;
+		protected _Pickup: SlashCommandBuilder;
+		protected _Roast: SlashCommandBuilder;
+		protected _Sexyrate: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Ship: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Simprate: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Waifu: SlashCommandBuilder;
+		protected _Wallpaper: SlashCommandBuilder;
+		protected _Equelmemes: SlashCommandBuilder;
+		protected _Sequelmemes: SlashCommandBuilder;
+		protected _Prequelmemes: SlashCommandBuilder;
+		protected _OTMeme: SlashCommandBuilder;
+		protected _Anime: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Collection: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Docs: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Google: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Lyrics: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Reddit: SlashCommandSubcommandsOnlyBuilder;
+		protected _Roblox: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _YouTube: SlashCommandSubcommandsOnlyBuilder;
+		protected _Info: SlashCommandSubcommandsOnlyBuilder;
+		protected _Cry: SlashCommandBuilder;
+		protected _Cuddle: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Feed: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Facepalm: SlashCommandBuilder;
+		protected _Hug: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Laugh: SlashCommandBuilder;
+		protected _Lick: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Mwah: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Pat: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Poke: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Slap: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Smug: SlashCommandBuilder;
+		protected _Tickle: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Wink: SlashCommandBuilder;
+		protected Commands: Array<
+			| SlashCommandSubcommandsOnlyBuilder
+			| Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
+		>;
+		constructor() {
+			this._Advice = null;
+			this._Baka = null;
+			this._Foxgirl = null;
+			this._Joke = null;
+			this._Neko = null;
+			this._Pickup = null;
+			this._Roast = null;
+			this._Sexyrate = null;
+			this._Ship = null;
+			this._Simprate = null;
+			this._Waifu = null;
+			this._Wallpaper = null;
+			this._Equelmemes = null;
+			this._Sequelmemes = null;
+			this._Prequelmemes = null;
+			this._Anime = null;
+			this._Collection = null;
+			this._Docs = null;
+			this._Google = null;
+			this._Lyrics = null;
+			this._Reddit = null;
+			this._Roblox = null;
+			this._YouTube = null;
+			this._Info = null;
+			this._Cry = null;
+			this._Cuddle = null;
+			this._Feed = null;
+			this._Facepalm = null;
+			this._Hug = null;
+			this._Laugh = null;
+			this._Lick = null;
+			this._Mwah = null;
+			this._Pat = null;
+			this._Poke = null;
+			this._Slap = null;
+			this._Smug = null;
+			this._Tickle = null;
+			this._Wink = null;
+			this.Commands = [];
+		}
+		Advice() {
+			this._Advice = new SlashCommandBuilder()
+				.setName('advice')
+				.setDescription('Sends you some advice');
+			this.Commands.push(this._Advice);
+			return this;
+		}
+		Baka() {
+			this._Baka = new SlashCommandBuilder()
+				.setName('baka')
+				.setDescription('B- BAKA!');
+			this.Commands.push(this._Baka);
+			return this;
+		}
+		Foxgirl() {
+			this._Foxgirl = new SlashCommandBuilder()
+				.setName('foxgirl')
+				.setDescription('Sends a picture of a foxgirl');
+			this.Commands.push(this._Foxgirl);
+			return this;
+		}
+		Joke() {
+			this._Joke = new SlashCommandBuilder()
+				.setName('joke')
+				.setDescription('Sends a joke');
+			this.Commands.push(this._Joke);
+			return this;
+		}
+		Neko() {
+			this._Neko = new SlashCommandBuilder()
+				.setName('neko')
+				.setDescription('Sends a picture of a neko');
+			this.Commands.push(this._Neko);
+			return this;
+		}
+		Pickup() {
+			this._Pickup = new SlashCommandBuilder()
+				.setName('pickup')
+				.setDescription('Sends a pickup line 😏');
+			this.Commands.push(this._Pickup);
+			return this;
+		}
+		Roast() {
+			this._Roast = new SlashCommandBuilder()
+				.setName('roast')
+				.setDescription('Sends a roast 🔥');
+			this.Commands.push(this._Roast);
+			return this;
+		}
+		Sexyrate() {
+			this._Sexyrate = new SlashCommandBuilder()
+				.setName('sexyrate')
+				.setDescription('Returns a rating of 100 for you or the mentioned user')
+				.addUserOption((opt) =>
+					opt
+						.setName('user')
+						.setDescription('The person whom you want to get a sexy rating for')
+						.setRequired(false)
+				);
+			this.Commands.push(this._Sexyrate);
+			return this;
+		}
+		Ship() {
+			this._Ship = new SlashCommandBuilder()
+				.setName('ship')
+				.setDescription('Ship people!')
+				.addUserOption((opt) =>
+					opt
+						.setName('user1')
+						.setDescription('First user who you want to ship')
+						.setRequired(true)
+				)
+				.addUserOption((opt) =>
+					opt
+						.setName('user2')
+						.setDescription('Second user who you want to ship')
+						.setRequired(false)
+				);
+			this.Commands.push(this._Ship);
+			return this;
+		}
+		Simprate() {
+			this._Simprate = new SlashCommandBuilder()
+				.setName('simprate')
+				.setDescription("Get a user's simp rating")
+				.addUserOption((opt) =>
+					opt
+						.setName('user')
+						.setDescription('The person who you want to get a simp rating for')
+						.setRequired(false)
+				);
+			this.Commands.push(this._Simprate);
+			return this;
+		}
+		Waifu() {
+			this._Waifu = new SlashCommandBuilder()
+				.setName('waifu')
+				.setDescription('Generates a waifu, just for you!');
+			this.Commands.push(this._Waifu);
+			return this;
+		}
+		Wallpaper() {
+			this._Wallpaper = new SlashCommandBuilder()
+				.setName('wallpaper')
+				.setDescription(
+					'Sends a picture of a wallpaper for you to use! (Mobile and PC wallpapers)'
+				);
+			this.Commands.push(this._Wallpaper);
+			return this;
+		}
+		Equelmemes() {
+			this._Equelmemes = new SlashCommandBuilder()
+				.setName('equelmemes')
+				.setDescription('Sends a meme from r/Equelmeme');
+			this.Commands.push(this._Equelmemes);
+			return this;
+		}
+		Sequelmemes() {
+			this._Sequelmemes = new SlashCommandBuilder()
+				.setName('sequelmeme')
+				.setDescription('Sends a sequel meme');
+			this.Commands.push(this._Sequelmemes);
+			return this;
+		}
+		Prequelmemes() {
+			this._Prequelmemes = new SlashCommandBuilder()
+				.setName('prequelmeme')
+				.setDescription('Sends a meme from r/Prequelmemes');
+			this.Commands.push(this._Prequelmemes);
+			return this;
+		}
+		OTMeme() {
+			this._OTMeme = new SlashCommandBuilder()
+				.setName('otmeme')
+				.setDescription('Sends a meme from the OT trilogy');
+			this.Commands.push(this._OTMeme);
+			return this;
+		}
+		Anime() {
+			this._Anime = new SlashCommandBuilder()
+				.setName('anime')
+				.setDescription('Search an anime by name')
+				.addStringOption((opt) =>
+					opt
+						.setName('query')
+						.setDescription('The anime you want information about')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Anime);
+			return this;
+		}
+		Collection() {
+			this._Collection = new SlashCommandBuilder()
+				.setName('collection')
+				.setDescription('Search the Discord JS collection docs')
+				.addStringOption((opt) =>
+					opt
+						.setName('query')
+						.setDescription('Your collection query')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Collection);
+			return this;
+		}
+		Docs() {
+			this._Docs = new SlashCommandBuilder()
+				.setName('docs')
+				.setDescription('Search the Discord JS docs (stable)')
+				.addStringOption((opt) =>
+					opt
+						.setName('query')
+						.setDescription('Discord.js stable query')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Docs);
+			return this;
+		}
+		Google() {
+			this._Google = new SlashCommandBuilder()
+				.setName('google')
+				.setDescription('Do a google search using the bot!')
+				.addStringOption((opt) =>
+					opt
+						.setName('query')
+						.setDescription('Query for Google search')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Google);
+			return this;
+		}
+		Lyrics() {
+			this._Lyrics = new SlashCommandBuilder()
+				.setName('lyrics')
+				.setDescription('Get the lyrics for any song')
+				.addStringOption((opt) =>
+					opt
+						.setName('query')
+						.setDescription('The song name you want lyrics of')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Lyrics);
+			return this;
+		}
+		Reddit() {
+			this._Reddit = new SlashCommandBuilder()
+				.setName('reddit')
+				.setDescription('Do a search for a subreddit or a reddit user')
+				.addSubcommand((sub) =>
+					sub
+						.setName('subreddit')
+						.setDescription('Search subreddits')
+						.addStringOption((opt) =>
+							opt
+								.setName('query')
+								.setDescription(
+									'A subreddit name you want to get information on'
+								)
+								.setRequired(true)
+						)
+				)
+				.addSubcommand((sub) =>
+					sub
+						.setName('user')
+						.setDescription('Search users on reddit')
+						.addStringOption((opt) =>
+							opt
+								.setName('query')
+								.setDescription(
+									'A reddit username you want to get information on'
+								)
+								.setRequired(true)
+						)
+				);
+			this.Commands.push(this._Reddit);
+			return this;
+		}
+		Roblox() {
+			this._Roblox = new SlashCommandBuilder()
+				.setName('roblox')
+				.setDescription('Get information on a ROBLOX user')
+				.addStringOption((opt) =>
+					opt
+						.setName('query')
+						.setDescription(
+							'ROBLOX username who you want to get information about'
+						)
+						.setRequired(true)
+				);
+			this.Commands.push(this._Roblox);
+			return this;
+		}
+		YouTube() {
+			this._YouTube = new SlashCommandBuilder()
+				.setName('youtube')
+				.setDescription('Get information on a YouTube video or YouTube channel')
+				.addSubcommand((sub) =>
+					sub
+						.setName('channel')
+						.setDescription('Get information on a YouTube channel')
+						.addStringOption((opt) =>
+							opt
+								.setName('query')
+								.setDescription('YouTube channel name')
+								.setRequired(true)
+						)
+				)
+				.addSubcommand((sub) =>
+					sub
+						.setName('video')
+						.setDescription('Get information on a video')
+						.addStringOption((opt) =>
+							opt
+								.setName('query')
+								.setDescription('Name of the video you want to search')
+								.setRequired(true)
+						)
+				);
+			this.Commands.push(this._YouTube);
+			return this;
+		}
+		Info() {
+			this._Info = new SlashCommandBuilder()
+				.setName('info')
+				.setDescription('Get information on a server / user / role / channel')
+				.addSubcommand((sub) =>
+					sub
+						.setName('user')
+						.setDescription('Get information on a user')
+						.addUserOption((opt) =>
+							opt
+								.setName('user')
+								.setDescription('User who you want to get information on')
+								.setRequired(false)
+						)
+				)
+				.addSubcommand((sub) =>
+					sub
+						.setName('role')
+						.setDescription('Get information on a role')
+						.addRoleOption((opt) =>
+							opt
+								.setName('role')
+								.setDescription('Role you want to get information on')
+								.setRequired(true)
+						)
+				)
+				.addSubcommand((sub) =>
+					sub
+						.setName('channel')
+						.setDescription('Get information on a channel')
+						.addChannelOption((opt) =>
+							opt
+								.setName('channel')
+								.setDescription('Channel you want to get information on')
+								.setRequired(false)
+						)
+				)
+				.addSubcommand((sub) =>
+					sub.setName('server').setDescription('Get information on the server')
+				);
+			this.Commands.push(this._Info);
+			return this;
+		}
+		Cry() {
+			this._Cry = new SlashCommandBuilder().setName('cry').setDescription('😢');
+			this.Commands.push(this._Cry);
+			return this;
+		}
+		Cuddle() {
+			this._Cuddle = new SlashCommandBuilder()
+				.setName('cuddle')
+				.setDescription('Cuddle the mentioned user')
+				.addUserOption((opt) =>
+					opt
+						.setName('user')
+						.setDescription('The user you want to cuddle')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Cuddle);
+			return this;
+		}
+		Facepalm() {
+			this._Facepalm = new SlashCommandBuilder()
+				.setName('facepalm')
+				.setDescription('🤦‍♂️🤦🤦‍♀️');
+			this.Commands.push(this._Facepalm);
+			return this;
+		}
+		Feed() {
+			this._Feed = new SlashCommandBuilder()
+				.setName('feed')
+				.setDescription('Feed the mentioned user')
+				.addUserOption((opt) =>
+					opt
+						.setName('user')
+						.setDescription('The user you want to feed')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Feed);
+			return this;
+		}
+		Hug() {
+			this._Hug = new SlashCommandBuilder()
+				.setName('hug')
+				.setDescription('Hug the mentioned user')
+				.addUserOption((opt) =>
+					opt
+						.setName('user')
+						.setDescription('The user you want to hug')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Hug);
+			return this;
+		}
+		Laugh() {
+			this._Laugh = new SlashCommandBuilder()
+				.setName('laugh')
+				.setDescription('🤣');
+			this.Commands.push(this._Laugh);
+			return this;
+		}
+		Lick() {
+			this._Lick = new SlashCommandBuilder()
+				.setName('lick')
+				.setDescription('Lick the mentioned user')
+				.addUserOption((opt) =>
+					opt
+						.setName('user')
+						.setDescription('The user you want to lick')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Lick);
+			return this;
+		}
+		Mwah() {
+			this._Mwah = new SlashCommandBuilder()
+				.setName('mwah')
+				.setDescription('Kiss the mentioned user')
+				.addUserOption((opt) =>
+					opt
+						.setName('user')
+						.setDescription('The user you want to kiss')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Mwah);
+			return this;
+		}
+		Pat() {
+			this._Pat = new SlashCommandBuilder()
+				.setName('pat')
+				.setDescription('Pat the mentioned user')
+				.addUserOption((opt) =>
+					opt
+						.setName('user')
+						.setDescription('The user you want to pat')
+						.setRequired(true)
+				);
+			return this;
+		}
+		Poke() {
+			this._Poke = new SlashCommandBuilder()
+				.setName('poke')
+				.setDescription('Poke the mentioned user')
+				.addUserOption((opt) =>
+					opt
+						.setName('user')
+						.setDescription('The user you want to poke')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Poke);
+			return this;
+		}
+		Slap() {
+			this._Slap = new SlashCommandBuilder()
+				.setName('slap')
+				.setDescription('Slap the mentioned user')
+				.addUserOption((opt) =>
+					opt
+						.setName('user')
+						.setDescription('The user you want to slap')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Slap);
+			return this;
+		}
+		Smug() {
+			this._Smug = new SlashCommandBuilder()
+				.setName('smug')
+				.setDescription('Smug');
+			this.Commands.push(this._Smug);
+			return this;
+		}
+		Tickle() {
+			this._Tickle = new SlashCommandBuilder()
+				.setName('tickle')
+				.setDescription('Tickle the mentioned user')
+				.addUserOption((opt) =>
+					opt
+						.setName('user')
+						.setDescription('The user you want to tickle')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Tickle);
+			return this;
+		}
+		Wink() {
+			this._Wink = new SlashCommandBuilder()
+				.setName('wink')
+				.setDescription('wink');
+			this.Commands.push(this._Wink);
+			return this;
+		}
+		All() {
+			this.Advice();
+			this.Anime();
+			this.Baka();
+			this.Collection();
+			this.Cry();
+			this.Cuddle();
+			this.Docs();
+			this.Equelmemes();
+			this.Facepalm();
+			this.Feed();
+			this.Foxgirl();
+			this.Google();
+			this.Hug();
+			this.Info();
+			this.Joke();
+			this.Laugh();
+			this.Lick();
+			this.Lyrics();
+			this.Mwah();
+			this.Neko();
+			this.OTMeme();
+			this.Pat();
+			this.Pickup();
+			this.Poke();
+			this.Prequelmemes();
+			this.Reddit();
+			this.Roast();
+			this.Roblox();
+			this.Sequelmemes();
+			this.Sexyrate();
+			this.Ship();
+			this.Simprate();
+			this.Slap();
+			this.Smug();
+			this.Tickle();
+			this.Waifu();
+			this.Wallpaper();
+			this.YouTube();
+			this.Wink();
+			return this;
+		}
+		toArray() {
+			return this.Commands;
 		}
 	}
 }

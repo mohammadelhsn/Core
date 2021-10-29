@@ -9,31 +9,31 @@ import Schemas from '../Schemas';
 
 export default abstract class BaseCommand {
 	// API functions
-	Animals = new API.Animals();
-	Canvas = new API.Canvas();
-	Facts = new API.Facts();
-	Fun = new API.Fun();
-	Memes = new API.Memes();
-	Miscellaneous = new API.Miscellaneous();
-	Reactions = new API.Reactions();
+	protected Animals = new API.Animals();
+	protected Canvas = new API.Canvas();
+	protected Facts = new API.Facts();
+	protected Fun = new API.Fun();
+	protected Memes = new API.Memes();
+	protected Miscellaneous = new API.Miscellaneous();
+	protected Reactions = new API.Reactions();
 	// Functions
-	Colour = new Functions.Colour();
-	Translator = new Functions.Translator();
-	Utils = new Functions.Utils();
-	Channels = new Functions.Channels();
-	Settings = new Functions.Settings();
-	ErrorEmbed = new Functions.ErrorEmbed();
-	SuccessEmbed = new Functions.SuccessEmbed();
-	Embed = new Functions.Embed();
-	HelpEmbed = new Functions.HelpEmbed();
-	GeneratingEmbed = new Functions.GeneratingEmbed();
-	ImageEmbed = new Functions.ImageEmbed();
-	Moderation = new Functions.Moderation();
+	protected Colour = new Functions.Colour();
+	protected Translator = new Functions.Translator();
+	protected Utils = new Functions.Utils();
+	protected Channels = new Functions.Channels();
+	protected Settings = new Functions.Settings();
+	protected ErrorEmbed = new Functions.ErrorEmbed();
+	protected SuccessEmbed = new Functions.SuccessEmbed();
+	protected Embed = new Functions.Embed();
+	protected HelpEmbed = new Functions.HelpEmbed();
+	protected GeneratingEmbed = new Functions.GeneratingEmbed();
+	protected ImageEmbed = new Functions.ImageEmbed();
+	protected Moderation = new Functions.Moderation();
 	// Misc properties
-	con = StateManager.con;
-	Emojis = Emojis;
-	Colours = Colours;
-	Schemas = Schemas;
+	protected con = StateManager.con;
+	protected Emojis = Emojis;
+	protected Colours = Colours;
+	protected Schemas = Schemas;
 	constructor(
 		private name: string,
 		private category: string,
