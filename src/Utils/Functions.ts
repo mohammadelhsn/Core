@@ -27,6 +27,7 @@ import {
 	User,
 	GuildEmoji,
 	Role,
+	Util,
 } from 'discord.js';
 import CachedGuild from './Structures/CachedGuild';
 import Colours from '../../Colours.json';
@@ -35,7 +36,7 @@ import Descriptions from '../../Descriptions.json';
 import CachedGuildTypes from './Structures/Interfaces/CachedGuild';
 import Emojis from '../../Emojis.json';
 import Schemas from './Schemas';
-import moment from 'moment';
+import moment, { relativeTimeThreshold } from 'moment';
 import { ChannelTypes } from 'discord.js/typings/enums';
 import {
 	APIApplicationCommandOption,
@@ -321,12 +322,15 @@ namespace Functions {
 				console.log(error);
 			}
 		}
+		/** @deprecated */
 		Mentionrole(id: Snowflake): string {
 			return `<@&${id}>`;
 		}
+		/** @deprecated */
 		Mentionchannel(id: Snowflake): string {
 			return `<#${id}>`;
 		}
+		/** @deprecated */
 		Mentionuser(id: Snowflake): string {
 			return `<@${id}>`;
 		}
@@ -442,6 +446,18 @@ namespace Functions {
 			if (toGrab instanceof CommandInteraction && type == 'guild')
 				return toGrab.guild.iconURL({ dynamic: dynamic });
 			else return toGrab.user.displayAvatarURL({ dynamic: dynamic });
+		}
+		async FetchChannel(id: Snowflake) {
+			return (
+				this.client.channels.cache.find((ch) => ch.id == id) ||
+				(await this.client.channels.fetch(id))
+			);
+		}
+		async FetchUser(id: Snowflake) {
+			return (
+				this.client.users.cache.find((u) => u.id == id) ||
+				(await this.client.users.fetch(id))
+			);
 		}
 	}
 
@@ -826,6 +842,8 @@ namespace Functions {
 			try {
 				if (!force) force = false;
 				if (!cache) cache = true;
+
+				console.log(con);
 
 				const guild = this.cache.get(id);
 

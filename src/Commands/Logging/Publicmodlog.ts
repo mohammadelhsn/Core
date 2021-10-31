@@ -64,7 +64,7 @@ export default class PublicModlogCommand extends BaseCommand {
 						value:
 							publicmodlog == null
 								? '`N/A`'
-								: this.Utils.Mentionchannel(publicmodlog),
+								: (await this.Utils.FetchChannel(publicmodlog)).toString(),
 					},
 				],
 			});
@@ -140,7 +140,7 @@ export default class PublicModlogCommand extends BaseCommand {
 				success_message: '```Successfully updated publicmodlog!```',
 				fields: [
 					{ name: 'Old value', value: '`Disabled`' },
-					{ name: 'New value', value: this.Utils.Mentionchannel(mention.id) },
+					{ name: 'New value', value: (await this.Utils.FetchChannel(mention.id)).toString() },
 				],
 			});
 
@@ -199,7 +199,7 @@ export default class PublicModlogCommand extends BaseCommand {
 				text: this,
 				success_message: '```Successfully updated public mod log```',
 				fields: [
-					{ name: 'Old value', value: this.Utils.Mentionchannel(publicmodlog) },
+					{ name: 'Old value', value: (await this.Utils.FetchChannel(publicmodlog)).toString() },
 					{ name: 'New value', value: '`Disabled`' },
 				],
 			});
@@ -272,8 +272,8 @@ export default class PublicModlogCommand extends BaseCommand {
 				text: this,
 				success_message: '```Successfully updated public mod log```',
 				fields: [
-					{ name: 'Old value', value: this.Utils.Mentionchannel(publicmodlog) },
-					{ name: 'New value', value: this.Utils.Mentionchannel(mention.id) },
+					{ name: 'Old value', value: (await this.Utils.FetchChannel(publicmodlog)).toString() },
+					{ name: 'New value', value: (await this.Utils.FetchChannel(mention.id)).toString() },
 				],
 			});
 

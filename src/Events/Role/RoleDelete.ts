@@ -7,6 +7,6 @@ export default class RoleDeleteEvent extends BaseEvent {
 		super('roleDelete');
 	}
 	async run(client: DiscordClient, role: Role) {
-		//	console.log(role);
+		const guild = role.guild;
 	}
 }

@@ -48,8 +48,8 @@ export default class RolesCommand extends BaseCommand {
 						value:
 							adminrole == null
 								? this.Emojis.off_switch
-								: `${this.Emojis.on_switch} | ${this.Utils.Mentionrole(
-										adminrole
+								: `${this.Emojis.on_switch} | ${message.guild.roles.cache.find(
+										(r) => r.id == adminrole.toString()
 								  )}`,
 					},
 					{
@@ -57,27 +57,27 @@ export default class RolesCommand extends BaseCommand {
 						value:
 							muterole == null
 								? this.Emojis.off_switch
-								: `${this.Emojis.on_switch} | ${this.Utils.Mentionrole(
-										muterole
-								  )}`,
+								: `${this.Emojis.on_switch} | ${message.guild.roles.cache
+										.find((r) => r.id == muterole)
+										.toString()}`,
 					},
 					{
 						name: 'Mod role',
 						value:
 							modrole == null
 								? this.Emojis.off_switch
-								: `${this.Emojis.on_switch} | ${this.Utils.Mentionrole(
-										modrole
-								  )}`,
+								: `${this.Emojis.on_switch} | ${message.guild.roles.cache
+										.find((r) => r.id == modrole)
+										.toString()}`,
 					},
 					{
 						name: 'Warning role',
 						value:
 							warningrole == null
 								? this.Emojis.off_switch
-								: `${this.Emojis.on_switch} | ${this.Utils.Mentionrole(
-										warningrole
-								  )}`,
+								: `${this.Emojis.on_switch} | ${message.guild.roles.cache
+										.find((r) => r.id == warningrole)
+										.toString()}`,
 					},
 				],
 			});
@@ -161,12 +161,16 @@ export default class RolesCommand extends BaseCommand {
 								value: `${
 									oldValue.data.muterole == null
 										? '`Disabled`'
-										: this.Utils.Mentionrole(oldValue.data.muterole)
+										: message.guild.roles.cache
+												.find((r) => r.id == oldValue.data.muterole)
+												.toString()
 								}`,
 							},
 							{
 								name: 'New value',
-								value: `${this.Utils.Mentionrole(data.data.muterole)}`,
+								value: `${message.guild.roles.cache
+									.find((r) => r.id == data.data.muterole)
+									.toString()}`,
 							},
 						],
 					});
@@ -205,7 +209,9 @@ export default class RolesCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value:',
-							value: `${this.Utils.Mentionrole(oldValue.data.muterole)}`,
+							value: `${message.guild.roles.cache
+								.find((r) => r.id == oldValue.data.muterole)
+								.toString()}`,
 						},
 						{
 							name: 'New value',
@@ -266,12 +272,16 @@ export default class RolesCommand extends BaseCommand {
 								value: `${
 									oldValue.data.adminrole == null
 										? '`Disabled`'
-										: this.Utils.Mentionrole(oldValue.data.adminrole)
+										: message.guild.roles.cache
+												.find((role) => role.id == oldValue.data.adminrole)
+												.toString()
 								}`,
 							},
 							{
 								name: 'New value',
-								value: `${this.Utils.Mentionrole(data.data.adminrole)}`,
+								value: `${message.guild.roles.cache
+									.find((role) => role.id == data.data.adminrole)
+									.toString()}`,
 							},
 						],
 					});
@@ -310,7 +320,9 @@ export default class RolesCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value:',
-							value: `${this.Utils.Mentionrole(oldValue.data.adminrole)}`,
+							value: `${message.guild.roles.cache
+								.find((r) => r.id == oldValue.data.adminrole)
+								.toString()}`,
 						},
 						{
 							name: 'New value',
@@ -371,12 +383,16 @@ export default class RolesCommand extends BaseCommand {
 								value: `${
 									oldValue.data.warningrole == null
 										? '`Disabled`'
-										: this.Utils.Mentionrole(oldValue.data.warningrole)
+										: message.guild.roles.cache
+												.find((r) => r.id == oldValue.data.warningrole)
+												.toString()
 								}`,
 							},
 							{
 								name: 'New value',
-								value: `${this.Utils.Mentionrole(data.data.warningrole)}`,
+								value: `${message.guild.roles.cache
+									.find((r) => r.id == data.data.warningrole)
+									.toString()}`,
 							},
 						],
 					});
@@ -415,7 +431,9 @@ export default class RolesCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value:',
-							value: `${this.Utils.Mentionrole(oldValue.data.warningrole)}`,
+							value: `${message.guild.roles.cache
+								.find((r) => r.id == oldValue.data.warningrole)
+								.toString()}`,
 						},
 						{
 							name: 'New value',
@@ -475,12 +493,18 @@ export default class RolesCommand extends BaseCommand {
 								value: `${
 									oldValue.data.modrole == null
 										? '`Disabled`'
-										: this.Utils.Mentionrole(oldValue.data.modrole)
+										: message.guild.roles.cache
+												.find((role) => role.id == oldValue.data.modrole)
+												.toString()
 								}`,
 							},
 							{
 								name: 'New value',
-								value: `${this.Utils.Mentionrole(data.data.modrole)}`,
+								value: `${
+									message.guild.roles.cache.find(
+										(role) => role.id == data.data.modrole
+									).toString
+								}`,
 							},
 						],
 					});
@@ -519,7 +543,9 @@ export default class RolesCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value:',
-							value: `${this.Utils.Mentionrole(oldValue.data.modrole)}`,
+							value: `${message.guild.roles.cache
+								.find((r) => r.id == oldValue.data.modrole)
+								.toString()}`,
 						},
 						{
 							name: 'New value',

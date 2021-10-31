@@ -34,7 +34,6 @@ export async function registerEvents(client: DiscordClient, dir: string = '') {
 			const event = new Event();
 			client.events.set(event.getName(), event);
 			client.on(event.getName(), event.run.bind(event, client));
-			console.log(event.getName());
 		}
 	}
 }

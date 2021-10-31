@@ -6,5 +6,7 @@ export default class EmojiCreateEvent extends BaseEvent {
 	constructor() {
 		super('emojiCreate');
 	}
-	async run(client: DiscordClient, emoji: GuildEmoji) {}
+	async run(client: DiscordClient, emoji: GuildEmoji) {
+		const guild = emoji.guild;
+	}
 }

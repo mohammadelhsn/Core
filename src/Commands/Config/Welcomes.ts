@@ -32,6 +32,10 @@ export default class WelcomeCommand extends BaseCommand {
 		const welcome = await this.Settings.WelcomeSystem(message.guild.id, true);
 		const data = new this.Schemas.Welcome(welcome);
 
+		const channel =
+			client.channels.cache.find((ch) => ch.id == welcome.channel) ||
+			(await client.channels.fetch(welcome.channel));
+
 		if (!todo) {
 			const embed = await this.Embed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -47,17 +51,11 @@ export default class WelcomeCommand extends BaseCommand {
 					},
 					{
 						name: 'Media?',
-						value:
-							welcome.media == null
-								? 'N/A'
-								: this.Utils.Capitalize(welcome.media),
+						value: welcome.media == null ? 'N/A' : channel.toString(),
 					},
 					{
 						name: 'Channel',
-						value:
-							welcome.channel == null
-								? 'N/A'
-								: this.Utils.Mentionchannel(welcome.channel),
+						value: welcome.channel == null ? 'N/A' : channel.toString(),
 					},
 					{
 						name: 'Message',
@@ -84,10 +82,8 @@ export default class WelcomeCommand extends BaseCommand {
 
 			let timedOut = false;
 
-			const isFromAuthor = (m) => m.author.id == message.author.id;
-
 			const options = {
-				filter: isFromAuthor,
+				filter: (m) => m.author.id == message.author.id,
 				max: 1,
 				time: 60000,
 			};

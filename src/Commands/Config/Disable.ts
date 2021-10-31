@@ -64,6 +64,11 @@ export default class DisableCommand extends BaseCommand {
 
 		const toDisable = args.join(' ');
 
+		if (!toDisable)
+			return message.channel.send({
+				content: 'Must include a command / category to disable',
+			});
+
 		const value: BaseCommand | string =
 			client.commands.get(toDisable) ||
 			client.commands.get(client.aliases.get(toDisable)) ||

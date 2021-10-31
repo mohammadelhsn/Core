@@ -7,6 +7,6 @@ export default class GuildMemberRemoveEvent extends BaseEvent {
 		super('guildMemberRemove');
 	}
 	async run(client: DiscordClient, member: GuildMember) {
-		//	console.log(member);
+		const guild = member.guild;
 	}
 }

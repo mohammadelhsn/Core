@@ -86,9 +86,9 @@ export default class ClearNotesCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				id: message.guild.id,
-				success_message: `Successfully cleared all notes for ${this.Utils.Mentionuser(
-					user.id
-				)}`,
+				success_message: `Successfully cleared all notes for ${(
+					await this.Utils.FetchUser(user.id)
+				).toString()}`,
 			});
 
 			return message.channel.send({ embeds: [embed] });

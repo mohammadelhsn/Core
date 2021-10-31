@@ -55,7 +55,7 @@ export default class LeavesCommand extends BaseCommand {
 						value:
 							leave.channel == null
 								? 'N/A'
-								: this.Utils.Mentionchannel(leave.channel),
+								: (await this.Utils.FetchChannel(leave.channel)).toString(),
 					},
 					{
 						name: 'Message',

@@ -46,7 +46,9 @@ export default class ActionlogCommand extends BaseCommand {
 		const toConfigure = args[0];
 
 		const actionlog = await this.Channels.Actionlog(message.guild.id, true);
-
+		const channel =
+			client.channels.cache.find((ch) => ch.id == actionlog) ||
+			(await client.channels.fetch(actionlog));
 		if (!toConfigure) {
 			const embed = await this.Embed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -62,10 +64,7 @@ export default class ActionlogCommand extends BaseCommand {
 					},
 					{
 						name: 'Value',
-						value:
-							actionlog == null
-								? '`N/A`'
-								: this.Utils.Mentionchannel(actionlog),
+						value: actionlog == null ? '`N/A`' : channel.toString(),
 					},
 				],
 			});
@@ -134,6 +133,8 @@ export default class ActionlogCommand extends BaseCommand {
 				con.release();
 			}
 
+			const newChannel = client.channels.cache.find((ch) => ch.id == mention.id) || await client.channels.fetch(mention.id);
+
 			const embed = await this.SuccessEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				id: message.guild.id,
@@ -141,7 +142,7 @@ export default class ActionlogCommand extends BaseCommand {
 				success_message: '```Successfully updated actionlog!```',
 				fields: [
 					{ name: 'Old value', value: '`Disabled`' },
-					{ name: 'New value', value: this.Utils.Mentionchannel(mention.id) },
+					{ name: 'New value', value: newChannel.toString()},
 				],
 			});
 
@@ -194,13 +195,15 @@ export default class ActionlogCommand extends BaseCommand {
 				con.release();
 			}
 
+			const oldChnl = client.channels.cache.find((ch) => ch.id == actionlog) || await client.channels.fetch(actionlog)
+
 			const embed = await this.SuccessEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				id: message.guild.id,
 				text: this,
 				success_message: '```Successfully updated action-log```',
 				fields: [
-					{ name: 'Old value', value: this.Utils.Mentionchannel(actionlog) },
+					{ name: 'Old value', value: oldChnl.toString() },
 					{ name: 'New value', value: '`Disabled`' },
 				],
 			});
@@ -267,14 +270,21 @@ export default class ActionlogCommand extends BaseCommand {
 				con.release();
 			}
 
+			const oldChannel =
+				client.channels.cache.find((ch) => ch.id == actionlog) ||
+				(await client.channels.fetch(actionlog));
+			const newChannel =
+				client.channels.cache.find((ch) => ch.id == mention.id) ||
+				(await client.channels.fetch(mention.id));
+
 			const embed = await this.SuccessEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				id: message.guild.id,
 				text: this,
 				success_message: '```Successfully updated action-log```',
 				fields: [
-					{ name: 'Old value', value: this.Utils.Mentionchannel(actionlog) },
-					{ name: 'New value', value: this.Utils.Mentionchannel(mention.id) },
+					{ name: 'Old value', value: oldChannel.toString() },
+					{ name: 'New value', value: newChannel.toString() },
 				],
 			});
 

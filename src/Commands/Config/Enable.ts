@@ -45,6 +45,11 @@ export default class EnableCommand extends BaseCommand {
 
 		const toEnable = args.join(' ');
 
+		if (!toEnable)
+			return message.channel.send({
+				content: 'Must include the required argument',
+			});
+
 		const categories = {
 			aww: 'aww',
 			bot: 'bot',

@@ -56,7 +56,10 @@ export default class ModlogCommand extends BaseCommand {
 					},
 					{
 						name: 'Value',
-						value: modlog == null ? '`N/A`' : this.Utils.Mentionchannel(modlog),
+						value:
+							modlog == null
+								? '`N/A`'
+								: (await this.Utils.FetchChannel(modlog)).toString(),
 					},
 				],
 			});
@@ -132,7 +135,10 @@ export default class ModlogCommand extends BaseCommand {
 				success_message: '```Successfully updated modlog!```',
 				fields: [
 					{ name: 'Old value', value: '`Disabled`' },
-					{ name: 'New value', value: this.Utils.Mentionchannel(mention.id) },
+					{
+						name: 'New value',
+						value: (await this.Utils.FetchChannel(mention.id)).toString(),
+					},
 				],
 			});
 
@@ -191,7 +197,10 @@ export default class ModlogCommand extends BaseCommand {
 				text: this,
 				success_message: '```Successfully updated mod-log```',
 				fields: [
-					{ name: 'Old value', value: this.Utils.Mentionchannel(modlog) },
+					{
+						name: 'Old value',
+						value: (await this.Utils.FetchChannel(modlog)).toString(),
+					},
 					{ name: 'New value', value: '`Disabled`' },
 				],
 			});
@@ -264,8 +273,14 @@ export default class ModlogCommand extends BaseCommand {
 				text: this,
 				success_message: '```Successfully updated mod-log```',
 				fields: [
-					{ name: 'Old value', value: this.Utils.Mentionchannel(modlog) },
-					{ name: 'New value', value: this.Utils.Mentionchannel(mention.id) },
+					{
+						name: 'Old value',
+						value: (await this.Utils.FetchChannel(modlog)).toString(),
+					},
+					{
+						name: 'New value',
+						value: (await this.Utils.FetchChannel(mention.id)).toString(),
+					},
 				],
 			});
 

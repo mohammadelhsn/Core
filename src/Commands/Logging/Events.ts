@@ -65,11 +65,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Channel create',
 							value: `${
 								data.channelCreate.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.channelCreate.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.channelCreate.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -77,11 +75,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Channel delete',
 							value: `${
 								data.channelDelete.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.channelDelete.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.channelDelete.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -89,11 +85,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Channel update',
 							value: `${
 								data.channelUpdate.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.channelUpdate.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.channelUpdate.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -110,11 +104,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Emoji create',
 							value: `${
 								data.emojiCreate.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.emojiCreate.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.emojiCreate.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -122,11 +114,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Emoji delete',
 							value: `${
 								data.emojiDelete.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.emojiDelete.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.emojiDelete.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -134,11 +124,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Emoji update',
 							value: `${
 								data.emojiUpdate.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.emojiUpdate.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.emojiUpdate.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -155,11 +143,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Ban add',
 							value: `${
 								data.guildBanAdd.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.guildBanAdd.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.guildBanAdd.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -167,11 +153,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Ban remove',
 							value: `${
 								data.guildBanRemove.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.guildBanRemove.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.guildBanRemove.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -179,11 +163,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Member join',
 							value: `${
 								data.guildMemberAdd.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.guildMemberAdd.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.guildMemberAdd.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -191,11 +173,11 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Member leave',
 							value: `${
 								data.guildMemberRemove.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.guildMemberRemove.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(
+												data.guildMemberRemove.channel
+											)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -203,11 +185,11 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Member update',
 							value: `${
 								data.guildMemberUpdate.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.guildMemberUpdate.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(
+												data.guildMemberUpdate.channel
+											)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -224,11 +206,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Message delete',
 							value: `${
 								data.messageDelete.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.messageDelete.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.messageDelete.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -236,11 +216,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Message edit',
 							value: `${
 								data.messageUpdate.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.messageUpdate.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.messageUpdate.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -248,11 +226,11 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Bulk delete',
 							value: `${
 								data.messageDeleteBulk.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.messageDeleteBulk.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(
+												data.messageDeleteBulk.channel
+											)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -269,11 +247,11 @@ export default class EventsCommand extends BaseCommand {
 							name: 'VC join',
 							value: `${
 								data.voiceMemberJoin.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.voiceMemberJoin.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(
+												data.voiceMemberJoin.channel
+											)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -281,11 +259,11 @@ export default class EventsCommand extends BaseCommand {
 							name: 'VC leave',
 							value: `${
 								data.voiceMemberLeave.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.voiceMemberLeave.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(
+												data.voiceMemberLeave.channel
+											)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -293,11 +271,11 @@ export default class EventsCommand extends BaseCommand {
 							name: 'VC move',
 							value: `${
 								data.voiceMemberMoved.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.voiceMemberMoved.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(
+												data.voiceMemberMoved.channel
+											)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -314,11 +292,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Guild update',
 							value: `${
 								data.guildUpdate.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.guildUpdate.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.guildUpdate.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -326,11 +302,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Invite create',
 							value: `${
 								data.inviteCreate.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.inviteCreate.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.inviteCreate.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -338,11 +312,9 @@ export default class EventsCommand extends BaseCommand {
 							name: 'Invite delete',
 							value: `${
 								data.inviteDelete.enabled == true
-									? `${
-											this.Emojis.on_switch
-									  } | Value: ${this.Utils.Mentionchannel(
-											data.inviteDelete.channel
-									  )}`
+									? `${this.Emojis.on_switch} | Value: ${(
+											await this.Utils.FetchChannel(data.inviteDelete.channel)
+									  ).toString()}`
 									: `${this.Emojis.off_switch} | Value: \`Disabled\``
 							}`,
 						},
@@ -392,13 +364,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -441,7 +415,7 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${this.Utils.FetchChannel(oldValue.channel)}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -455,6 +429,7 @@ export default class EventsCommand extends BaseCommand {
 					channel: data.channelDelete.channel,
 					enabled: data.channelDelete.enabled,
 				};
+
 				if (mention) {
 					try {
 						data.channelDelete.enabled = true;
@@ -483,13 +458,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -497,7 +474,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.channelDelete.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -532,7 +509,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -574,13 +553,13 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: this.Utils.FetchChannel(oldValue.channel)
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -588,7 +567,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.channelUpdate.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -623,7 +602,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -665,13 +646,13 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: this.Utils.FetchChannel(oldValue.channel)
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -679,7 +660,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.emojiCreate.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -714,7 +695,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -756,13 +739,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -770,7 +755,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.emojiDelete.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -805,7 +790,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -847,13 +834,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -861,7 +850,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.emojiUpdate.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -896,7 +885,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -938,13 +929,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -952,7 +945,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.guildBanAdd.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -987,7 +980,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -1029,13 +1024,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -1043,7 +1040,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.guildBanRemove.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -1078,7 +1075,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -1120,13 +1119,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -1134,7 +1135,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.guildMemberAdd.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -1169,7 +1170,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -1211,13 +1214,13 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: this.Utils.FetchChannel(oldValue.channel).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: this.Utils.FetchChannel(mention.id).toString(),
 								inline: true,
 							},
 						],
@@ -1225,7 +1228,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.guildMemberRemove.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -1260,7 +1263,7 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${this.Utils.FetchChannel(oldValue.channel).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -1302,13 +1305,13 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: this.Utils.FetchChannel(oldValue.channel).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -1316,7 +1319,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.guildMemberUpdate.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -1351,7 +1354,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -1393,13 +1398,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -1407,7 +1414,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.guildUpdate.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -1442,7 +1449,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -1484,13 +1493,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -1498,7 +1509,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.inviteCreate.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -1533,7 +1544,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${await this.Utils.FetchChannel(
+								oldValue.channel
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -1575,13 +1588,13 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: this.Utils.FetchChannel(oldValue.channel)
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: await this.Utils.FetchChannel(mention.id).toString(),
 								inline: true,
 							},
 						],
@@ -1589,7 +1602,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.inviteDelete.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -1624,7 +1637,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -1666,13 +1681,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -1680,7 +1697,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.messageDelete.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -1715,7 +1732,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -1757,13 +1776,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -1771,7 +1792,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.messageUpdate.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -1806,7 +1827,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -1848,13 +1871,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -1862,7 +1887,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.messageDeleteBulk.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -1897,7 +1922,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -1939,13 +1966,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -1953,7 +1982,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.voiceMemberJoin.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -1988,7 +2017,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -2030,13 +2061,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -2044,7 +2077,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.voiceMemberLeave.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -2079,7 +2112,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },
@@ -2121,13 +2156,15 @@ export default class EventsCommand extends BaseCommand {
 								value: `${
 									oldValue.channel == null
 										? `\`Disabled\``
-										: this.Utils.Mentionchannel(oldValue.channel)
+										: (
+												await this.Utils.FetchChannel(oldValue.channel)
+										  ).toString()
 								}`,
 								inline: true,
 							},
 							{
 								name: 'New value',
-								value: this.Utils.Mentionchannel(mention.id),
+								value: (await this.Utils.FetchChannel(mention.id)).toString(),
 								inline: true,
 							},
 						],
@@ -2135,7 +2172,7 @@ export default class EventsCommand extends BaseCommand {
 					return message.channel.send({ embeds: [successEmbed] });
 				}
 
-				if (data.channelCreate.enabled == false) {
+				if (data.voiceMemberMoved.enabled == false) {
 					const embed = await this.ErrorEmbed.Base({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
@@ -2170,7 +2207,9 @@ export default class EventsCommand extends BaseCommand {
 					fields: [
 						{
 							name: 'Old value',
-							value: `${this.Utils.Mentionchannel(oldValue.channel)}`,
+							value: `${(
+								await this.Utils.FetchChannel(oldValue.channel)
+							).toString()}`,
 							inline: true,
 						},
 						{ name: 'New value', value: `\`Disabled\``, inline: true },

@@ -11,7 +11,6 @@ export default class GuildMemberUpdateEvent extends BaseEvent {
 		oldMember: GuildMember,
 		newMember: GuildMember
 	) {
-		//	console.log(oldMember);
-		//	console.log(newMember);
+		const guild = newMember.guild;
 	}
 }

@@ -6,8 +6,5 @@ export default class GuildBanRemoveEvent extends BaseEvent {
 	constructor() {
 		super('guildBanRemove');
 	}
-	async run(client: DiscordClient, guild: Guild, user: User) {
-		///	console.log(guild);
-		//	console.log(user);
-	}
+	async run(client: DiscordClient, guild: Guild, user: User) {}
 }

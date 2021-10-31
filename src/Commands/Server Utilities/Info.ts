@@ -74,7 +74,7 @@ export default class InfoCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				title: 'Channel info',
-				description: `${this.Utils.Mentionchannel(id)} information`,
+				description: `${(await this.Utils.FetchChannel(id)).toString()} information`,
 				fields: [
 					{ name: 'Name', value: name },
 					{ name: 'ID', value: id },
@@ -113,7 +113,9 @@ export default class InfoCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				title: 'Role information',
-				description: `${this.Utils.Mentionrole(id)} information`,
+				description: `${message.guild.roles.cache
+					.find((r) => r.id == id)
+					.toString()} information`,
 				fields: [
 					{ name: 'Name', value: name },
 					{ name: 'ID', value: id },
@@ -131,7 +133,7 @@ export default class InfoCommand extends BaseCommand {
 
 			const name = guild.name;
 			const id = guild.id;
-			const owner = this.Utils.Mentionuser(guild.ownerId);
+			const owner = (await this.Utils.FetchUser(guild.ownerId)).toString();
 			const verified = guild.verified ? 'Yes' : 'No';
 			const membercount = guild.memberCount;
 			const humans = message.guild.members.cache.filter(
@@ -192,7 +194,9 @@ export default class InfoCommand extends BaseCommand {
 					iconURL: guild.iconURL({ dynamic: true }),
 					text: this,
 					title: 'Channel info',
-					description: `${this.Utils.Mentionchannel(id)} information`,
+					description: `${(
+						await this.Utils.FetchChannel(id)
+					).toString()} information`,
 					fields: [
 						{ name: 'Name', value: name },
 						{ name: 'ID', value: id },
@@ -222,7 +226,9 @@ export default class InfoCommand extends BaseCommand {
 				iconURL: interaction.guild.iconURL({ dynamic: true }),
 				text: this,
 				title: 'Channel info',
-				description: `${this.Utils.Mentionchannel(c.id)} information`,
+				description: `${(
+					await this.Utils.FetchChannel(c.id)
+				).toString()} information`,
 				fields: [
 					{ name: 'Name', value: name },
 					{ name: 'Type', value: type },
@@ -238,7 +244,7 @@ export default class InfoCommand extends BaseCommand {
 
 			const name = guild.name;
 			const id = guild.id;
-			const owner = this.Utils.Mentionuser(guild.ownerId);
+			const owner = (await this.Utils.FetchUser(guild.ownerId)).toString();
 			const verified = guild.verified ? this.Emojis.verified : 'No';
 			const membercount = guild.memberCount;
 			const humans = guild.members.cache.filter(
@@ -313,7 +319,9 @@ export default class InfoCommand extends BaseCommand {
 				iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
 				text: this,
 				title: 'Role information',
-				description: `${this.Utils.Mentionrole(id)} information`,
+				description: `${interaction.guild.roles.cache
+					.find((role) => role.id == id)
+					.toString()} information`,
 				fields: [
 					{ name: 'Name', value: name },
 					{ name: 'ID', value: id },
@@ -343,7 +351,12 @@ export default class InfoCommand extends BaseCommand {
 						: user.username;
 
 					const roles = `${(member as APIInteractionGuildMember).roles
-						.map((r) => `${this.Utils.Mentionrole(r)}`)
+						.map(
+							(r) =>
+								`${interaction.guild.roles.cache
+									.find((role) => role.id == r)
+									.toString()}`
+						)
 						.join(' | ')}`;
 
 					const joinedAt = (member as APIInteractionGuildMember).joined_at;
@@ -473,7 +486,12 @@ export default class InfoCommand extends BaseCommand {
 
 				if (Array.isArray(mem.roles)) {
 					const roles = `${(mem as APIInteractionGuildMember).roles
-						.map((r) => `${this.Utils.Mentionrole(r)}`)
+						.map(
+							(r) =>
+								`${interaction.guild.roles.cache
+									.find((role) => role.id == r)
+									.toString()}`
+						)
 						.join(' | ')}`;
 
 					const data = await client.users.fetch(mem.user.id);

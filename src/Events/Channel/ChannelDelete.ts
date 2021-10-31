@@ -9,6 +9,8 @@ export default class ChannelDeleteEvent extends BaseEvent {
 	async run(client: DiscordClient, channel: GuildChannel | DMChannel) {
 		if (channel.type == 'DM') return;
 
+		console.log(channel);
+
 		const { guild } = channel;
 
 		const lang = await this.Translator.Getlang(guild.id);

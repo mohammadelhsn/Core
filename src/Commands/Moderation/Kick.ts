@@ -167,7 +167,7 @@ export default class KickCommand extends BaseCommand {
 			description: 'Moderation: `Kick`',
 			fields: [
 				{ name: 'User', value: `${user.user.tag} (${user.user.id})` },
-				{ name: 'Moderator', value: this.Utils.Mentionuser(message.author.id) },
+				{ name: 'Moderator', value: (await this.Utils.FetchUser(message.author.id)).toString() },
 				{ name: 'Reason', value: `\`${reason}\`` },
 				{ name: 'Case #', value: `\`${caseNumber}\`` },
 				{ name: 'Date', value: message.createdAt.toLocaleString() },

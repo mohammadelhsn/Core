@@ -6,5 +6,7 @@ export default class EmojiDeleteEvent extends BaseEvent {
 	constructor() {
 		super('emojiDelete');
 	}
-	async run(client: DiscordClient, emoji: GuildEmoji) {}
+	async run(client: DiscordClient, emoji: GuildEmoji) {
+		const guild = emoji.guild;
+	}
 }

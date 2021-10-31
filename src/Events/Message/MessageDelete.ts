@@ -7,6 +7,6 @@ export default class MessageDeleteEvent extends BaseEvent {
 		super('messageDelete');
 	}
 	async run(client: DiscordClient, message: Message) {
-		//	console.log(message);
+		const guild = message.guild;
 	}
 }

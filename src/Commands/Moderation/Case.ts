@@ -285,7 +285,7 @@ export default class CaseCommand extends BaseCommand {
 					value: `${
 						moderation.moderatorId == null
 							? 'Unknown'
-							: `${this.Utils.Mentionuser(moderation.moderatorId)} - (${
+							: `${(await this.Utils.FetchUser(moderation.moderatorId)).toString()} - (${
 									moderation.moderatorId
 							  })`
 					}`,
@@ -296,7 +296,7 @@ export default class CaseCommand extends BaseCommand {
 				},
 				{
 					name: 'Last updated by',
-					value: `${this.Utils.Mentionuser(moderation.updateby)} - (${
+					value: `${(await this.Utils.FetchUser(moderation.updateby)).toString()} - (${
 						moderation.updateby
 					})`,
 				},

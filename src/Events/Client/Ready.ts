@@ -20,23 +20,23 @@ export default class ReadyEvent extends BaseEvent {
 			status: 'dnd',
 		});
 
-		const commands = new Functions.SlashCommands()
-			.All()
-			.toArray()
-			.map((cmd) => cmd.toJSON());
+		// const commands = new Functions.SlashCommands()
+		// 	.All()
+		// 	.toArray()
+		// 	.map((cmd) => cmd.toJSON());
 
-		const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
+		// const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
-		rest
-			.put(
-				Routes.applicationGuildCommands(client.user.id, '890636612839563325'),
-				{ body: commands }
-			)
-			.then(() => console.log('Successfully registered application commands.'))
-			.catch((err) => {
-				console.log(err);
-				console.log(err.errors);
-			});
+		// rest
+		// 	.put(
+		// 		Routes.applicationGuildCommands(client.user.id, '890636612839563325'),
+		// 		{ body: commands }
+		// 	)
+		// 	.then(() => console.log('Successfully registered application commands.'))
+		// 	.catch((err) => {
+		// 		console.log(err);
+		// 		console.log(err.errors);
+		// 	});
 
 		for (const g of client.guilds.cache) {
 			const guildId = g[1].id;

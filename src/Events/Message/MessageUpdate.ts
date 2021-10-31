@@ -7,7 +7,6 @@ export default class MessageUpdateEvent extends BaseEvent {
 		super('messageUpdate');
 	}
 	async run(client: DiscordClient, oldMessage: Message, newMessage: Message) {
-		//	console.log(newMessage);
-		//	console.log(oldMessage);
+		const guild = newMessage.guild;
 	}
 }

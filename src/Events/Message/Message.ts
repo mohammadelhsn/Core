@@ -8,15 +8,16 @@ export default class MessageEvent extends BaseEvent {
 	}
 
 	async run(client: DiscordClient, message: Message) {
-		console.log('hi');
-		if (message.author.bot) return;
+		if (message.author.bot == true) return;
 		if (message.channel.type == 'DM') return;
+
+		console.log(message.content);
 
 		const con = await this.con.connect();
 
-		const prefix = await this.Settings.Prefix(message.guild.id);
+		console.log(con);
 
-		console.log(prefix);
+		const prefix = await this.Settings.Prefix(message.guild.id, true, false);
 
 		if (message.content.startsWith(prefix)) {
 			const [cmdName, ...cmdArgs] = message.content
@@ -102,7 +103,9 @@ export default class MessageEvent extends BaseEvent {
 					return this.Utils.Delete(msg);
 				}
 
-				command.run(client, message, cmdArgs);
+				await command
+					.run(client, message, cmdArgs)
+					.catch((err) => console.log(err));
 
 				if (message.guild.id == '704034868547289089') {
 					const res = await con.query(

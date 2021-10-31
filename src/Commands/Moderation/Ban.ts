@@ -164,9 +164,9 @@ export default class BanCommand extends BaseCommand {
 			iconURL: user.displayAvatarURL({ dynamic: true }),
 			text: this,
 			id: message.guild.id,
-			success_message: `${this.Utils.Mentionuser(
-				user.id
-			)} was successfully banned!`,
+			success_message: `${(
+				await this.Utils.FetchUser(user.id)
+			).toString()} was successfully banned!`,
 		});
 
 		const msg = await message.channel.send({ embeds: [successEmbed] });
@@ -180,10 +180,15 @@ export default class BanCommand extends BaseCommand {
 			title: 'New moderation',
 			description: 'Moderation: `Ban`',
 			fields: [
-				{ name: 'User', value: `${this.Utils.Mentionuser(user.id)}` },
+				{
+					name: 'User',
+					value: `${(await this.Utils.FetchUser(user.id)).toString()}`,
+				},
 				{
 					name: 'Moderator',
-					value: `${this.Utils.Mentionuser(message.author.id)}`,
+					value: `${(
+						await this.Utils.FetchUser(message.author.id)
+					).toString()}`,
 				},
 				{ name: 'Reason', value: `${reason}` },
 				{ name: 'Case #', value: `\`${caseNumber}\`` },

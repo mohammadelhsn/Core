@@ -1,3 +1,5 @@
+import DiscordClient from '../Client/Client';
+import Functions from './Functions';
 import Types from './Structures/Interfaces/CachedGuild';
 
 namespace Constructors {
@@ -173,7 +175,9 @@ namespace Constructors {
 	}
 	export class Events {
 		public data: Types.events;
+		protected client: DiscordClient;
 		constructor(data?: Types.events | string) {
+			this.client = globalThis.client as DiscordClient;
 			if (!data) {
 				this.data = {
 					channelCreate: {

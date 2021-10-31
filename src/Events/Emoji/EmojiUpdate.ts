@@ -6,9 +6,7 @@ export default class EmojiUpdateEvent extends BaseEvent {
 	constructor() {
 		super('emojiUpdate');
 	}
-	async run(
-		client: DiscordClient,
-		oldEmoji: GuildEmoji,
-		newEmoji: GuildEmoji
-	) {}
+	async run(client: DiscordClient, oldEmoji: GuildEmoji, newEmoji: GuildEmoji) {
+		const guild = newEmoji.guild;
+	}
 }
