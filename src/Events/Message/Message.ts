@@ -11,12 +11,6 @@ export default class MessageEvent extends BaseEvent {
 		if (message.author.bot == true) return;
 		if (message.channel.type == 'DM') return;
 
-		console.log(message.content);
-
-		const con = await this.con.connect();
-
-		console.log(con);
-
 		const prefix = await this.Settings.Prefix(message.guild.id, true, false);
 
 		if (message.content.startsWith(prefix)) {
@@ -106,6 +100,8 @@ export default class MessageEvent extends BaseEvent {
 				await command
 					.run(client, message, cmdArgs)
 					.catch((err) => console.log(err));
+
+				const con = await this.con.connect();
 
 				if (message.guild.id == '704034868547289089') {
 					const res = await con.query(

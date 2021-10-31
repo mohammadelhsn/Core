@@ -757,6 +757,7 @@ namespace Functions {
 		}
 		async Prefix(id: Snowflake, force?: boolean, cache?: boolean) {
 			const con = await this.con.connect();
+
 			try {
 				if (!force) force = false;
 				if (!cache) cache = true;
