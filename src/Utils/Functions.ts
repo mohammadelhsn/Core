@@ -438,14 +438,22 @@ namespace Functions {
 			if (toGrab instanceof GuildMember && type == 'guild')
 				return toGrab.guild.iconURL({ dynamic: dynamic });
 			else if (toGrab instanceof GuildMember)
-				return toGrab.user.displayAvatarURL({ dynamic: dynamic });
+				return toGrab.displayAvatarURL({ dynamic: dynamic });
 			if (toGrab instanceof Message && type == 'guild')
 				return toGrab.guild.iconURL({ dynamic: dynamic });
 			else if (toGrab instanceof Message)
-				return toGrab.author.displayAvatarURL({ dynamic: dynamic });
+				return toGrab.member.displayAvatarURL({ dynamic: dynamic });
 			if (toGrab instanceof CommandInteraction && type == 'guild')
 				return toGrab.guild.iconURL({ dynamic: dynamic });
-			else return toGrab.user.displayAvatarURL({ dynamic: dynamic });
+
+			if (toGrab.member instanceof GuildMember) {
+				return toGrab.member.displayAvatarURL({ dynamic: true });
+			}
+
+			const user = toGrab.guild.members.cache.find(
+				(member) => member.id == toGrab.user.id
+			);
+			return user.displayAvatarURL({ dynamic: true });
 		}
 		async FetchChannel(id: Snowflake) {
 			return (
