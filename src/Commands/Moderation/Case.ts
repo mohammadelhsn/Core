@@ -214,24 +214,22 @@ export default class CaseCommand extends BaseCommand {
 						{
 							name: 'Database',
 							value:
-								dbUpdated == true
-									? this.Emojis.success_emoji
-									: this.Emojis.error_emoji,
+								dbUpdated == true ? this.Emojis.success : this.Emojis.error,
 						},
 						{
 							name: 'Modlog message',
 							value: `${
 								typeof modlogUpdated == 'string'
-									? `${this.Emojis.error_emoji} | ${mnew}`
-									: `${this.Emojis.success_emoji} | ${mnew}`
+									? `${this.Emojis.error} | ${mnew}`
+									: `${this.Emojis.success} | ${mnew}`
 							}`,
 						},
 						{
 							name: 'Publicmodlog',
 							value: `${
 								typeof pmUpdated == 'string'
-									? `${this.Emojis.error_emoji} | ${pmNew}`
-									: `${this.Emojis.success_emoji} | ${pmNew}`
+									? `${this.Emojis.error} | ${pmNew}`
+									: `${this.Emojis.success} | ${pmNew}`
 							}`,
 						},
 					],
@@ -285,9 +283,9 @@ export default class CaseCommand extends BaseCommand {
 					value: `${
 						moderation.moderatorId == null
 							? 'Unknown'
-							: `${(await this.Utils.FetchUser(moderation.moderatorId)).toString()} - (${
-									moderation.moderatorId
-							  })`
+							: `${(
+									await this.Utils.FetchUser(moderation.moderatorId)
+							  ).toString()} - (${moderation.moderatorId})`
 					}`,
 				},
 				{
@@ -296,9 +294,9 @@ export default class CaseCommand extends BaseCommand {
 				},
 				{
 					name: 'Last updated by',
-					value: `${(await this.Utils.FetchUser(moderation.updateby)).toString()} - (${
-						moderation.updateby
-					})`,
+					value: `${(
+						await this.Utils.FetchUser(moderation.updateby)
+					).toString()} - (${moderation.updateby})`,
 				},
 				{
 					name: 'Moderation date',

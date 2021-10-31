@@ -33,7 +33,15 @@ export default class TesstCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		console.log(message.guild.emojis.cache.toJSON());
+		message.guild.emojis.cache.each((emoji) => {
+			console.log(
+				`"${emoji.name}": "${
+					emoji.animated == true
+						? `<a:${emoji.name}:${emoji.id}>,`
+						: `<:${emoji.name}:${emoji.id}>,`
+				}"`
+			);
+		});
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

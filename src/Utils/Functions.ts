@@ -353,10 +353,10 @@ namespace Functions {
 			return newPermissions;
 		}
 		StatusEmoji(status: PresenceStatus) {
-			if (status == 'dnd') return this.Emojis.dnd_emoji;
-			if (status == 'idle') return this.Emojis.idle_emoji;
-			if (status == 'online') return this.Emojis.online_emoji;
-			return this.Emojis.offline_emoji;
+			if (status == 'dnd') return this.Emojis.dnd;
+			if (status == 'idle') return this.Emojis.idle;
+			if (status == 'online') return this.Emojis.online;
+			return this.Emojis.offline;
 		}
 		StatusText(status: PresenceStatus) {
 			if (status == 'dnd') return 'DND';
@@ -369,19 +369,19 @@ namespace Functions {
 		}
 		GetFlags(uFlags: Readonly<UserFlags> | UserFlags) {
 			const userflag = {
-				DISCORD_EMPLOYEE: this.Emojis.discord_staff,
+				DISCORD_EMPLOYEE: this.Emojis.discord_employee,
 				DISCORD_PARTNER: this.Emojis.discord_partner,
-				BUGHUNTER_LEVEL_1: this.Emojis.bug_hunter,
-				BUGHUNTER_LEVEL_2: this.Emojis.bug_hunter_2,
+				BUGHUNTER_LEVEL_1: this.Emojis.bughunter_1,
+				BUGHUNTER_LEVEL_2: this.Emojis.bughunter_2,
 				HYPESQUAD_EVENTS: this.Emojis.hypesquad_events,
 				HOUSE_BRAVERY: this.Emojis.hypesquad_bravery,
 				HOUSE_BRILLIANCE: this.Emojis.hypesquad_brilliance,
 				HOUSE_BALANCE: this.Emojis.hypesquad_balance,
-				EARLY_SUPPORTER: this.Emojis.earlysupporter,
+				EARLY_SUPPORTER: this.Emojis.early_supporter,
 				TEAM_USER: 'Team User',
 				SYSTEM: this.Emojis.system,
-				VERIFIED_BOT: this.Emojis.bot_emoji,
-				VERIFIED_DEVELOPER: this.Emojis.discord_bot_dev,
+				VERIFIED_BOT: this.Emojis['7235bot'],
+				VERIFIED_DEVELOPER: this.Emojis.verified_bot_dev,
 			};
 
 			if (uFlags !== null) {
@@ -843,8 +843,6 @@ namespace Functions {
 			try {
 				if (!force) force = false;
 				if (!cache) cache = true;
-
-				console.log(con);
 
 				const guild = this.cache.get(id);
 
@@ -1311,7 +1309,7 @@ namespace Functions {
 			const embed = this.Embed({
 				iconURL: opts.iconURL,
 				text: opts.text,
-				title: `${Emojis.success_emoji} | ${this.Capitalize(
+				title: `${Emojis.success} | ${this.Capitalize(
 					this.Getstring(lang, 'success')
 				)}`,
 				description: `${this.Capitalize(opts.success_message)}`,
@@ -1372,7 +1370,7 @@ namespace Functions {
 				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
-				title: `${Emojis.error_emoji} | ${this.Capitalize(
+				title: `${Emojis.error} | ${this.Capitalize(
 					this.Getstring(lang, 'error_message')
 				)}`,
 				description: `\`\`\`Error details: ${this.Capitalize(

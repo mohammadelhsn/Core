@@ -69,23 +69,23 @@ export default class MembercountCommand extends BaseCommand {
 						value: `\`${this.Utils.FormatNumber(membercount.humanCount)}\``,
 					},
 					{
-						name: `${this.Emojis.bot_emoji} | Bot count`,
+						name: `${this.Emojis.bot} | Bot count`,
 						value: `\`${this.Utils.FormatNumber(membercount.botCount)}\``,
 					},
 					{
-						name: `${this.Emojis.online_emoji} | Members online`,
+						name: `${this.Emojis.online} | Members online`,
 						value: `\`${this.Utils.FormatNumber(membercount.online)}\``,
 					},
 					{
-						name: `${this.Emojis.idle_emoji} | Idle members`,
+						name: `${this.Emojis.idle} | Idle members`,
 						value: `\`${this.Utils.FormatNumber(membercount.idle)}\``,
 					},
 					{
-						name: `${this.Emojis.dnd_emoji} | DND members`,
+						name: `${this.Emojis.dnd} | DND members`,
 						value: `\`${this.Utils.FormatNumber(membercount.dnd)}\``,
 					},
 					{
-						name: `${this.Emojis.offline_emoji} | Offline/invisible members`,
+						name: `${this.Emojis.offline} | Offline/invisible members`,
 						value: `\`${this.Utils.FormatNumber(membercount.offline)}\``,
 					},
 				],
