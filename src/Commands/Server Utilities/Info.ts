@@ -487,7 +487,7 @@ export default class InfoCommand extends BaseCommand {
 				}
 
 				if (Array.isArray(mem.roles)) {
-					const roles = `${(mem as APIInteractionGuildMember).roles
+					const roles = `${(mem as any).roles
 						.map(
 							(r) =>
 								`${interaction.guild.roles.cache
