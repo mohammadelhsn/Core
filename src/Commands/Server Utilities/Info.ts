@@ -74,7 +74,9 @@ export default class InfoCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				title: 'Channel info',
-				description: `${(await this.Utils.FetchChannel(id)).toString()} information`,
+				description: `${(
+					await this.Utils.FetchChannel(id)
+				).toString()} information`,
 				fields: [
 					{ name: 'Name', value: name },
 					{ name: 'ID', value: id },
@@ -495,12 +497,12 @@ export default class InfoCommand extends BaseCommand {
 						.join(' | ')}`;
 
 					const data = await client.users.fetch(mem.user.id);
-					const nickname = (mem as APIInteractionGuildMember).nick
-						? `${mem as APIInteractionGuildMember} AKA ${data.username}`
+					const nickname = (mem as any).nick
+						? `${mem as any} AKA ${data.username}`
 						: data.username;
 					const discrim = data.discriminator;
 					const id = data.id;
-					const joinedAt = (mem as APIInteractionGuildMember).joined_at;
+					const joinedAt = (mem as any).joined_at;
 					const createdAt = data.createdAt.toString();
 					const flags = this.Utils.GetFlags(data.flags);
 
