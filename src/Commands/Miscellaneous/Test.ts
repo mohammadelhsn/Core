@@ -32,16 +32,6 @@ export default class TesstCommand extends BaseCommand {
 			'working'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {
-		message.guild.emojis.cache.each((emoji) => {
-			console.log(
-				`"${emoji.name}": "${
-					emoji.animated == true
-						? `<a:${emoji.name}:${emoji.id}>,`
-						: `<:${emoji.name}:${emoji.id}>,`
-				}"`
-			);
-		});
-	}
+	async run(client: DiscordClient, message: Message, args: string[]) {}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

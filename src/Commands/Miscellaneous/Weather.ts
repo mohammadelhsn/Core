@@ -36,36 +36,33 @@ export default class WeatherCommand extends BaseCommand {
 
 		const city = args.join(' ');
 		if (!city) {
-			const errorEmbed = await this.ErrorEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+			const errorEmbed = await self.ErrorEmbed.Base({
+				accessor: message,
 				text: self,
-				id: message.guild.id,
 				error_message: 'Plese mention a city',
 			});
 			const msg = await message.channel.send({ embeds: [errorEmbed] });
-			return this.Utils.Delete(msg);
+			return self.Utils.Delete(msg);
 		}
 		find({ search: city, degreeType: 'C' }, async function (err, res) {
 			if (err) {
 				console.log(err);
 
 				const errorEmbed = await self.ErrorEmbed.UnexpectedError({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					accessor: message,
 					text: self,
-					id: message.guild.id,
 				});
 				const msg = await message.channel.send({ embeds: [errorEmbed] });
-				return this.Utils.Delete(msg);
+				return self.Utils.Delete(msg);
 			}
 
 			if (!res || res.length === '0' || res.length === 0) {
 				const errorEmbed = await self.ErrorEmbed.NoResult({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					accessor: message,
 					text: self,
-					id: message.guild.id,
 				});
 				const msg = await message.channel.send({ embeds: [errorEmbed] });
-				return this.Utils.Delete(msg);
+				return self.Utils.Delete(msg);
 			}
 
 			if (res.length > 1) {
@@ -76,13 +73,14 @@ export default class WeatherCommand extends BaseCommand {
 					.map((x) => `**${index++}**) \`${x.location.name}\``)
 					.join('\n')}`;
 				const embed = await self.Embed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					text: this,
+					accessor: message,
+					text: self,
 					title: `Oops, there are multiple locations!`,
 					description: string,
 				});
+
 				const mesg = await message.channel.send({ embeds: [embed] });
-				this.Utils.Delete(mesg);
+				self.Utils.Delete(mesg);
 
 				const options: MessageCollectorOptions = {
 					filter: (m) => {
@@ -103,9 +101,9 @@ export default class WeatherCommand extends BaseCommand {
 					const region = res[Number(m.content) - 1];
 
 					const weatherEmbed = await self.ImageEmbed.Base({
-						iconURL: region.current.imageUrl,
+						iconURL: message.member.displayAvatarURL({ dynamic: true }),
 						text: self,
-						title: `Weather command`,
+						title: `Weather command | Current`,
 						description: `Location: \`${region.location.name}\``,
 						image: region.current.imageUrl,
 						fields: [
@@ -126,7 +124,41 @@ export default class WeatherCommand extends BaseCommand {
 							},
 						],
 					});
-					message.channel.send({ embeds: [weatherEmbed] });
+
+					const embeds = [weatherEmbed];
+
+					const forecasts = region.forecast.filter(
+						(day) => Date.parse(day.date) > Date.now()
+					);
+
+					for (let forecast of forecasts) {
+						const embed = self.Embed.Base({
+							accessor: message,
+							title: `Weather Command | ${forecast.date}`,
+							description: `Location: \`${region.location.name}\``,
+							text: self,
+							fields: [
+								{ name: 'Low', value: `\`${forecast.low}\`` },
+								{ name: 'High', value: `\`${forecast.high}\`` },
+								{ name: 'Sky text', value: `\`${forecast.skytextday}\`` },
+								{
+									name: 'Chance of rain',
+									value: `${
+										forecast.precip.length > 0
+											? `\`${forecast.precip}%\``
+											: '`Unknown`'
+									}`,
+								},
+							],
+						});
+
+						embeds.push(embed);
+					}
+
+					await self.Utils.Paginate({
+						accessor: message,
+						embeds: embeds,
+					});
 					return;
 				});
 
@@ -135,19 +167,19 @@ export default class WeatherCommand extends BaseCommand {
 						const embed = await self.SuccessEmbed.Base({
 							iconURL: message.author.displayAvatarURL({ dynamic: true }),
 							id: message.guild.id,
-							text: this,
+							text: self,
 							success_message: 'Successfully cancelled selection!',
 						});
 						const msg = await message.channel.send({ embeds: [embed] });
-						this.Utils.Delete(msg);
+						self.Utils.Delete(msg);
 						return;
 					}
 				});
 			} else {
-				const weatherEmbed = await self.ImageEmbed.Base({
-					iconURL: res[0].current.imageUrl,
+				const currentEmbed = await self.ImageEmbed.Base({
+					iconURL: message.member.displayAvatarURL({ dynamic: true }),
 					text: self,
-					title: `Weather command`,
+					title: `Weather command | Current`,
 					description: `Location: \`${res[0].location.name}\``,
 					image: res[0].current.imageUrl,
 					fields: [
@@ -168,9 +200,42 @@ export default class WeatherCommand extends BaseCommand {
 						},
 					],
 				});
-				return message.channel.send({ embeds: [weatherEmbed] });
+
+				const embeds = [currentEmbed];
+
+				const forecasts = res[0].forecast.filter(
+					(day) => Date.parse(day.date) > Date.now()
+				);
+
+				for (let forecast of forecasts) {
+					const embed = self.Embed.Base({
+						accessor: message,
+						title: `Weather Command | ${forecast.date}`,
+						description: `Location: \`${res[0].location.name}\``,
+						text: self,
+						fields: [
+							{ name: 'Low', value: `\`${forecast.low}\`` },
+							{ name: 'High', value: `\`${forecast.high}\`` },
+							{ name: 'Sky text', value: `\`${forecast.skytextday}\`` },
+							{
+								name: 'Chance of rain',
+								value: `${
+									forecast.precip.length > 0
+										? `\`${forecast.precip}%\``
+										: '`Unknown`'
+								}`,
+							},
+						],
+					});
+
+					embeds.push(embed);
+				}
+
+				return await self.Utils.Paginate({ accessor: message, embeds: embeds });
 			}
 		});
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }
+
+Date.now();
