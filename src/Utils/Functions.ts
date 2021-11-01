@@ -1438,6 +1438,9 @@ namespace Functions {
 			});
 		}
 		async UnexpectedError(opts: Funcs.ErrorEmbedOpts) {
+			if (!opts.id && !opts.accessor) throw new Error('Manual or defualt');
+			if (!opts.id && opts.accessor) opts.id = this.GetGuildId(opts.accessor);
+
 			const lang = await this.Getlang(opts.id);
 
 			const description = this.Getstring(lang, 'unexpected_error');
@@ -2637,6 +2640,51 @@ namespace Functions {
 				.setDescription('wink');
 			this.Commands.push(this._Wink);
 			return this;
+		}
+		Aww() {
+			// const test = new SlashCommandBuilder()
+			// 	.setName('aww')
+			// 	.setDescription(
+			// 		'Find cute animal pictures with a nice fact to go with it!'
+			// 	)
+			// 	.addSubcommand((opt) =>
+			// 		opt.setName('bird').setDescription('Get a bird image and fact')
+			// 	)
+			// 	.addSubcommand((opt) =>
+			// 		opt.setName('cat').setDescription('Get a cat image and fact')
+			// 	)
+			// 	.addSubcommand((opt) =>
+			// 		opt.setName('dog').setDescription('Get a dog image and fact')
+			// 	)
+			// 	.addSubcommand((opt) =>
+			// 		opt.setName('fox').setDescription('Get a fox image and fact')
+			// 	)
+			// 	.addSubcommand((opt) =>
+			// 		opt
+			// 			.setName('kangaroo')
+			// 			.setDescription('Get a kangaroo image and fact')
+			// 	)
+			// 	.addSubcommand((opt) =>
+			// 		opt.setName('koala').setDescription('Get a koala image and fact')
+			// 	)
+			// 	.addSubcommand((opt) =>
+			// 		opt.setName('panda').setDescription('Get a panda image and fact')
+			// 	)
+			// 	.addSubcommand((opt) =>
+			// 		opt.setName('racoon').setDescription('Get a racoon image and fact')
+			// 	)
+			// 	.addSubcommand((opt) =>
+			// 		opt
+			// 			.setName('redpanda')
+			// 			.setDescription('Get a red panda image and fact')
+			// 	)
+			// 	.addSubcommand((opt) =>
+			// 		opt.setName('shibe').setDescription('Get a picture of a shiba inu')
+			// 	)
+			// 	.addSubcommand((opt) =>
+			// 		opt.setName('whale').setDescription('Get a whale image and fact')
+			// 	);
+			// return this;
 		}
 		All() {
 			this.Advice();

@@ -41,7 +41,6 @@ export default class HelpCommand extends BaseCommand {
 					bot: `Bot [${commands['bot'].length}]`,
 					canvas: `Canvas [${commands['canvas'].length}]`,
 					config: `Config [${commands['config'].length}]`,
-					facts: `Facts [${commands['facts'].length}]`,
 					fun: `Fun [${commands['fun'].length}]`,
 					logging: `Logging [${commands['logging'].length}]`,
 					manager: `Manager [${commands['manager'].length}]`,
@@ -57,7 +56,6 @@ export default class HelpCommand extends BaseCommand {
 					bot: commands['bot'].map((c) => `\`${c}\``).join(', '),
 					canvas: commands['canvas'].map((c) => `\`${c}\``).join(', '),
 					config: commands['config'].map((c) => `\`${c}\``).join(', '),
-					facts: commands['facts'].map((c) => `\`${c}\``).join(', '),
 					fun: commands['fun'].map((c) => `\`${c}\``).join(', '),
 					logging: commands['logging'].map((c) => `\`${c}\``).join(', '),
 					manager: commands['manager'].map((c) => `\`${c}\``).join(', '),
@@ -168,30 +166,6 @@ export default class HelpCommand extends BaseCommand {
 						`${categories.command.config}`
 					);
 
-				const fEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
-					.setTitle(
-						`Core help command | Command count: ${client.commands.size}`
-					)
-					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
-					)
-					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-					.setTimestamp()
-					.addField(
-						`${categories.titles.facts}`,
-						`${categories.command.facts}`
-					);
 				const fuEmbed = new MessageEmbed()
 					.setAuthor(
 						client.user.username,
@@ -413,7 +387,7 @@ export default class HelpCommand extends BaseCommand {
 					botEmbed,
 					cEmbed,
 					coEmbed,
-					fEmbed,
+
 					fuEmbed,
 					logEmbed,
 					mEmbed,
@@ -473,18 +447,7 @@ export default class HelpCommand extends BaseCommand {
 						},
 					],
 				});
-				const fEmbed = this.Embed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					text: this,
-					title: `Core help command | Command count: ${client.commands.size}`,
-					description: `\`<>\` is required \`()\` is optional`,
-					fields: [
-						{
-							name: `${categories.titles.facts}`,
-							value: `${categories.command.facts}`,
-						},
-					],
-				});
+
 				const fuEmbed = this.Embed.Base({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
@@ -558,7 +521,6 @@ export default class HelpCommand extends BaseCommand {
 					botEmbed,
 					cEmbed,
 					coEmbed,
-					fEmbed,
 					fuEmbed,
 					miEmbed,
 					oEmbed,

@@ -2,10 +2,10 @@ import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
 import { CommandInteraction, Message } from 'discord.js';
 
-export default class FoxCommand extends BaseCommand {
+export default class WhaleCommand extends BaseCommand {
 	constructor() {
 		super(
-			'fox',
+			'whale',
 			'aww',
 			[],
 			'',
@@ -31,9 +31,10 @@ export default class FoxCommand extends BaseCommand {
 		const m = await message.channel.send({ embeds: [gEmbed] });
 
 		try {
-			const res = await this.Animals.Fox();
+			const res = await this.Animals.Whale();
+			const data = await this.Facts.Whalefact();
 
-			if (res.error == true) {
+			if (res.error == true || data.error == true) {
 				await m.delete();
 
 				const embed = await this.ErrorEmbed.ApiError({
@@ -47,17 +48,17 @@ export default class FoxCommand extends BaseCommand {
 			const embed = await this.ImageEmbed.Base({
 				accessor: message,
 				text: this,
-				title: 'Fox command',
-				description: `Fact: \`${res.text}\``,
+				title: 'Whale command',
+				description: `Fact: \`${data.text}\``,
 				image: res.file,
 			});
 
 			await m.delete();
 			return await message.channel.send({ embeds: [embed] });
 		} catch (error) {
-			// console.log(error);
+			console.log(error);
 
-			if (m.deleted == false) m.delete();
+			if (m.deleted == false) await m.delete();
 
 			const embed = await this.ErrorEmbed.UnexpectedError({
 				accessor: message,

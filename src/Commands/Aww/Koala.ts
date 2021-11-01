@@ -1,19 +1,19 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { Message, CommandInteraction } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 
 export default class KoalaCommand extends BaseCommand {
 	constructor() {
 		super(
 			'koala',
-			'category',
+			'aww',
 			[],
 			'',
-			'Sends a picture of a koala',
+			'',
 			'',
 			[],
 			[],
-			['SEND_MESSAGES', 'EMBED_LINKS'],
+			[],
 			[],
 			true,
 			false,
@@ -23,52 +23,48 @@ export default class KoalaCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		if (args[0]) {
-			return await this.HelpEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				command: this,
-				accessor: message,
-			});
-		}
-
-		const generatingEmbed = await this.GeneratingEmbed.SomeRandomApi({
+		const gEmbed = await this.GeneratingEmbed.SomeRandomApi({
 			accessor: message,
 			text: this,
 		});
-		const m = await message.channel.send({ embeds: [generatingEmbed] });
+
+		const m = await message.channel.send({ embeds: [gEmbed] });
 
 		try {
 			const res = await this.Animals.Koala();
 
 			if (res.error == true) {
-				m.delete();
+				await m.delete();
 
-				const errEmbed = await this.ErrorEmbed.ApiError({
+				const embed = await this.ErrorEmbed.ApiError({
 					accessor: message,
 					text: this,
 				});
-				const msg = await message.channel.send({ embeds: [errEmbed] });
-				return this.Utils.Delete(msg);
+
+				return await message.channel.send({ embeds: [embed] });
 			}
 
 			const embed = await this.ImageEmbed.Base({
 				accessor: message,
 				text: this,
 				title: 'Koala command',
-				description: client.database.get(message.guild.id).Strings
-					.SomeRandomAPI,
+				description: `Fact: \`${res.text}\``,
 				image: res.file,
 			});
-			m.delete();
-			return message.channel.send({ embeds: [embed] });
-		} catch (e) {
-			m.delete();
 
-			const errEmbed = await this.ErrorEmbed.UnexpectedError({
+			await m.delete();
+			return await message.channel.send({ embeds: [embed] });
+		} catch (error) {
+			// console.log(error);
+
+			if (m.deleted == false) m.delete();
+
+			const embed = await this.ErrorEmbed.UnexpectedError({
 				accessor: message,
 				text: this,
 			});
-			return message.channel.send({ embeds: [errEmbed] });
+
+			return await message.channel.send({ embeds: [embed] });
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {}

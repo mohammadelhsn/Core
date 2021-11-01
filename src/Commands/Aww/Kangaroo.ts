@@ -6,14 +6,14 @@ export default class KangarooCommand extends BaseCommand {
 	constructor() {
 		super(
 			'kangaroo',
-			'category',
+			'aww',
 			[],
 			'',
-			'Sends a picture of a kangaroo',
+			'',
 			'',
 			[],
 			[],
-			['SEND_MESSAGES', 'EMBED_LINKS'],
+			[],
 			[],
 			true,
 			false,
@@ -23,92 +23,49 @@ export default class KangarooCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		if (args[0]) {
-			return await this.HelpEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				command: this,
-				accessor: message,
-			});
-		}
-
-		const generatingEmbed = await this.GeneratingEmbed.SomeRandomApi({
+		const gEmbed = await this.GeneratingEmbed.SomeRandomApi({
 			accessor: message,
 			text: this,
 		});
-		const m = await message.channel.send({ embeds: [generatingEmbed] });
+
+		const m = await message.channel.send({ embeds: [gEmbed] });
 
 		try {
 			const res = await this.Animals.Kangaroo();
 
 			if (res.error == true) {
-				m.delete();
+				await m.delete();
 
-				const errEmbed = await this.ErrorEmbed.ApiError({
+				const embed = await this.ErrorEmbed.ApiError({
 					accessor: message,
 					text: this,
 				});
-				const msg = await message.channel.send({ embeds: [errEmbed] });
-				return this.Utils.Delete(msg);
+
+				return await message.channel.send({ embeds: [embed] });
 			}
 
 			const embed = await this.ImageEmbed.Base({
 				accessor: message,
 				text: this,
 				title: 'Kangaroo command',
-				description: client.database.get(message.guild.id).Strings
-					.SomeRandomAPI,
+				description: `Fact: \`${res.text}\``,
 				image: res.file,
 			});
-			m.delete();
-			return message.channel.send({ embeds: [embed] });
-		} catch (e) {
-			m.delete();
 
-			const errEmbed = await this.ErrorEmbed.UnexpectedError({
+			await m.delete();
+			return await message.channel.send({ embeds: [embed] });
+		} catch (error) {
+			// console.log(error);
+
+			if (m.deleted == false) m.delete();
+
+			const embed = await this.ErrorEmbed.UnexpectedError({
 				accessor: message,
 				text: this,
 			});
-			return message.channel.send({ embeds: [errEmbed] });
+
+			return await message.channel.send({ embeds: [embed] });
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {
-		const embed = await this.GeneratingEmbed.SomeRandomApi({
-			iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
-			text: this,
-			id: interaction.guild.id,
-		});
-
-		await interaction.reply({ embeds: [embed] });
-
-		try {
-			const res = await this.Animals.Kangaroo();
-
-			if (res.error == true) {
-				const errEmbed = await this.ErrorEmbed.ApiError({
-					iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
-					id: interaction.guild.id,
-					text: this,
-				});
-				const msg = await interaction.channel.send({ embeds: [errEmbed] });
-				return this.Utils.Delete(msg);
-			}
-
-			const embed = await this.ImageEmbed.Base({
-				iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
-				text: this,
-				title: 'Kangaroo command',
-				description: client.database.get(interaction.guild.id).Strings
-					.SomeRandomAPI,
-				image: res.file,
-			});
-			return interaction.editReply({ embeds: [embed] });
-		} catch (e) {
-			const errEmbed = await this.ErrorEmbed.UnexpectedError({
-				id: interaction.guild.id,
-				iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
-				text: this,
-			});
-			return interaction.editReply({ embeds: [errEmbed] });
-		}
-	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

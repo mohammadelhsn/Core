@@ -6,55 +6,15 @@ import BaseObj from './Structures/BaseObj';
 
 namespace API {
 	export class Animals {
-		async Alpaca(): Promise<BaseObj> {
-			try {
-				const res = await axios.get(`https://apis.duncte123.me/animal/alpaca`);
-				const body = <Responses.Duncte123Response>res.data;
-
-				return new BaseObj({
-					error: false,
-					file: body.data.file,
-					id: body.data.id,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
 		async Bird(): Promise<BaseObj> {
 			try {
-				const res = await axios.get(`https://apis.duncte123.me/animal/bird`);
-				const body = <Responses.Duncte123Response>res.data;
+				const res = await axios.get(`https://some-random-api.ml/animal/birb`);
+				const body = <Responses.SomeRandomApi>res.data;
 
 				return new BaseObj({
 					error: false,
-					file: body.data.file,
-					id: body.data.id,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Camel(): Promise<BaseObj> {
-			try {
-				const res = await axios.get(`https://apis.duncte123.me/animal/bird`);
-				const body = <Responses.Duncte123Response>res.data;
-
-				return new BaseObj({
-					error: false,
-					file: body.data.file,
-					id: body.data.id,
+					file: body.image,
+					text: body.fact,
 				});
 			} catch (error) {
 				return new BaseObj({
@@ -68,12 +28,13 @@ namespace API {
 		}
 		async Cat(): Promise<BaseObj> {
 			try {
-				const res = await axios.get(`http://aws.random.cat/meow`);
-				const body = <Responses.RandomCat>res.data;
+				const res = await axios.get(`https://some-random-api.ml/animal/cat`);
+				const body = <Responses.SomeRandomApi>res.data;
 
 				return new BaseObj({
 					error: false,
-					file: body.file,
+					file: body.image,
+					text: body.fact,
 				});
 			} catch (error) {
 				return new BaseObj({
@@ -87,12 +48,13 @@ namespace API {
 		}
 		async Dog(): Promise<BaseObj> {
 			try {
-				const res = await axios.get(`https://dog.ceo/api/breeds/image/random`);
-				const body = <Responses.RandomDog>res.data;
+				const res = await axios.get(`https://some-random-api.ml/animal/dog`);
+				const body = <Responses.SomeRandomApi>res.data;
 
 				return new BaseObj({
 					error: false,
-					file: body.message,
+					file: body.image,
+					text: body.fact,
 				});
 			} catch (error) {
 				return new BaseObj({
@@ -104,35 +66,16 @@ namespace API {
 				});
 			}
 		}
-		async Duck(): Promise<BaseObj> {
-			try {
-				const res = await axios.get(`https://apis.duncte123.me/animal/duck`);
-				const body = <Responses.Duncte123Response>res.data;
 
-				return new BaseObj({
-					error: false,
-					file: body.data.file,
-					id: body.data.id,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
 		async Fox(): Promise<BaseObj> {
 			try {
-				const res = await axios.get(`https://apis.duncte123.me/animal/fox`);
-				const body = <Responses.Duncte123Response>res.data;
+				const res = await axios.get(`https://some-random-api.ml/animal/fox`);
+				const body = <Responses.SomeRandomApi>res.data;
 
 				return new BaseObj({
 					error: false,
-					file: body.data.file,
-					id: body.data.id,
+					file: body.image,
+					text: body.fact,
 				});
 			} catch (error) {
 				return new BaseObj({
@@ -186,77 +129,15 @@ namespace API {
 				});
 			}
 		}
-		async Lizard() {
-			try {
-				const res = await axios.get(`https://apis.duncte123.me/animal/lizard`);
-				const body = <Responses.Duncte123Response>res.data;
-
-				return new BaseObj({
-					error: false,
-					file: body.data.file,
-					id: body.data.id,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Llama() {
-			try {
-				const res = await axios.get(`https://apis.duncte123.me/animal/llama`);
-				const body = <Responses.Duncte123Response>res.data;
-
-				return new BaseObj({
-					error: true,
-					id: body.data.id,
-					file: body.data.file,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Monster() {
-			try {
-				const res = await axios.get(
-					`https://apis.duncte123.me/animal/discord-monster`
-				);
-				const body = <Responses.Duncte123Response>res.data;
-
-				return new BaseObj({
-					error: false,
-					id: body.data.id,
-					file: body.data.file,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
 		async Panda() {
 			try {
-				const res = await axios.get(`https://apis.duncte123.me/animal/panda`);
-				const body = <Responses.Duncte123Response>res.data;
+				const res = await axios.get(`https://some-random-api.ml/animal/panda`);
+				const body = <Responses.SomeRandomApi>res.data;
 
 				return new BaseObj({
 					error: false,
-					id: body.data.id,
-					file: body.data.file,
+					file: body.image,
+					text: body.fact,
 				});
 			} catch (error) {
 				return new BaseObj({
@@ -310,31 +191,9 @@ namespace API {
 				});
 			}
 		}
-		async Seal() {
-			try {
-				const res = await axios.get(`https://apis.duncte123.me/animal/seal`);
-				const body = <Responses.Duncte123Response>res.data;
-
-				return new BaseObj({
-					error: false,
-					file: body.data.file,
-					id: body.data.id,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
 		async Shibe() {
 			try {
-				const res = await axios.get(
-					`http://shibe.online/api/shibes?count=1&urls=true&httpsUrls=true`
-				);
+				const res = await axios.get(`http://shibe.online/api/shibes`);
 				const body = <Responses.ShibeOnline>res.data;
 
 				return new BaseObj({
@@ -351,17 +210,18 @@ namespace API {
 				});
 			}
 		}
-		async Wolf() {
+		async Whale() {
 			try {
-				const res = await axios.get(`https://apis.duncte123.me/animal/wolf`);
-				const body = <Responses.Duncte123Response>res.data;
+				const res = await axios.get(`https://some-random-api.ml/img/whale`);
+				const body = <any>res.data;
 
 				return new BaseObj({
 					error: false,
-					file: body.data.file,
-					id: body.data.id,
+					file: body.link,
 				});
 			} catch (error) {
+				console.log(error) 
+
 				return new BaseObj({
 					error: true,
 					error_type: (error as Error).name ? (error as Error).name : null,
@@ -698,204 +558,10 @@ namespace API {
 		}
 	}
 	export class Facts {
-		async Birdfact() {
-			try {
-				const res = await axios.get(`https://some-random-api.ml/facts/bird`);
-				const data = <Responses.FactsResponse>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.fact,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Catfact() {
-			try {
-				const res = await axios.get(`https://some-random-api.ml/facts/cat`);
-				const data = <Responses.FactsResponse>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.fact,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Dogfact() {
-			try {
-				const res = await axios.get(`https://some-random-api.ml/facts/dog`);
-				const data = <Responses.FactsResponse>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.fact,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Elephantfact() {
-			try {
-				const res = await axios.get(
-					`https://some-random-api.ml/facts/elephant`
-				);
-				const data = <Responses.FactsResponse>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.fact,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Foxfact() {
-			try {
-				const res = await axios.get(`https://some-random-api.ml/facts/fox`);
-				const data = <Responses.FactsResponse>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.fact,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Giraffefact() {
-			try {
-				const res = await axios.get(`https://some-random-api.ml/facts/giraffe`);
-				const data = <Responses.FactsResponse>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.fact,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Kangaroofact() {
-			try {
-				const res = await axios.get(
-					`https://some-random-api.ml/facts/kangaroo`
-				);
-				const data = <Responses.FactsResponse>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.fact,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Koalafact() {
-			try {
-				const res = await axios.get(`https://some-random-api.ml/facts/koala`);
-				const data = <Responses.FactsResponse>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.fact,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Pandafact() {
-			try {
-				const res = await axios.get(`https://some-random-api.ml/facts/panda`);
-				const data = <Responses.FactsResponse>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.fact,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
-		async Racoonfact() {
-			try {
-				const res = await axios.get(`https://some-random-api.ml/facts/racoon`);
-				const data = <Responses.FactsResponse>res.data;
-
-				return new BaseObj({
-					error: false,
-					text: data.fact,
-				});
-			} catch (error) {
-				return new BaseObj({
-					error: true,
-					error_type: (error as Error).name ? (error as Error).name : null,
-					error_message: (error as Error).message
-						? (error as Error).message
-						: null,
-				});
-			}
-		}
 		async Whalefact() {
 			try {
 				const res = await axios.get(
-					`https://some-random-api.ml/facts/whalefact`
+					`https://some-random-api.ml/facts/whale`
 				);
 				const data = <Responses.FactsResponse>res.data;
 
@@ -904,6 +570,8 @@ namespace API {
 					text: data.fact,
 				});
 			} catch (error) {
+
+
 				return new BaseObj({
 					error: true,
 					error_type: (error as Error).name ? (error as Error).name : null,
