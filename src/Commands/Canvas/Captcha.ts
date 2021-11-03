@@ -49,9 +49,6 @@ export default class CaptchaCommand extends BaseCommand {
 			const image = await this.Canvas.Captcha(avatar, text);
 			const file = await new MessageAttachment(image.file, 'captcha.png');
 
-			console.log(file);
-			console.log(image);
-
 			const embed = await this.ImageEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,

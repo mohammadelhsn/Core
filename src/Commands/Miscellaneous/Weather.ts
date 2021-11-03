@@ -237,5 +237,3 @@ export default class WeatherCommand extends BaseCommand {
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }
-
-Date.now();

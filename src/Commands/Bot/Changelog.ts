@@ -29,13 +29,33 @@ export default class ChangelogCommand extends BaseCommand {
 			title: 'Changelog command',
 			description: `${client.version} changelog`,
 			fields: [
-				{ name: 'Additions', value: `Slash commands (WIP still)` },
-				{ name: 'Modifications', value: `Discord.JS V13 updates!` },
-				{ name: 'Removals', value: `` },
+				{ name: 'Additions', value: `Slash commands!!` },
+				{ name: 'Modifications', value: `Lots of bug fixes` },
+				{
+					name: 'Removals',
+					value: `Userinfo, Serverinfo, Roleinfo and Channelinfo have been combined to one command, they still show up for commands as I haven't yet removed them until the code is 100% working`,
+				},
 			],
 		});
 
 		return message.channel.send({ embeds: [embed] });
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const embed = this.Embed.Base({
+			accessor: interaction,
+			text: this,
+			title: 'Changelog command',
+			description: `${client.version} changelog`,
+			fields: [
+				{ name: 'Additions', value: `Slash commands!!` },
+				{ name: 'Modifications', value: `Lots of bug fixes` },
+				{
+					name: 'Removals',
+					value: `Userinfo, Serverinfo, Roleinfo and Channelinfo have been combined to one command, they still show up for commands as I haven't yet removed them until the code is 100% working`,
+				},
+			],
+		});
+
+		return await interaction.reply({ embeds: [embed] });
+	}
 }

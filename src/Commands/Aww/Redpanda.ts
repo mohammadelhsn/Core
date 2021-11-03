@@ -67,5 +67,42 @@ export default class RedpandaCommand extends BaseCommand {
 			return await message.channel.send({ embeds: [embed] });
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const gEmbed = await this.GeneratingEmbed.SomeRandomApi({
+			accessor: interaction,
+			text: this,
+		});
+
+		await interaction.editReply({ embeds: [gEmbed] });
+
+		try {
+			const res = await this.Animals.Redpanda();
+
+			if (res.error == true) {
+				const embed = await this.ErrorEmbed.ApiError({
+					accessor: interaction,
+					text: this,
+				});
+
+				return await interaction.editReply({ embeds: [embed] });
+			}
+
+			const embed = await this.ImageEmbed.Base({
+				accessor: interaction,
+				text: this,
+				title: 'Red panda command',
+				description: `Fact: \`${res.text}\``,
+				image: res.file,
+			});
+
+			return await interaction.editReply({ embeds: [embed] });
+		} catch (error) {
+			const embed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+
+			return await interaction.editReply({ embeds: [embed] });
+		}
+	}
 }

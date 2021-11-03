@@ -17,8 +17,8 @@ export default class DiscordClient extends Client {
 		Snowflake,
 		{ msg: string; user: Snowflake; iconURL: string }
 	>();
-	private _version = '0.1';
-	private _updated_at = 'Tuesday May 18, 2021';
+	private _version = '0.5.1';
+	private _updated_at = new Date(Date.now()).toDateString();
 
 	constructor(options?: ClientOptions) {
 		super(options);

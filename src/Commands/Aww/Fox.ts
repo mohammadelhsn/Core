@@ -67,5 +67,34 @@ export default class FoxCommand extends BaseCommand {
 			return await message.channel.send({ embeds: [embed] });
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const gEmbed = await this.GeneratingEmbed.SomeRandomApi({
+			accessor: interaction,
+			text: this,
+		});
+
+		await interaction.reply({ embeds: [gEmbed] });
+
+		try {
+			const res = await this.Animals.Fox();
+
+			if (res.error == true) {
+				const embed = await this.ErrorEmbed.ApiError({
+					accessor: interaction,
+					text: this,
+				});
+
+				return await interaction.editReply({ embeds: [embed] });
+			}
+		} catch (error) {
+			// console.log(error);
+
+			const embed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+
+			return await interaction.editReply({ embeds: [embed] });
+		}
+	}
 }

@@ -14,12 +14,12 @@ export default class AdCommand extends BaseCommand {
 			'ad',
 			'canvas',
 			[],
-			'',
+			'(@mention || me || help)',
 			'',
 			'',
 			[],
 			[],
-			[],
+			['SEND_MESSAGES', 'EMBED_LINKS'],
 			[],
 			true,
 			false,
@@ -140,10 +140,8 @@ export default class AdCommand extends BaseCommand {
 
 		let timedOut: boolean = false;
 
-		const isFromAuthor = (m) => m.author.id == message.author.id;
-
 		const options: AwaitMessagesOptions = {
-			filter: isFromAuthor,
+			filter: (m) => m.author.id == message.author.id,
 			max: 1,
 			time: 60000,
 		};

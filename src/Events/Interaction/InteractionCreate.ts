@@ -10,10 +10,16 @@ export default class Event extends BaseEvent {
 		if (interaction.isCommand()) {
 			const con = await this.con.connect();
 			try {
-				const command = client.commands.get(interaction.commandName);
+				let command;
+				if (interaction.commandName == 'aww') {
+					const cmd = interaction.options.getString('animal');
+
+					command = client.commands.get(cmd);
+				} else {
+					command = client.commands.get(interaction.commandName);
+				}
 
 				if (!command) return;
-
 				const { data } = await this.Settings.Disabled(interaction.guild.id);
 				const { commands, categories } = data;
 

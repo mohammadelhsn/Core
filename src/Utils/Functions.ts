@@ -28,6 +28,7 @@ import {
 	GuildEmoji,
 	Role,
 	Util,
+	Options,
 } from 'discord.js';
 import CachedGuild from './Structures/CachedGuild';
 import Colours from '../../Colours.json';
@@ -2128,7 +2129,45 @@ namespace Functions {
 			| SlashCommandSubcommandsOnlyBuilder
 			| Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
 		>;
+		protected _Weather: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Help: Omit<
+			SlashCommandBuilder,
+			'addSubcommandGroup' | 'addSubcommand'
+		>;
+		protected _Meme: SlashCommandBuilder;
+		protected _News: SlashCommandSubcommandsOnlyBuilder;
+		protected _Quote: SlashCommandBuilder;
+		protected _Urban: SlashCommandSubcommandsOnlyBuilder;
+		protected _Aww: Omit<
+			SlashCommandBuilder,
+			'addSubcommand' | 'addSubcommandGroup'
+		>;
+		protected _Botclear: SlashCommandBuilder;
+		protected _Botinfo: SlashCommandBuilder;
+		protected _Changelog: SlashCommandBuilder;
+		protected _Invite: SlashCommandBuilder;
+		protected _Ping: SlashCommandBuilder;
+		protected _Support: SlashCommandBuilder;
+		protected _Uptime: SlashCommandBuilder;
+		protected _Botnick: Omit<
+			SlashCommandBuilder,
+			'addSubcommand' | 'addSubcommandGroup'
+		>;
+		protected client: DiscordClient;
 		constructor() {
+			this.client = globalThis.client as DiscordClient;
+			this._Aww = null;
+			this._Botclear = null;
+			this._Botinfo = null;
+			this._Changelog = null;
+			this._Invite = null;
+			this._Ping = null;
+			this._Support = null;
+			this._Uptime = null;
+			this._Botnick = null;
 			this._Advice = null;
 			this._Baka = null;
 			this._Foxgirl = null;
@@ -2167,61 +2206,67 @@ namespace Functions {
 			this._Smug = null;
 			this._Tickle = null;
 			this._Wink = null;
+			this._Weather = null;
+			this._Help = null;
+			this._Meme = null;
+			this._News = null;
+			this._Quote = null;
+			this._Urban = null;
 			this.Commands = [];
 		}
 		Advice() {
 			this._Advice = new SlashCommandBuilder()
 				.setName('advice')
-				.setDescription('Sends you some advice');
+				.setDescription(this.client.commands.get('advice').getDescription());
 			this.Commands.push(this._Advice);
 			return this;
 		}
 		Baka() {
 			this._Baka = new SlashCommandBuilder()
 				.setName('baka')
-				.setDescription('B- BAKA!');
+				.setDescription(this.client.commands.get('baka').getDescription());
 			this.Commands.push(this._Baka);
 			return this;
 		}
 		Foxgirl() {
 			this._Foxgirl = new SlashCommandBuilder()
 				.setName('foxgirl')
-				.setDescription('Sends a picture of a foxgirl');
+				.setDescription(this.client.commands.get('foxgirl').getDescription());
 			this.Commands.push(this._Foxgirl);
 			return this;
 		}
 		Joke() {
 			this._Joke = new SlashCommandBuilder()
 				.setName('joke')
-				.setDescription('Sends a joke');
+				.setDescription(this.client.commands.get('joke').getDescription());
 			this.Commands.push(this._Joke);
 			return this;
 		}
 		Neko() {
 			this._Neko = new SlashCommandBuilder()
 				.setName('neko')
-				.setDescription('Sends a picture of a neko');
+				.setDescription(this.client.commands.get('neko').getDescription());
 			this.Commands.push(this._Neko);
 			return this;
 		}
 		Pickup() {
 			this._Pickup = new SlashCommandBuilder()
 				.setName('pickup')
-				.setDescription('Sends a pickup line 😏');
+				.setDescription(this.client.commands.get('pickup').getDescription());
 			this.Commands.push(this._Pickup);
 			return this;
 		}
 		Roast() {
 			this._Roast = new SlashCommandBuilder()
 				.setName('roast')
-				.setDescription('Sends a roast 🔥');
+				.setDescription(this.client.commands.get('roast').getDescription());
 			this.Commands.push(this._Roast);
 			return this;
 		}
 		Sexyrate() {
 			this._Sexyrate = new SlashCommandBuilder()
 				.setName('sexyrate')
-				.setDescription('Returns a rating of 100 for you or the mentioned user')
+				.setDescription(this.client.commands.get('sexyrate').getDescription())
 				.addUserOption((opt) =>
 					opt
 						.setName('user')
@@ -2234,7 +2279,7 @@ namespace Functions {
 		Ship() {
 			this._Ship = new SlashCommandBuilder()
 				.setName('ship')
-				.setDescription('Ship people!')
+				.setDescription(this.client.commands.get('ship').getDescription())
 				.addUserOption((opt) =>
 					opt
 						.setName('user1')
@@ -2253,7 +2298,7 @@ namespace Functions {
 		Simprate() {
 			this._Simprate = new SlashCommandBuilder()
 				.setName('simprate')
-				.setDescription("Get a user's simp rating")
+				.setDescription(this.client.commands.get('simprate').getDescription())
 				.addUserOption((opt) =>
 					opt
 						.setName('user')
@@ -2266,51 +2311,53 @@ namespace Functions {
 		Waifu() {
 			this._Waifu = new SlashCommandBuilder()
 				.setName('waifu')
-				.setDescription('Generates a waifu, just for you!');
+				.setDescription(this.client.commands.get('waifu').getDescription());
 			this.Commands.push(this._Waifu);
 			return this;
 		}
 		Wallpaper() {
 			this._Wallpaper = new SlashCommandBuilder()
 				.setName('wallpaper')
-				.setDescription(
-					'Sends a picture of a wallpaper for you to use! (Mobile and PC wallpapers)'
-				);
+				.setDescription(this.client.commands.get('wallpaper').getDescription());
 			this.Commands.push(this._Wallpaper);
 			return this;
 		}
 		Equelmemes() {
 			this._Equelmemes = new SlashCommandBuilder()
 				.setName('equelmemes')
-				.setDescription('Sends a meme from r/Equelmeme');
+				.setDescription(this.client.commands.get('equelmeme').getDescription());
 			this.Commands.push(this._Equelmemes);
 			return this;
 		}
 		Sequelmemes() {
 			this._Sequelmemes = new SlashCommandBuilder()
 				.setName('sequelmeme')
-				.setDescription('Sends a sequel meme');
+				.setDescription(
+					this.client.commands.get('sequelmeme').getDescription()
+				);
 			this.Commands.push(this._Sequelmemes);
 			return this;
 		}
 		Prequelmemes() {
 			this._Prequelmemes = new SlashCommandBuilder()
 				.setName('prequelmeme')
-				.setDescription('Sends a meme from r/Prequelmemes');
+				.setDescription(
+					this.client.commands.get('prequelmeme').getDescription()
+				);
 			this.Commands.push(this._Prequelmemes);
 			return this;
 		}
 		OTMeme() {
 			this._OTMeme = new SlashCommandBuilder()
 				.setName('otmeme')
-				.setDescription('Sends a meme from the OT trilogy');
+				.setDescription(this.client.commands.get('otmeme').getDescription());
 			this.Commands.push(this._OTMeme);
 			return this;
 		}
 		Anime() {
 			this._Anime = new SlashCommandBuilder()
 				.setName('anime')
-				.setDescription('Search an anime by name')
+				.setDescription(this.client.commands.get('anime').getDescription())
 				.addStringOption((opt) =>
 					opt
 						.setName('query')
@@ -2323,7 +2370,7 @@ namespace Functions {
 		Collection() {
 			this._Collection = new SlashCommandBuilder()
 				.setName('collection')
-				.setDescription('Search the Discord JS collection docs')
+				.setDescription(this.client.commands.get('collection').getDescription())
 				.addStringOption((opt) =>
 					opt
 						.setName('query')
@@ -2336,7 +2383,7 @@ namespace Functions {
 		Docs() {
 			this._Docs = new SlashCommandBuilder()
 				.setName('docs')
-				.setDescription('Search the Discord JS docs (stable)')
+				.setDescription(this.client.commands.get('docs').getDescription())
 				.addStringOption((opt) =>
 					opt
 						.setName('query')
@@ -2349,7 +2396,7 @@ namespace Functions {
 		Google() {
 			this._Google = new SlashCommandBuilder()
 				.setName('google')
-				.setDescription('Do a google search using the bot!')
+				.setDescription(this.client.commands.get('google').getDescription())
 				.addStringOption((opt) =>
 					opt
 						.setName('query')
@@ -2362,7 +2409,7 @@ namespace Functions {
 		Lyrics() {
 			this._Lyrics = new SlashCommandBuilder()
 				.setName('lyrics')
-				.setDescription('Get the lyrics for any song')
+				.setDescription(this.client.commands.get('lyrics').getDescription())
 				.addStringOption((opt) =>
 					opt
 						.setName('query')
@@ -2375,7 +2422,7 @@ namespace Functions {
 		Reddit() {
 			this._Reddit = new SlashCommandBuilder()
 				.setName('reddit')
-				.setDescription('Do a search for a subreddit or a reddit user')
+				.setDescription(this.client.commands.get('reddit').getDescription())
 				.addSubcommand((sub) =>
 					sub
 						.setName('subreddit')
@@ -2408,7 +2455,7 @@ namespace Functions {
 		Roblox() {
 			this._Roblox = new SlashCommandBuilder()
 				.setName('roblox')
-				.setDescription('Get information on a ROBLOX user')
+				.setDescription(this.client.commands.get('roblox').getDescription())
 				.addStringOption((opt) =>
 					opt
 						.setName('query')
@@ -2423,7 +2470,7 @@ namespace Functions {
 		YouTube() {
 			this._YouTube = new SlashCommandBuilder()
 				.setName('youtube')
-				.setDescription('Get information on a YouTube video or YouTube channel')
+				.setDescription(this.client.commands.get('youtube').getDescription())
 				.addSubcommand((sub) =>
 					sub
 						.setName('channel')
@@ -2452,7 +2499,7 @@ namespace Functions {
 		Info() {
 			this._Info = new SlashCommandBuilder()
 				.setName('info')
-				.setDescription('Get information on a server / user / role / channel')
+				.setDescription(this.client.commands.get('info').getDescription())
 				.addSubcommand((sub) =>
 					sub
 						.setName('user')
@@ -2488,6 +2535,22 @@ namespace Functions {
 				)
 				.addSubcommand((sub) =>
 					sub.setName('server').setDescription('Get information on the server')
+				)
+				.addSubcommand((sub) =>
+					sub
+						.setName('avatar')
+						.setDescription("View a user's avatar")
+						.addUserOption((opt) =>
+							opt
+								.setName('user')
+								.setDescription('User mention to view their avatar')
+								.setRequired(false)
+						)
+				)
+				.addSubcommand((sub) =>
+					sub
+						.setName('membercount')
+						.setDescription('View the membercount of the guild')
 				);
 			this.Commands.push(this._Info);
 			return this;
@@ -2500,7 +2563,7 @@ namespace Functions {
 		Cuddle() {
 			this._Cuddle = new SlashCommandBuilder()
 				.setName('cuddle')
-				.setDescription('Cuddle the mentioned user')
+				.setDescription(this.client.commands.get('cuddle').getDescription())
 				.addUserOption((opt) =>
 					opt
 						.setName('user')
@@ -2513,14 +2576,14 @@ namespace Functions {
 		Facepalm() {
 			this._Facepalm = new SlashCommandBuilder()
 				.setName('facepalm')
-				.setDescription('🤦‍♂️🤦🤦‍♀️');
+				.setDescription(this.client.commands.get('facepalm').getDescription());
 			this.Commands.push(this._Facepalm);
 			return this;
 		}
 		Feed() {
 			this._Feed = new SlashCommandBuilder()
 				.setName('feed')
-				.setDescription('Feed the mentioned user')
+				.setDescription(this.client.commands.get('feed').getDescription())
 				.addUserOption((opt) =>
 					opt
 						.setName('user')
@@ -2533,7 +2596,7 @@ namespace Functions {
 		Hug() {
 			this._Hug = new SlashCommandBuilder()
 				.setName('hug')
-				.setDescription('Hug the mentioned user')
+				.setDescription(this.client.commands.get('hug').getDescription())
 				.addUserOption((opt) =>
 					opt
 						.setName('user')
@@ -2546,7 +2609,7 @@ namespace Functions {
 		Laugh() {
 			this._Laugh = new SlashCommandBuilder()
 				.setName('laugh')
-				.setDescription('🤣');
+				.setDescription(this.client.commands.get('laugh').getDescription());
 			this.Commands.push(this._Laugh);
 			return this;
 		}
@@ -2557,7 +2620,7 @@ namespace Functions {
 				.addUserOption((opt) =>
 					opt
 						.setName('user')
-						.setDescription('The user you want to lick')
+						.setDescription(this.client.commands.get('lick').getDescription())
 						.setRequired(true)
 				);
 			this.Commands.push(this._Lick);
@@ -2566,7 +2629,7 @@ namespace Functions {
 		Mwah() {
 			this._Mwah = new SlashCommandBuilder()
 				.setName('mwah')
-				.setDescription('Kiss the mentioned user')
+				.setDescription(this.client.commands.get('mwah').getDescription())
 				.addUserOption((opt) =>
 					opt
 						.setName('user')
@@ -2579,7 +2642,7 @@ namespace Functions {
 		Pat() {
 			this._Pat = new SlashCommandBuilder()
 				.setName('pat')
-				.setDescription('Pat the mentioned user')
+				.setDescription(this.client.commands.get('pat').getDescription())
 				.addUserOption((opt) =>
 					opt
 						.setName('user')
@@ -2591,7 +2654,7 @@ namespace Functions {
 		Poke() {
 			this._Poke = new SlashCommandBuilder()
 				.setName('poke')
-				.setDescription('Poke the mentioned user')
+				.setDescription(this.client.commands.get('poke').getDescription())
 				.addUserOption((opt) =>
 					opt
 						.setName('user')
@@ -2604,7 +2667,7 @@ namespace Functions {
 		Slap() {
 			this._Slap = new SlashCommandBuilder()
 				.setName('slap')
-				.setDescription('Slap the mentioned user')
+				.setDescription(this.client.commands.get('slap').getDescription())
 				.addUserOption((opt) =>
 					opt
 						.setName('user')
@@ -2617,14 +2680,14 @@ namespace Functions {
 		Smug() {
 			this._Smug = new SlashCommandBuilder()
 				.setName('smug')
-				.setDescription('Smug');
+				.setDescription(this.client.commands.get('smug').getDescription());
 			this.Commands.push(this._Smug);
 			return this;
 		}
 		Tickle() {
 			this._Tickle = new SlashCommandBuilder()
 				.setName('tickle')
-				.setDescription('Tickle the mentioned user')
+				.setDescription(this.client.commands.get('tickle').getDescription())
 				.addUserOption((opt) =>
 					opt
 						.setName('user')
@@ -2637,54 +2700,188 @@ namespace Functions {
 		Wink() {
 			this._Wink = new SlashCommandBuilder()
 				.setName('wink')
-				.setDescription('wink');
+				.setDescription(this.client.commands.get('wink').getDescription());
 			this.Commands.push(this._Wink);
 			return this;
 		}
+		Weather() {
+			this._Weather = new SlashCommandBuilder()
+				.setName('weather')
+				.setDescription(this.client.commands.get('weather').getDescription())
+				.addStringOption((opt) =>
+					opt
+						.setName('query')
+						.setDescription('Location for weather information')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Weather);
+			return this;
+		}
+		Help() {
+			this._Help = new SlashCommandBuilder()
+				.setName('help')
+				.setDescription(this.client.commands.get('help').getDescription())
+				.addStringOption((opt) =>
+					opt
+						.setName('query')
+						.setDescription(
+							'Command or category name you want to get information on'
+						)
+				);
+			this.Commands.push(this._Help);
+			return this;
+		}
+		Meme() {
+			this._Meme = new SlashCommandBuilder()
+				.setName('meme')
+				.setDescription(this.client.commands.get('meme').getDescription());
+			this.Commands.push(this._Meme);
+			return this;
+		}
+		News() {
+			this._News = new SlashCommandBuilder()
+				.setName('news')
+				.setDescription(this.client.commands.get('news').getDescription())
+				.addSubcommand((sub) =>
+					sub
+						.setName('alltime')
+						.setDescription('Search the all time news')
+						.addStringOption((opt) =>
+							opt
+								.setName('query')
+								.setDescription('Your all-time news query')
+								.setRequired(true)
+						)
+				)
+				.addSubcommand((sub) =>
+					sub
+						.setName('top')
+						.setDescription('The top news at the current time')
+						.addStringOption((opt) =>
+							opt
+								.setName('query')
+								.setDescription('Your top news query')
+								.setRequired(true)
+						)
+				);
+			this.Commands.push(this._News);
+			return this;
+		}
+		Quote() {
+			this._Quote = new SlashCommandBuilder()
+				.setName('quote')
+				.setDescription(this.client.commands.get('quote').getDescription());
+			this.Commands.push(this._Quote);
+			return this;
+		}
+		Urban() {
+			this._Urban = new SlashCommandBuilder()
+				.setName('urban')
+				.setDescription(this.client.commands.get('urban').getDescription())
+				.addSubcommand((opt) =>
+					opt
+						.setName('random')
+						.setDescription('Get a random word from urban dictionary')
+				)
+				.addSubcommand((opt) =>
+					opt
+						.setName('search')
+						.setDescription('Search urban dictionary')
+						.addStringOption((opt) =>
+							opt
+								.setName('query')
+								.setDescription('Your word query to search on urban dictionary')
+								.setRequired(true)
+						)
+				);
+			this.Commands.push(this._Urban);
+			return this;
+		}
 		Aww() {
-			// const test = new SlashCommandBuilder()
-			// 	.setName('aww')
-			// 	.setDescription(
-			// 		'Find cute animal pictures with a nice fact to go with it!'
-			// 	)
-			// 	.addSubcommand((opt) =>
-			// 		opt.setName('bird').setDescription('Get a bird image and fact')
-			// 	)
-			// 	.addSubcommand((opt) =>
-			// 		opt.setName('cat').setDescription('Get a cat image and fact')
-			// 	)
-			// 	.addSubcommand((opt) =>
-			// 		opt.setName('dog').setDescription('Get a dog image and fact')
-			// 	)
-			// 	.addSubcommand((opt) =>
-			// 		opt.setName('fox').setDescription('Get a fox image and fact')
-			// 	)
-			// 	.addSubcommand((opt) =>
-			// 		opt
-			// 			.setName('kangaroo')
-			// 			.setDescription('Get a kangaroo image and fact')
-			// 	)
-			// 	.addSubcommand((opt) =>
-			// 		opt.setName('koala').setDescription('Get a koala image and fact')
-			// 	)
-			// 	.addSubcommand((opt) =>
-			// 		opt.setName('panda').setDescription('Get a panda image and fact')
-			// 	)
-			// 	.addSubcommand((opt) =>
-			// 		opt.setName('racoon').setDescription('Get a racoon image and fact')
-			// 	)
-			// 	.addSubcommand((opt) =>
-			// 		opt
-			// 			.setName('redpanda')
-			// 			.setDescription('Get a red panda image and fact')
-			// 	)
-			// 	.addSubcommand((opt) =>
-			// 		opt.setName('shibe').setDescription('Get a picture of a shiba inu')
-			// 	)
-			// 	.addSubcommand((opt) =>
-			// 		opt.setName('whale').setDescription('Get a whale image and fact')
-			// 	);
-			// return this;
+			this._Aww = new SlashCommandBuilder()
+				.setName('aww')
+				.setDescription('Get a picture of various animals')
+				.addStringOption((opt) =>
+					opt
+						.setName('animal')
+						.setDescription("The animal you'd like a picture of")
+						.setRequired(true)
+						.addChoice('bird', 'bird')
+						.addChoice('cat', 'cat')
+						.addChoice('dog', 'dog')
+						.addChoice('fox', 'fox')
+						.addChoice('kangaroo', 'kangaroo')
+						.addChoice('koala', 'koala')
+						.addChoice('panda', 'panda')
+						.addChoice('racoon', 'racoon')
+						.addChoice('redpanda', 'redpanda')
+						.addChoice('shibe', 'shibe')
+						.addChoice('whale', 'whale')
+				);
+			this.Commands.push(this._Aww);
+			return this;
+		}
+		Botclear() {
+			this._Botclear = new SlashCommandBuilder()
+				.setName('botclear')
+				.setDescription(this.client.commands.get('botclear').getDescription());
+			this.Commands.push(this._Botclear);
+			return this;
+		}
+		Botinfo() {
+			this._Botinfo = new SlashCommandBuilder()
+				.setName('botinfo')
+				.setDescription(this.client.commands.get('botinfo').getDescription());
+			this.Commands.push(this._Botinfo);
+			return this;
+		}
+		Botnick() {
+			this._Botnick = new SlashCommandBuilder()
+				.setName('botnick')
+				.setDescription(this.client.commands.get('botnick').getDescription())
+				.addStringOption((opt) =>
+					opt
+						.setName('name')
+						.setDescription('The new nickname you want to give the bot')
+						.setRequired(true)
+				);
+			this.Commands.push(this._Botnick);
+			return this;
+		}
+		Changelog() {
+			this._Changelog = new SlashCommandBuilder()
+				.setName('changelog')
+				.setDescription(this.client.commands.get('changelog').getDescription());
+			this.Commands.push(this._Changelog);
+			return this;
+		}
+		Invite() {
+			this._Invite = new SlashCommandBuilder()
+				.setName('invite')
+				.setDescription(this.client.commands.get('invite').getDescription());
+			this.Commands.push(this._Invite);
+			return this;
+		}
+		Ping() {
+			this._Ping = new SlashCommandBuilder()
+				.setName('ping')
+				.setDescription(this.client.commands.get('ping').getDescription());
+			this.Commands.push(this._Ping);
+			return this;
+		}
+		Support() {
+			this._Support = new SlashCommandBuilder()
+				.setName('support')
+				.setDescription(this.client.commands.get('support').getDescription());
+			this.Commands.push(this._Support);
+			return this;
+		}
+		Uptime() {
+			this._Uptime = new SlashCommandBuilder()
+				.setName('uptime')
+				.setDescription(this.client.commands.get('uptime').getDescription());
+			this.Commands.push(this._Uptime);
+			return this;
 		}
 		All() {
 			this.Advice();
@@ -2726,9 +2923,27 @@ namespace Functions {
 			this.Wallpaper();
 			this.YouTube();
 			this.Wink();
+			this.Weather();
+			this.Help();
+			this.Meme();
+			this.News();
+			this.Quote();
+			this.Urban();
+			this.Aww();
+			this.Botclear();
+			this.Botinfo();
+			this.Changelog();
+			this.Invite();
+			this.Ping();
+			this.Support();
+			this.Uptime();
+			this.Botnick();
 			return this;
 		}
-		toArray() {
+		toJSON() {
+			for (let cmd of this.Commands) {
+				this.Commands.map((command) => command.toJSON());
+			}
 			return this.Commands;
 		}
 	}

@@ -549,5 +549,15 @@ export default class HelpCommand extends BaseCommand {
 			});
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const commands = {};
+
+		client.commands.forEach((el) => {
+			if (commands[el.getCategory()]) {
+				commands[el.getCategory()].push(el.getName());
+			} else {
+				commands[el.getCategory()] = [el.getName()];
+			}
+		});
+	}
 }

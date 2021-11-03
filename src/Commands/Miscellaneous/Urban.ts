@@ -20,21 +20,19 @@ export default class UrbanCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const image =
 			'http://cdn.marketplaceimages.windowsphone.com/v8/images/5c942bfe-6c90-45b0-8cd7-1f2129c6e319?imageType=ws_icon_medium';
-		const search = args[0] ? urban(args.slice(1).join('%20')) : urban.random();
 
-		if (!args[1] || !['search', 'random'].includes(args[0])) {
-			return await this.HelpEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				accessor: message,
-				command: this,
-			});
-		}
+		let search;
+
+		if (args[0] == 'search') {
+			search = urban(args.slice(1).join(' '));
+		} else search = urban.random();
+
 		try {
 			search.first(async (res) => {
 				if (!res) {
@@ -46,7 +44,8 @@ export default class UrbanCommand extends BaseCommand {
 					const msg = await message.channel.send({ embeds: [errorEmbed] });
 					return this.Utils.Delete(msg);
 				}
-				let {
+
+				const {
 					word,
 					definition,
 					example,
@@ -85,14 +84,14 @@ export default class UrbanCommand extends BaseCommand {
 						},
 					],
 				});
-				return message.channel.send({ embeds: [embed] });
+
+				return await message.channel.send({ embeds: [embed] });
 			});
 		} catch (e) {
-			console.log(e);
+			//	console.log(e);
 
 			const errorEmbed = await this.ErrorEmbed.UnexpectedError({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
+				accessor: message,
 				text: this,
 			});
 			return message.channel.send({ embeds: [errorEmbed] });

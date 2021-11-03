@@ -20,16 +20,13 @@ export default class ReadyEvent extends BaseEvent {
 			status: 'dnd',
 		});
 
-		// const commands = new Functions.SlashCommands()
-		// 	.All()
-		// 	.toArray()
-		// 	.map((cmd) => cmd.toJSON());
+		// const commands = new Functions.SlashCommands().All().toJSON();
 
 		// const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
 		// rest
 		// 	.put(
-		// 		Routes.applicationGuildCommands(client.user.id, '890636612839563325'),
+		// 		Routes.applicationGuildCommands(client.user.id, '690975783363280918'),
 		// 		{ body: commands }
 		// 	)
 		// 	.then(() => console.log('Successfully registered application commands.'))

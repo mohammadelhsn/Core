@@ -76,28 +76,27 @@ export default class ShibeCommand extends BaseCommand {
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {
-		const sub = interaction.options.getSubcommand();
-
-		const lang = await this.Translator.Getlang(interaction.guild.id);
-
-		if (sub == 'help') {
-			return await this.HelpEmbed.Base({
-				iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
-				command: this,
-				accessor: interaction,
-			});
-		}
-
-		const generatingEmbed = await this.GeneratingEmbed.Base({
+		const gEmbed = await this.GeneratingEmbed.Base({
 			accessor: interaction,
 			text: this,
 			provider: 'Shibe Online API',
 		});
 
-		await interaction.reply({ embeds: [generatingEmbed] });
+		const lang = await this.Translator.Getlang(interaction.guild.id);
+
+		await interaction.editReply({ embeds: [gEmbed] });
 
 		try {
 			const res = await this.Animals.Shibe();
+
+			if (res.error == true) {
+				const errEmbed = await this.ErrorEmbed.ApiError({
+					accessor: interaction,
+					text: this,
+				});
+
+				return await interaction.editReply({ embeds: [errEmbed] });
+			}
 
 			const embed = await this.ImageEmbed.Base({
 				accessor: interaction,
@@ -109,14 +108,13 @@ export default class ShibeCommand extends BaseCommand {
 				image: res.file,
 			});
 
-			return interaction.editReply({ embeds: [embed] });
+			return await interaction.editReply({ embeds: [embed] });
 		} catch (error) {
-			console.log(error);
-
 			const errEmbed = await this.ErrorEmbed.UnexpectedError({
 				accessor: interaction,
 				text: this,
 			});
+
 			return interaction.editReply({ embeds: [errEmbed] });
 		}
 	}
