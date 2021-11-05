@@ -97,5 +97,131 @@ export default class UrbanCommand extends BaseCommand {
 			return message.channel.send({ embeds: [errorEmbed] });
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const sub = interaction.options.getSubcommand();
+
+		await interaction.deferReply({ ephemeral: true });
+
+		if (sub == 'random') {
+			const image =
+				'http://cdn.marketplaceimages.windowsphone.com/v8/images/5c942bfe-6c90-45b0-8cd7-1f2129c6e319?imageType=ws_icon_medium';
+
+			const search = urban.random();
+
+			search.first(async (res) => {
+				if (!res) {
+					const errorEmbed = await this.ErrorEmbed.NoResult({
+						accessor: interaction,
+						text: this,
+					});
+
+					return await interaction.editReply({ embeds: [errorEmbed] });
+				}
+
+				const {
+					word,
+					definition,
+					example,
+					thumbs_up,
+					thumbs_down,
+					permalink,
+					author,
+				} = res;
+
+				const embed = await this.Embed.Base({
+					iconURL: image,
+					text: `${author ? `Written by \`${author}\`` : 'Urban command'}`,
+					title: `Urban Dictionary | ${word}`,
+					description: `Definition: \`${
+						definition ? `${definition}` : 'N/A'
+					}\``,
+					fields: [
+						{ name: 'Example', value: `\`${example ? `${example}` : 'N/A'}\`` },
+						{
+							name: `${this.Emojis.upvote}`,
+							value: `${
+								thumbs_up ? `${this.Utils.FormatNumber(thumbs_up)}` : '0'
+							}`,
+						},
+						{
+							name: `${this.Emojis.downvote}`,
+							value: `${
+								thumbs_down ? `${this.Utils.FormatNumber(thumbs_down)}` : '0'
+							}`,
+						},
+						{
+							name: 'Permalink',
+							value: `[Link to ${word}](${
+								permalink ? permalink : 'https://www.urbandictionary.com/'
+							})`,
+						},
+					],
+				});
+
+				return await interaction.editReply({ embeds: [embed] });
+			});
+		}
+
+		if (sub == 'search') {
+			const query = interaction.options.getString('query');
+
+			const image =
+				'http://cdn.marketplaceimages.windowsphone.com/v8/images/5c942bfe-6c90-45b0-8cd7-1f2129c6e319?imageType=ws_icon_medium';
+
+			const search = urban(query);
+
+			search.first(async (res) => {
+				if (!res) {
+					const errorEmbed = await this.ErrorEmbed.NoResult({
+						accessor: interaction,
+						text: this,
+					});
+
+					return await interaction.editReply({ embeds: [errorEmbed] });
+				}
+
+				const {
+					word,
+					definition,
+					example,
+					thumbs_up,
+					thumbs_down,
+					permalink,
+					author,
+				} = res;
+
+				const embed = await this.Embed.Base({
+					iconURL: image,
+					text: `${author ? `Written by \`${author}\`` : 'Urban command'}`,
+					title: `Urban Dictionary | ${word}`,
+					description: `Definition: \`${
+						definition ? `${definition}` : 'N/A'
+					}\``,
+					fields: [
+						{ name: 'Example', value: `\`${example ? `${example}` : 'N/A'}\`` },
+						{
+							name: `${this.Emojis.upvote}`,
+							value: `${
+								thumbs_up ? `${this.Utils.FormatNumber(thumbs_up)}` : '0'
+							}`,
+						},
+						{
+							name: `${this.Emojis.downvote}`,
+							value: `${
+								thumbs_down ? `${this.Utils.FormatNumber(thumbs_down)}` : '0'
+							}`,
+						},
+						{
+							name: 'Permalink',
+							value: `[Link to ${word}](${
+								permalink ? permalink : 'https://www.urbandictionary.com/'
+							})`,
+						},
+					],
+				});
+
+				return await interaction.editReply({ embeds: [embed] });
+			});
+		}
+	}
 }

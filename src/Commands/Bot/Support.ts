@@ -19,9 +19,13 @@ export default class SupportCommand extends BaseCommand {
 			false,
 			false,
 			3000,
-			'WIP'
+			'working'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async run(client: DiscordClient, message: Message, args: string[]) {
+		return message.channel.send({ content: 'Support server WIP' });
+	}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		return interaction.reply({ content: 'Support server WIP' });
+	}
 }

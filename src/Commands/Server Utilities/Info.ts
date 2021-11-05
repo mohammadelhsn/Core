@@ -37,7 +37,12 @@ export default class InfoCommand extends BaseCommand {
 
 		if (
 			!sub ||
-			(sub != 'channel' && sub != 'role' && sub != 'user' && sub && 'server')
+			(sub != 'channel' &&
+				sub != 'role' &&
+				sub != 'user' &&
+				sub != 'server' &&
+				sub != 'avatar' &&
+				sub != 'membercount')
 		) {
 			const embed = await this.ErrorEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -175,7 +180,223 @@ export default class InfoCommand extends BaseCommand {
 			return message.channel.send({ embeds: [embed] });
 		}
 		if (sub == 'user') {
-			const user = args[0];
+			const user =
+				message.mentions.members.first() ||
+				message.guild.members.cache.find((u) => u.user.id == args[1]) ||
+				message.guild.members.cache.find((u) => u.user.username == args[1]) ||
+				message.guild.members.cache.find(
+					(u) => u.nickname != null && u.nickname == args[1]
+				);
+
+			if (!user && !args[1]) {
+				const u = message.member;
+
+				const roles = `${u.roles.cache.map((r) => `${r}`).join(' | ')}`;
+				const kickable = u.kickable ? 'Yes' : 'No';
+				const bannable = u.bannable ? 'Yes' : 'No';
+				const joinedAt = u.joinedAt;
+				const presence = u.presence
+					? `${this.Utils.StatusEmoji(
+							u.presence.status
+					  )} | ${u.presence.status.toUpperCase()}`
+					: 'N/A';
+				const nickname = u.nickname
+					? `${u.nickname} AKA ${u.user.username}`
+					: u.user.username;
+
+				const flags = this.Utils.GetFlags(u.user.flags);
+
+				const embed = await this.Embed.Base({
+					iconURL: u.displayAvatarURL({
+						dynamic: true,
+					}),
+					text: this,
+					title: `${u.user.username}#${u.user.discriminator} information`,
+					description: `Badges: ${flags}`,
+					fields: [
+						{ name: 'Name', value: nickname },
+						{ name: 'Discriminator', value: `#${u.user.discriminator}` },
+						{ name: 'ID', value: u.id },
+						{ name: 'Presence', value: presence },
+						{ name: 'Kickable', value: kickable },
+						{ name: 'Bannable', value: bannable },
+						{ name: 'Joined at', value: `${joinedAt}` },
+						{ name: 'Created at', value: `${u.user.createdAt}` },
+						{ name: 'Roles', value: roles },
+					],
+				});
+				return await message.reply({ embeds: [embed] });
+			}
+			if (!user && args[1]) {
+				try {
+					const u = await this.Utils.FetchUser(args[0]);
+
+					if (!u) {
+						return message.reply({ content: "I couldn't find this user!" });
+					}
+
+					const username = u.username;
+					const discrim = u.discriminator;
+					const id = u.id;
+					const createdAt = u.createdAt;
+					const flags = this.Utils.GetFlags(u.flags);
+
+					const embed = this.Embed.Base({
+						iconURL: user.displayAvatarURL({ dynamic: true }),
+						text: this,
+						title: `${username}#${discrim} information`,
+						description: flags,
+						fields: [
+							{ name: 'Name', value: username },
+							{ name: 'Discriminator', value: `#${discrim}` },
+							{ name: 'ID', value: id },
+							{ name: 'Created At', value: createdAt.toString() },
+						],
+					});
+
+					return message.reply({ embeds: [embed] });
+				} catch (error) {
+					return message.reply({ content: "I couldn't find this user!" });
+				}
+			}
+			const roles = `${user.roles.cache.map((r) => `${r}`).join(' | ')}`;
+			const kickable = user.kickable ? 'Yes' : 'No';
+			const bannable = user.bannable ? 'Yes' : 'No';
+			const joinedAt = user.joinedAt;
+			const presence = user.presence
+				? `${this.Utils.StatusEmoji(
+						user.presence.status
+				  )} | ${user.presence.status.toUpperCase()}`
+				: 'N/A';
+			const nickname = user.nickname
+				? `${user.nickname} AKA ${user.user.username}`
+				: user.user.username;
+
+			const flags = this.Utils.GetFlags(user.user.flags);
+
+			const embed = await this.Embed.Base({
+				iconURL: user.displayAvatarURL({
+					dynamic: true,
+				}),
+				text: this,
+				title: `${user.user.username}#${user.user.discriminator} information`,
+				description: `Badges: ${flags}`,
+				fields: [
+					{ name: 'Name', value: nickname },
+					{ name: 'Discriminator', value: `#${user.user.discriminator}` },
+					{ name: 'ID', value: user.id },
+					{ name: 'Presence', value: presence },
+					{ name: 'Kickable', value: kickable },
+					{ name: 'Bannable', value: bannable },
+					{ name: 'Joined at', value: `${joinedAt}` },
+					{ name: 'Created at', value: `${user.user.createdAt}` },
+					{ name: 'Roles', value: roles },
+				],
+			});
+			return await message.reply({ embeds: [embed] });
+		}
+		if (sub == 'membercount') {
+			const embed = await this.Embed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				title: 'Membercount command',
+				description: `${message.guild.name} membercount!`,
+				fields: [
+					{
+						name: 'Total membercount',
+						value: `\`${this.Utils.FormatNumber(message.guild.memberCount)}\``,
+					},
+					{
+						name: 'Human count',
+						value: `\`${this.Utils.FormatNumber(
+							message.guild.members.cache.filter((member) => !member.user.bot)
+								.size
+						)}\``,
+					},
+					{
+						name: `${this.Emojis.bot} | Bot count`,
+						value: `\`${this.Utils.FormatNumber(
+							message.guild.members.cache.filter((member) => member.user.bot)
+								.size
+						)}\``,
+					},
+					{
+						name: `${this.Emojis.online} | Members online`,
+						value: `\`${this.Utils.FormatNumber(
+							message.guild.members.cache.filter(
+								(o) => o.presence.status === 'online'
+							).size
+						)}\``,
+					},
+					{
+						name: `${this.Emojis.idle} | Idle members`,
+						value: `\`${this.Utils.FormatNumber(
+							message.guild.members.cache.filter(
+								(i) => i.presence.status === 'idle'
+							).size
+						)}\``,
+					},
+					{
+						name: `${this.Emojis.dnd} | DND members`,
+						value: `\`${this.Utils.FormatNumber(
+							message.guild.members.cache.filter(
+								(dnd) => dnd.presence.status === 'dnd'
+							).size
+						)}\``,
+					},
+					{
+						name: `${this.Emojis.offline} | Offline/invisible members`,
+						value: `\`${this.Utils.FormatNumber(
+							message.guild.members.cache.filter(
+								(off) => off.presence.status === 'offline'
+							).size
+						)}\``,
+					},
+				],
+			});
+
+			return await message.reply({ embeds: [embed] });
+		}
+		if (sub == 'avatar') {
+			const mention = message.mentions.members.first() || message.member;
+
+			if (mention.avatar == null) {
+				const embed = await this.ImageEmbed.Base({
+					iconURL: mention.displayAvatarURL({ dynamic: true }),
+					text: this,
+					title: `${mention.user.tag}'s avatar`,
+					description: `Link: [Click here](${mention.displayAvatarURL({
+						dynamic: true,
+					})})`,
+					image: mention.displayAvatarURL({ dynamic: true }),
+				});
+
+				return message.reply({ embeds: [embed] });
+			}
+
+			const embed = await this.ImageEmbed.Base({
+				iconURL: mention.displayAvatarURL({ dynamic: true }),
+				text: this,
+				title: `${mention.user.tag}'s avatar`,
+				description: `This user has a per-guild avatar and a global avatar`,
+				fields: [
+					{
+						name: 'Global avatar',
+						value: `[Click here](${mention.user.displayAvatarURL({
+							dynamic: true,
+						})})`,
+						inline: true,
+					},
+					{
+						name: 'Guild avatar',
+						value: `[Click here](${mention.avatarURL({ dynamic: true })})`,
+						inline: true,
+					},
+				],
+				image: mention.displayAvatarURL({ dynamic: true }),
+			});
+
+			return message.reply({ embeds: [embed] });
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {
@@ -335,6 +556,179 @@ export default class InfoCommand extends BaseCommand {
 
 			return await interaction.reply({ embeds: [embed], ephemeral: true });
 		}
+
+		if (sub == 'avatar') {
+			const user = interaction.options.getUser('user');
+			let member = interaction.options.getMember('user');
+
+			if (member == null && user == null) {
+				let u = interaction.member;
+				if (!(u instanceof GuildMember))
+					u = interaction.guild.members.cache.find(
+						(user) => user.id == u.user.id
+					);
+
+				if (u.avatar == null) {
+					const embed = await this.ImageEmbed.Base({
+						iconURL: u.displayAvatarURL({ dynamic: true }),
+						text: this,
+						title: `${u.user.username}'s avatar!`,
+						description: `[Click here](${u.displayAvatarURL({
+							dynamic: true,
+						})})`,
+						image: u.displayAvatarURL({ dynamic: true }),
+					});
+
+					return await interaction.reply({ embeds: [embed] });
+				}
+
+				const embed = await this.ImageEmbed.Base({
+					iconURL: u.displayAvatarURL({ dynamic: true }),
+					text: this,
+					title: `${u.user.username}'s avatar!`,
+					description: `This user has a per-guild avatar and a global avatar`,
+					fields: [
+						{
+							name: 'Global avatar',
+							value: `[Click here](${u.user.displayAvatarURL({
+								dynamic: true,
+							})})`,
+							inline: true,
+						},
+						{
+							name: 'Guild avatar',
+							value: `[Click here](${u.avatarURL({ dynamic: true })})`,
+							inline: true,
+						},
+					],
+					image: u.displayAvatarURL({ dynamic: true }),
+				});
+
+				return await interaction.reply({ embeds: [embed] });
+			}
+
+			if (member == null && user != null) {
+				const embed = await this.ImageEmbed.Base({
+					iconURL: user.displayAvatarURL({ dynamic: true }),
+					text: this,
+					title: `${user.username}'s avatar!'`,
+					description: `[Click here](${user.displayAvatarURL({
+						dynamic: true,
+					})})`,
+					image: user.displayAvatarURL({ dynamic: true }),
+				});
+
+				return await interaction.reply({ embeds: [embed] });
+			}
+
+			if (!(member instanceof GuildMember))
+				member = interaction.guild.members.cache.find((u) => u.id == user.id);
+
+			if (member.avatar == null) {
+				const embed = await this.ImageEmbed.Base({
+					iconURL: member.displayAvatarURL({ dynamic: true }),
+					text: this,
+					title: `${member.user.username}'s avatar!`,
+					description: `[Click here](${member.displayAvatarURL({
+						dynamic: true,
+					})})`,
+					image: member.displayAvatarURL({ dynamic: true }),
+				});
+
+				return await interaction.reply({ embeds: [embed] });
+			}
+
+			const embed = await this.ImageEmbed.Base({
+				iconURL: member.displayAvatarURL({ dynamic: true }),
+				text: this,
+				title: `${member.user.username}'s avatar!`,
+				description: `This user has a per-guild avatar and a global avatar`,
+				fields: [
+					{
+						name: 'Global avatar',
+						value: `[Click here](${member.user.displayAvatarURL({
+							dynamic: true,
+						})})`,
+						inline: true,
+					},
+					{
+						name: 'Guild avatar',
+						value: `[Click here](${member.avatarURL({ dynamic: true })})`,
+						inline: true,
+					},
+				],
+				image: member.displayAvatarURL({ dynamic: true }),
+			});
+
+			return await interaction.reply({ embeds: [embed] });
+		}
+		if (sub == 'membercount') {
+			const embed = await this.Embed.Base({
+				iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+				text: this,
+				title: 'Membercount command',
+				description: `${interaction.guild.name} membercount!`,
+				fields: [
+					{
+						name: 'Total membercount',
+						value: `\`${this.Utils.FormatNumber(
+							interaction.guild.memberCount
+						)}\``,
+					},
+					{
+						name: 'Human count',
+						value: `\`${this.Utils.FormatNumber(
+							interaction.guild.members.cache.filter(
+								(member) => !member.user.bot
+							).size
+						)}\``,
+					},
+					{
+						name: `${this.Emojis.bot} | Bot count`,
+						value: `\`${this.Utils.FormatNumber(
+							interaction.guild.members.cache.filter(
+								(member) => member.user.bot
+							).size
+						)}\``,
+					},
+					{
+						name: `${this.Emojis.online} | Members online`,
+						value: `\`${this.Utils.FormatNumber(
+							interaction.guild.members.cache.filter(
+								(o) => o.presence.status === 'online'
+							).size
+						)}\``,
+					},
+					{
+						name: `${this.Emojis.idle} | Idle members`,
+						value: `\`${this.Utils.FormatNumber(
+							interaction.guild.members.cache.filter(
+								(i) => i.presence.status === 'idle'
+							).size
+						)}\``,
+					},
+					{
+						name: `${this.Emojis.dnd} | DND members`,
+						value: `\`${this.Utils.FormatNumber(
+							interaction.guild.members.cache.filter(
+								(dnd) => dnd.presence.status === 'dnd'
+							).size
+						)}\``,
+					},
+					{
+						name: `${this.Emojis.offline} | Offline/invisible members`,
+						value: `\`${this.Utils.FormatNumber(
+							interaction.guild.members.cache.filter(
+								(off) => off.presence.status === 'offline'
+							).size
+						)}\``,
+					},
+				],
+			});
+
+			return await interaction.reply({ embeds: [embed] });
+		}
+
 		if (sub == 'user') {
 			const user = interaction.options.getUser('user');
 			const member = interaction.options.getMember('user');

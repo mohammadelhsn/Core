@@ -88,5 +88,49 @@ export default class PrequelmemeCommand extends BaseCommand {
 			return message.channel.send({ embeds: [embed] });
 		}
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		const gEmbed = await this.GeneratingEmbed.Base({
+			accessor: interaction,
+			text: this,
+			provider: 'r/Prequelmemes',
+		});
+
+		await interaction.reply({ embeds: [gEmbed] });
+		
+		try {
+			const res = await this.Memes.Prequelmeme();
+
+			if (res.error == true) {
+				const embed = await this.ErrorEmbed.ApiError({
+					accessor: interaction,
+					text: this,
+				});
+
+				return await interaction.editReply({ embeds: [embed] })
+			}
+
+			const embed = await this.ImageEmbed.Base({
+				iconURL: this.Utils.GetIcon(interaction),
+				text: this,
+				title: res.title,
+				description: res.text,
+				image: res.file,
+				link: res.link,
+				fields: [
+					{ name: 'Upvotes:', value: res.misc.upvotes, inline: true },
+					{ name: 'Downvotes:', value: res.misc.downvotes, inline: true },
+					{ name: 'Posted at:', value: res.misc.postedAt },
+				],
+			});
+
+			return await interaction.editReply({ embeds: [embed] })
+		} catch (error) {
+			const embed = await this.ErrorEmbed.UnexpectedError({
+				accessor: interaction,
+				text: this,
+			});
+
+			return await interaction.editReply({ embeds: [embed] });
+		}
+	}
 }

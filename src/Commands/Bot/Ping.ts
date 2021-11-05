@@ -55,5 +55,32 @@ export default class PingCommand extends BaseCommand {
 
 		return m.edit({ embeds: [newEmbed] });
 	}
-	async slash(client: DiscordClient, interaction: CommandInteraction) {}
+	async slash(client: DiscordClient, interaction: CommandInteraction) {
+		await interaction.deferReply();
+
+		const embed = await this.Embed.Base({
+			accessor: interaction,
+			text: this,
+			title: `${client.user.tag} ping`,
+			description: '`Pinging...`',
+		});
+
+		const m = await interaction.channel.send({ embeds: [embed] });
+
+		const ping = m.createdTimestamp - interaction.createdTimestamp;
+
+		const newEmbed = this.Embed.Base({
+			accessor: interaction,
+			text: this,
+			title: `Ping command`,
+			description: `${client.user.tag} ping`,
+			fields: [
+				{ name: 'Latency', value: `\`${ping}\`` },
+				{ name: 'Websocket ping', value: `\`${client.ws.ping}\`` },
+			],
+		});
+
+		await m.delete();
+		return interaction.editReply({ embeds: [newEmbed] });
+	}
 }

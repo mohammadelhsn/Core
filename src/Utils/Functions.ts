@@ -2324,7 +2324,7 @@ namespace Functions {
 		}
 		Equelmemes() {
 			this._Equelmemes = new SlashCommandBuilder()
-				.setName('equelmemes')
+				.setName('equelmeme')
 				.setDescription(this.client.commands.get('equelmeme').getDescription());
 			this.Commands.push(this._Equelmemes);
 			return this;

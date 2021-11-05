@@ -220,7 +220,7 @@ namespace API {
 					file: body.link,
 				});
 			} catch (error) {
-				console.log(error) 
+				console.log(error);
 
 				return new BaseObj({
 					error: true,
@@ -560,9 +560,7 @@ namespace API {
 	export class Facts {
 		async Whalefact() {
 			try {
-				const res = await axios.get(
-					`https://some-random-api.ml/facts/whale`
-				);
+				const res = await axios.get(`https://some-random-api.ml/facts/whale`);
 				const data = <Responses.FactsResponse>res.data;
 
 				return new BaseObj({
@@ -570,8 +568,6 @@ namespace API {
 					text: data.fact,
 				});
 			} catch (error) {
-
-
 				return new BaseObj({
 					error: true,
 					error_type: (error as Error).name ? (error as Error).name : null,
@@ -743,6 +739,8 @@ namespace API {
 	export class Memes {
 		async Prequelmeme() {
 			try {
+				const { FormatNumber } = new Utils();
+
 				const res = await axios.get(
 					`https://www.reddit.com/r/PrequelMemes.json?sort=top&t=week`
 				);
@@ -772,8 +770,8 @@ namespace API {
 					author: postData.data.author,
 					link: `https://www.reddit.com${postData.data.permalink}`,
 					misc: {
-						upvotes: postData.data.ups,
-						downvotes: postData.data.downs,
+						upvotes: postData.data.ups ? FormatNumber(postData.data.ups) : 'N/A',
+						downvotes: postData.data.downs ? FormatNumber(postData.data.downs) : 'N/A',
 						subreddit: postData.data.subreddit_name_prefixed,
 						postedAt: moment
 							.unix(postData.data.created)
@@ -794,6 +792,8 @@ namespace API {
 		}
 		async Equelmeme(): Promise<BaseObj> {
 			try {
+				const { FormatNumber } = new Utils()
+
 				const res = await axios.get(
 					`https://www.reddit.com/r/equelMemes.json?sort=top&t=week`
 				);
@@ -819,13 +819,15 @@ namespace API {
 					error: false,
 					title: postData.data.title,
 					text: `Posted by: \`${postData.data.author}\``,
-					file: postData.data.url,
-					author: postData.data.author,
+					file: postData.data.url ? postData.data.url : '',
+					author: postData.data.author ? postData.data.author : '?',
 					link: `https://www.reddit.com${postData.data.permalink}`,
 					misc: {
-						upvotes: postData.data.ups,
-						downvotes: postData.data.downs,
-						subreddit: postData.data.subreddit_name_prefixed,
+						upvotes: postData.data.ups ? FormatNumber(postData.data.ups) : 'N/A',
+						downvotes: postData.data.downs ? FormatNumber(postData.data.downs) : 'N/A',
+						subreddit: postData.data.subreddit_name_prefixed
+							? postData.data.subreddit_name_prefixed
+							: 'r/Equelmemes',
 						postedAt: moment
 							.unix(postData.data.created)
 							.format('dddd, MMMM Do YYYY, h:mm:ss a'),
@@ -845,6 +847,8 @@ namespace API {
 		}
 		async OTmeme() {
 			try {
+				const { FormatNumber } = new Utils();
+
 				const res = await axios.get(
 					`https://www.reddit.com/r/OTMemes.json?sort=top&t=week`
 				);
@@ -874,8 +878,8 @@ namespace API {
 					author: postData.data.author,
 					link: `https://www.reddit.com${postData.data.permalink}`,
 					misc: {
-						upvotes: postData.data.ups,
-						downvotes: postData.data.downs,
+						upvotes: postData.data.ups ? FormatNumber(postData.data.ups) : 'N/A',
+						downvotes: postData.data.downs ? FormatNumber(postData.data.downs) : 'N/A',
 						subreddit: postData.data.subreddit_name_prefixed,
 						postedAt: moment
 							.unix(postData.data.created)
@@ -896,6 +900,8 @@ namespace API {
 		}
 		async Sequelmeme() {
 			try {
+				const { FormatNumber } = new Utils();
+
 				const res = await axios.get(
 					`https://www.reddit.com/r/SequelMemes.json?sort=top&t=week`
 				);
@@ -925,8 +931,8 @@ namespace API {
 					author: postData.data.author,
 					link: `https://www.reddit.com${postData.data.permalink}`,
 					misc: {
-						upvotes: postData.data.ups,
-						downvotes: postData.data.downs,
+						upvotes: postData.data.ups ? FormatNumber(postData.data.ups) : 'N/A',
+						downvotes: postData.data.downs ? FormatNumber(postData.data.downs) : 'N/A',
 						subreddit: postData.data.subreddit_name_prefixed,
 						postedAt: moment
 							.unix(postData.data.created)
@@ -947,14 +953,17 @@ namespace API {
 		}
 		async Meme() {
 			try {
-				const res = await axios.get(`https://apis.duncte123.me/meme`);
-				const data = <Responses.Duncte123Meme>res.data;
+				const res = await axios.get(`https://some-random-api.ml/meme`);
+				const data = res.data;
 
 				return new BaseObj({
 					error: false,
-					title: data.data.title,
-					file: data.data.image,
-					link: data.data.url,
+					id: data.id,
+					text: data.caption,
+					file: data.image,
+					misc: {
+						category: data.category,
+					},
 				});
 			} catch (error) {
 				console.log(error);

@@ -138,7 +138,9 @@ export default class BotinfoCommand extends BaseCommand {
 					},
 					{
 						name: 'Bot owner',
-						value: `\`${this.Utils.FetchUser('398264990567628812')}\``,
+						value: `\`${(
+							await this.Utils.FetchUser('398264990567628812')
+						).toString()}\``,
 					},
 				],
 			});

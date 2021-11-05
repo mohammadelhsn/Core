@@ -550,8 +550,18 @@ export default class HelpCommand extends BaseCommand {
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {
-		const commands = {};
+		const query = interaction.options.getString('query');
 
+		await interaction.deferReply();
+
+		const lang = await this.Translator.Getlang(
+			this.Utils.GetGuildId(interaction)
+		);
+		const prefix = await this.Settings.Prefix(
+			this.Utils.GetGuildId(interaction)
+		);
+
+		const commands = {};
 		client.commands.forEach((el) => {
 			if (commands[el.getCategory()]) {
 				commands[el.getCategory()].push(el.getName());
@@ -559,5 +569,331 @@ export default class HelpCommand extends BaseCommand {
 				commands[el.getCategory()] = [el.getName()];
 			}
 		});
+
+		if (query) {
+			const command =
+				client.commands.get(query.toLowerCase()) ||
+				client.commands.get(client.aliases.get(query.toLowerCase()));
+
+			if (!command) {
+				if (commands[query.toLowerCase()]) {
+					const embed = await this.Embed.Base({
+						accessor: interaction,
+						text: this,
+						title: `Core help command | Command count: ${client.commands.size}`,
+						description: `\`<>\` ${this.Translator.Getstring(
+							lang,
+							'is_required'
+						)} \`()\` ${this.Translator.Getstring(
+							lang,
+							'is_optional'
+						)} | Prefix: \`${prefix}\``,
+						fields: [
+							{
+								name: `${this.Utils.Capitalize(query)} [${
+									commands[query].length
+								}]`,
+								value: `${commands[query].map((c) => `\`${c}\``).join(', ')}`,
+							},
+						],
+					});
+
+					return await interaction.editReply({ embeds: [embed] });
+				}
+				return await interaction.editReply({
+					content: "I couldn't find any results to your query",
+				});
+			} else {
+				await interaction.editReply({ content: 'Command information:' });
+				return await this.HelpEmbed.Base({
+					accessor: interaction,
+					command: command,
+					iconURL: this.Utils.GetIcon(interaction),
+				});
+			}
+		}
+		const categories = {
+			titles: {
+				aww: `Aww [${commands['aww'].length}]`,
+				bot: `Bot [${commands['bot'].length}]`,
+				canvas: `Canvas [${commands['canvas'].length}]`,
+				config: `Config [${commands['config'].length}]`,
+				fun: `Fun [${commands['fun'].length}]`,
+				logging: `Logging [${commands['logging'].length}]`,
+				manager: `Manager [${commands['manager'].length}]`,
+				memes: `Memes [${commands['memes'].length}]`,
+				miscellaneous: `Miscellaneous [${commands['miscellaneous'].length}]`,
+				moderation: `Moderation [${commands['moderation'].length}]`,
+				owner: `Owner [${commands['owner'].length}]`,
+				reaction_images: `Reaction images [${commands['reaction images'].length}]`,
+				server_utilities: `Server utilities [${commands['server utilities'].length}]`,
+			},
+			command: {
+				aww: commands['aww'].map((c) => `\`${c}\``).join(', '),
+				bot: commands['bot'].map((c) => `\`${c}\``).join(', '),
+				canvas: commands['canvas'].map((c) => `\`${c}\``).join(', '),
+				config: commands['config'].map((c) => `\`${c}\``).join(', '),
+				fun: commands['fun'].map((c) => `\`${c}\``).join(', '),
+				logging: commands['logging'].map((c) => `\`${c}\``).join(', '),
+				manager: commands['manager'].map((c) => `\`${c}\``).join(', '),
+				memes: commands['memes'].map((c) => `\`${c}\``).join(', '),
+				miscellaneous: commands['miscellaneous']
+					.map((c) => `\`${c}\``)
+					.join(', '),
+				moderation: commands['moderation'].map((c) => `\`${c}\``).join(', '),
+				owner: commands['owner'].map((c) => `\`${c}\``).join(', '),
+				reaction_images: commands['reaction images']
+					.map((c) => `\`${c}\``)
+					.join(', '),
+				server_utilities: commands['server utilities']
+					.map((c) => `\`${c}\``)
+					.join(', '),
+			},
+		};
+
+		const awwEmbed = new MessageEmbed()
+			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
+			.setTitle(`Core help command | Command count: ${client.commands.size}`)
+			.setDescription(
+				`\`<>\` ${this.Translator.Getstring(
+					lang,
+					'is_required'
+				)} \`()\` ${this.Translator.Getstring(
+					lang,
+					'is_optional'
+				)} | Prefix: \`${prefix}\``
+			)
+			.setColor(this.Colour.Set())
+			.setThumbnail(this.Utils.GetIcon(interaction))
+			.setTimestamp()
+			.addField(`${categories.titles.aww}`, `${categories.command.aww}`);
+		const botEmbed = new MessageEmbed()
+			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
+			.setTitle(`Core help command | Command count: ${client.commands.size}`)
+			.setDescription(
+				`\`<>\` ${this.Translator.Getstring(
+					lang,
+					'is_required'
+				)} \`()\` ${this.Translator.Getstring(
+					lang,
+					'is_optional'
+				)} | Prefix: \`${prefix}\``
+			)
+			.setColor(this.Colour.Set())
+			.setThumbnail(this.Utils.GetIcon(interaction))
+			.setTimestamp()
+			.addField(`${categories.titles.bot}`, `${categories.command.bot}`);
+		const cEmbed = new MessageEmbed()
+			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
+			.setTitle(`Core help command | Command count: ${client.commands.size}`)
+			.setDescription(
+				`\`<>\` ${this.Translator.Getstring(
+					lang,
+					'is_required'
+				)} \`()\` ${this.Translator.Getstring(
+					lang,
+					'is_optional'
+				)} | Prefix: \`${prefix}\``
+			)
+			.addField(`${categories.titles.canvas}`, `${categories.command.canvas}`);
+		const coEmbed = new MessageEmbed()
+			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
+			.setTitle(`Core help command | Command count: ${client.commands.size}`)
+			.setDescription(
+				`\`<>\` ${this.Translator.Getstring(
+					lang,
+					'is_required'
+				)} \`()\` ${this.Translator.Getstring(
+					lang,
+					'is_optional'
+				)} | Prefix: \`${prefix}\``
+			)
+			.setColor(this.Colour.Set())
+			.setThumbnail(this.Utils.GetIcon(interaction))
+			.setTimestamp()
+			.addField(`${categories.titles.config}`, `${categories.command.config}`);
+
+		const fuEmbed = new MessageEmbed()
+			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
+			.setTitle(`Core help command | Command count: ${client.commands.size}`)
+			.setDescription(
+				`\`<>\` ${this.Translator.Getstring(
+					lang,
+					'is_required'
+				)} \`()\` ${this.Translator.Getstring(
+					lang,
+					'is_optional'
+				)} | Prefix: \`${prefix}\``
+			)
+			.setColor(this.Colour.Set())
+			.setThumbnail(this.Utils.GetIcon(interaction))
+			.setTimestamp()
+			.addField(`${categories.titles.fun}`, `${categories.command.fun}`);
+
+		const logEmbed = new MessageEmbed()
+			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
+			.setTitle(`Core help command | Command count: ${client.commands.size}`)
+			.setDescription(
+				`\`<>\` ${this.Translator.Getstring(
+					lang,
+					'is_required'
+				)} \`()\` ${this.Translator.Getstring(
+					lang,
+					'is_optional'
+				)} | Prefix: \`${prefix}\``
+			)
+			.setColor(this.Colour.Set())
+			.setThumbnail(this.Utils.GetIcon(interaction))
+			.setTimestamp()
+			.addField(
+				`${categories.titles.logging}`,
+				`${categories.command.logging}`
+			);
+		const mEmbed = new MessageEmbed()
+			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
+			.setTitle(`Core help command | Command count: ${client.commands.size}`)
+			.setDescription(
+				`\`<>\` ${this.Translator.Getstring(
+					lang,
+					'is_required'
+				)} \`()\` ${this.Translator.Getstring(
+					lang,
+					'is_optional'
+				)} | Prefix: \`${prefix}\``
+			)
+			.setColor(this.Colour.Set())
+			.setThumbnail(this.Utils.GetIcon(interaction))
+			.setTimestamp()
+			.addField(
+				`${categories.titles.manager}`,
+				`${categories.command.manager}`
+			);
+		const meEmbed = new MessageEmbed()
+			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
+			.setTitle(`Core help command | Command count: ${client.commands.size}`)
+			.setDescription(
+				`\`<>\` ${this.Translator.Getstring(
+					lang,
+					'is_required'
+				)} \`()\` ${this.Translator.Getstring(
+					lang,
+					'is_optional'
+				)} | Prefix: \`${prefix}\``
+			)
+			.setColor(this.Colour.Set())
+			.setThumbnail(this.Utils.GetIcon(interaction))
+			.setTimestamp()
+			.addField(`${categories.titles.memes}`, `${categories.command.memes}`);
+		const miEmbed = new MessageEmbed()
+			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
+			.setTitle(`Core help command | Command count: ${client.commands.size}`)
+			.setDescription(
+				`\`<>\` ${this.Translator.Getstring(
+					lang,
+					'is_required'
+				)} \`()\` ${this.Translator.Getstring(
+					lang,
+					'is_optional'
+				)} | Prefix: \`${prefix}\``
+			)
+			.setColor(this.Colour.Set())
+			.setThumbnail(this.Utils.GetIcon(interaction))
+			.setTimestamp()
+			.addField(
+				`${categories.titles.miscellaneous}`,
+				`${categories.command.miscellaneous}`
+			);
+		const moEmbed = new MessageEmbed()
+			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
+			.setTitle(`Core help command | Command count: ${client.commands.size}`)
+			.setDescription(
+				`\`<>\` ${this.Translator.Getstring(
+					lang,
+					'is_required'
+				)} \`()\` ${this.Translator.Getstring(
+					lang,
+					'is_optional'
+				)} | Prefix: \`${prefix}\``
+			)
+			.setColor(this.Colour.Set())
+			.setThumbnail(this.Utils.GetIcon(interaction))
+			.setTimestamp()
+			.addField(
+				`${categories.titles.moderation}`,
+				`${categories.command.moderation}`
+			);
+		const oEmbed = new MessageEmbed()
+			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
+			.setTitle(`Core help command | Command count: ${client.commands.size}`)
+			.setDescription(
+				`\`<>\` ${this.Translator.Getstring(
+					lang,
+					'is_required'
+				)} \`()\` ${this.Translator.Getstring(
+					lang,
+					'is_optional'
+				)} | Prefix: \`${prefix}\``
+			)
+			.setColor(this.Colour.Set())
+			.setThumbnail(this.Utils.GetIcon(interaction))
+			.setTimestamp()
+			.addField(`${categories.titles.owner}`, `${categories.command.owner}`);
+		const rEmbed = new MessageEmbed()
+			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
+			.setTitle(`Core help command | Command count: ${client.commands.size}`)
+			.setDescription(
+				`\`<>\` ${this.Translator.Getstring(
+					lang,
+					'is_required'
+				)} \`()\` ${this.Translator.Getstring(
+					lang,
+					'is_optional'
+				)} | Prefix: \`${prefix}\``
+			)
+			.setColor(this.Colour.Set())
+			.setThumbnail(this.Utils.GetIcon(interaction))
+			.setTimestamp()
+			.addField(
+				`${categories.titles.reaction_images}`,
+				`${categories.command.reaction_images}`
+			);
+		const suEmbed = new MessageEmbed()
+			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
+			.setTitle(`Core help command | Command count: ${client.commands.size}`)
+			.setDescription(
+				`\`<>\` ${this.Translator.Getstring(
+					lang,
+					'is_required'
+				)} \`()\` ${this.Translator.Getstring(
+					lang,
+					'is_optional'
+				)} | Prefix: \`${prefix}\``
+			)
+			.setColor(this.Colour.Set())
+			.setThumbnail(this.Utils.GetIcon(interaction))
+			.setTimestamp()
+			.addField(
+				`${categories.titles.server_utilities}`,
+				`${categories.command.server_utilities}`
+			);
+
+		await interaction.editReply({ content: 'Help Embed' });
+
+		return this.Utils.Paginate(
+			{ accessor: interaction },
+			awwEmbed,
+			botEmbed,
+			cEmbed,
+			coEmbed,
+			fuEmbed,
+			logEmbed,
+			mEmbed,
+			meEmbed,
+			miEmbed,
+			moEmbed,
+			oEmbed,
+			rEmbed,
+			suEmbed
+		);
 	}
 }
