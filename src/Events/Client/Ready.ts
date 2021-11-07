@@ -4,7 +4,6 @@ import Guild from '../../Utils/Structures/CachedGuild';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
-import Functions from '../../Utils/Functions';
 
 export default class ReadyEvent extends BaseEvent {
 	constructor() {
@@ -20,20 +19,20 @@ export default class ReadyEvent extends BaseEvent {
 			status: 'dnd',
 		});
 
-		// const commands = new Functions.SlashCommands().All().toJSON();
+		const commands = this.Slash.All().toJSON();
 
-		// const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
+		const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
-		// rest
-		// 	.put(
-		// 		Routes.applicationGuildCommands(client.user.id, '690975783363280918'),
-		// 		{ body: commands }
-		// 	)
-		// 	.then(() => console.log('Successfully registered application commands.'))
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 		console.log(err.errors);
-		// 	});
+		rest
+			.put(
+				Routes.applicationGuildCommands(client.user.id, '890636612839563325'),
+				{ body: commands }
+			)
+			.then(() => console.log('Successfully registered application commands.'))
+			.catch((err) => {
+				console.log(err);
+				console.log(err.errors);
+			});
 
 		for (const g of client.guilds.cache) {
 			const guildId = g[1].id;

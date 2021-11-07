@@ -19,6 +19,7 @@ export default abstract class BaseEvent {
 	protected GeneratingEmbed = new Functions.GeneratingEmbed();
 	protected ImageEmbed = new Functions.ImageEmbed();
 	protected Moderation = new Functions.Moderation();
+	protected Slash = new Functions.SlashCommands();
 	protected Emojis = Emojis;
 	protected Colours = Colours;
 	protected Schemas = Schemas;

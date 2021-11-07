@@ -15,7 +15,7 @@ export default class WeatherCommand extends BaseCommand {
 			'miscellaneous',
 			[],
 			'',
-			'',
+			'Get the weather for a certain location',
 			'',
 			[],
 			[],
