@@ -38,7 +38,7 @@ export default class ChangelogCommand extends BaseCommand {
 			],
 		});
 
-		return message.channel.send({ embeds: [embed] });
+		return await message.reply({ embeds: [embed] });
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {
 		const embed = this.Embed.Base({

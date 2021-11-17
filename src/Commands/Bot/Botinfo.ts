@@ -123,7 +123,7 @@ export default class BotinfoCommand extends BaseCommand {
 						value: client.users.cache.size.toString(),
 						inline: true,
 					},
-					{ name: 'Bot version', value: `\`${client.version}\`` },
+					{ name: 'Bot version', value: `${client.version}` },
 					{
 						name: 'Command count',
 						value: client.commands.size.toString(),
@@ -131,16 +131,18 @@ export default class BotinfoCommand extends BaseCommand {
 					},
 					{ name: 'Commands used (total)', value: totalCommands },
 					{ name: 'Commands used (guild)', value: guildCommands },
-					{ name: 'Library', value: `\`Discord.js (${discord.version})\`` },
+					{ name: 'Library', value: `Discord.js (${discord.version})` },
 					{
 						name: 'Language',
-						value: `\`Typescript (Node ${process.version})\``,
+						value: `Typescript (Node ${process.version})`,
 					},
 					{
 						name: 'Bot owner',
-						value: `\`${(
-							await this.Utils.FetchUser('398264990567628812')
-						).toString()}\``,
+						value: `${
+							(
+								await this.Utils.FetchUser('398264990567628812')
+							).tag
+						} (398264990567628812)`,
 					},
 				],
 			});

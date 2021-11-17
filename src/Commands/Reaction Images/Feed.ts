@@ -33,8 +33,7 @@ export default class FeedCommand extends BaseCommand {
 				error_message: 'You are missing the mention',
 			});
 
-			const msg = await message.channel.send({ embeds: [errorEmbed] });
-			return msg.delete({ timeout: 10000 });
+			return await message.reply({ embeds: [errorEmbed] });
 		}
 
 		if (args[0] && args[0]?.toLowerCase().includes('help')) {
@@ -51,22 +50,19 @@ export default class FeedCommand extends BaseCommand {
 			text: this,
 		});
 
-		const m = await message.channel.send({ embeds: [generatingEmbed] });
+		const m = await message.reply({ embeds: [generatingEmbed] });
 
 		try {
 			const res = await this.Reactions.Feed();
 
 			if (res.error == true) {
-				m.delete();
-
 				const errEmbed = await this.ErrorEmbed.ApiError({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					id: message.guild.id,
 					text: this,
 				});
 
-				const msg = await message.channel.send({ embeds: [errEmbed] });
-				return this.Utils.Delete(msg);
+				return await m.edit({ embeds: [errEmbed] });
 			}
 
 			const feedEmbed = await this.ImageEmbed.Base({

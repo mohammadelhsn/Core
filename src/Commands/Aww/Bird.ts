@@ -22,26 +22,28 @@ export default class BirdCommand extends BaseCommand {
 			'working'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {
+	async run(
+		client: DiscordClient,
+		message: Message,
+		args: string[]
+	): Promise<Message> {
 		const gEmbed = await this.GeneratingEmbed.SomeRandomApi({
 			accessor: message,
 			text: this,
 		});
 
-		const m = await message.channel.send({ embeds: [gEmbed] });
+		const m = await message.reply({ embeds: [gEmbed] });
 
 		try {
 			const res = await this.Animals.Bird();
 
 			if (res.error == true) {
-				await m.delete();
-
 				const embed = await this.ErrorEmbed.ApiError({
 					accessor: message,
 					text: this,
 				});
 
-				return await message.channel.send({ embeds: [embed] });
+				return await m.edit({ embeds: [embed] });
 			}
 
 			const embed = await this.ImageEmbed.Base({
@@ -52,19 +54,15 @@ export default class BirdCommand extends BaseCommand {
 				image: res.file,
 			});
 
-			await m.delete();
-			return await message.channel.send({ embeds: [embed] });
+			return await m.edit({ embeds: [embed] });
 		} catch (error) {
 			// console.log(error);
-
-			if (m.deleted == false) m.delete();
-
 			const embed = await this.ErrorEmbed.UnexpectedError({
 				accessor: message,
 				text: this,
 			});
 
-			return await message.channel.send({ embeds: [embed] });
+			return await m.edit({ embeds: [embed] });
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {

@@ -38,20 +38,18 @@ export default class ShibeCommand extends BaseCommand {
 			text: this,
 			provider: 'Shibe Online API',
 		});
-		const m = await message.channel.send({ embeds: [generatingEmbed] });
+		const m = await message.reply({ embeds: [generatingEmbed] });
 
 		try {
 			const res = await this.Animals.Shibe();
 
 			if (res.error == true) {
-				m.delete();
-
 				const errEmbed = await this.ErrorEmbed.ApiError({
 					accessor: message,
 					text: this,
 				});
-				const msg = await message.channel.send({ embeds: [errEmbed] });
-				return this.Utils.Delete(msg);
+
+				return await m.edit({ embeds: [errEmbed] })
 			}
 
 			const embed = await this.ImageEmbed.Base({
@@ -63,16 +61,15 @@ export default class ShibeCommand extends BaseCommand {
 				)}: \`Shibe online API\``,
 				image: res.file,
 			});
-			m.delete();
-			return message.channel.send({ embeds: [embed] });
-		} catch (e) {
-			m.delete();
 
+			return await m.edit({ embeds: [embed] });
+		} catch (e) {
 			const errEmbed = await this.ErrorEmbed.UnexpectedError({
 				accessor: message,
 				text: this,
 			});
-			return message.channel.send({ embeds: [errEmbed] });
+
+			return await m.edit({ embeds: [errEmbed] });
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {

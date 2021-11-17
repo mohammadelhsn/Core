@@ -23,9 +23,8 @@ export default class CuddleCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id);
-		const self = this;
 		const mention = message.mentions.users.first();
+
 		let user;
 
 		if (mention) {
@@ -56,21 +55,19 @@ export default class CuddleCommand extends BaseCommand {
 				text: this,
 			});
 
-			const m = await message.channel.send({ embeds: [generatingEmbed] });
+			const m = await message.reply({ embeds: [generatingEmbed] });
+
 			try {
 				const res = await this.Reactions.Cuddle();
 
 				if (res.error == true) {
-					m.delete();
-
 					const errEmbed = await this.ErrorEmbed.ApiError({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
 						text: this,
 					});
 
-					const msg = await message.channel.send({ embeds: [errEmbed] });
-					return this.Utils.Delete(msg);
+					return await m.edit({ embeds: [errEmbed] });
 				}
 
 				const cuddleEmbed = await this.ImageEmbed.Base({
@@ -81,17 +78,15 @@ export default class CuddleCommand extends BaseCommand {
 					image: res.file,
 				});
 
-				m.delete();
-				return message.channel.send({ embeds: [cuddleEmbed] });
+				return await m.edit({ embeds: [cuddleEmbed] });
 			} catch (e) {
-				m.delete();
-
 				const errorEmbed = await this.ErrorEmbed.UnexpectedError({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embeds: [errorEmbed] });
+
+				return await m.edit({ embeds: [errorEmbed] });
 			}
 		}
 	}

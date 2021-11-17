@@ -223,6 +223,15 @@ namespace Functions {
 			if (!pages) throw new Error('Pages are not given.');
 			if (emojiList.length !== 2) throw new Error('Need two emojis.');
 			let page = 0;
+
+			if (accessor instanceof CommandInteraction) {
+				if (accessor.replied == true || accessor.deferred == true) {
+					await accessor.editReply({ content: 'See embed below:' });
+				} else {
+					await accessor.reply({ content: 'See embed below:' });
+				}
+			}
+
 			const curPage =
 				accessor instanceof CommandInteraction
 					? await accessor.channel.send({
@@ -230,7 +239,7 @@ namespace Functions {
 								pages[page].setFooter(`Page ${page + 1} / ${pages.length}`),
 							],
 					  })
-					: await accessor.channel.send({
+					: await accessor.reply({
 							embeds: [
 								pages[page].setFooter(`Page ${page + 1} / ${pages.length}`),
 							],
@@ -270,9 +279,14 @@ namespace Functions {
 				});
 			});
 
-			reactionCollector.on('end', (_, reason) => {
+			reactionCollector.on('end', async (_, reason) => {
 				if (!curPage.deleted) {
 					curPage.reactions.removeAll();
+
+					if (accessor instanceof CommandInteraction) {
+						await accessor.deleteReply();
+						await curPage.delete();
+					}
 				}
 			});
 			return curPage;

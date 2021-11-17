@@ -22,11 +22,11 @@ export default class FacepalmCommand extends BaseCommand {
 			'working'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id);
-		const self = this;
-		// https://some-random-api.ml/animu/face-palm
-
+	async run(
+		client: DiscordClient,
+		message: Message,
+		args: string[]
+	): Promise<Message> {
 		if (args[0]) {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -40,21 +40,18 @@ export default class FacepalmCommand extends BaseCommand {
 				text: this,
 			});
 
-			const m = await message.channel.send({ embeds: [generatingEmbed] });
+			const m = await message.reply({ embeds: [generatingEmbed] });
 			try {
 				const res = await this.Reactions.Facepalm();
 
 				if (res.error == true) {
-					m.delete();
-
 					const errEmbed = await this.ErrorEmbed.ApiError({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
 						text: this,
 					});
 
-					const msg = await message.channel.send({ embeds: [errEmbed] });
-					return this.Utils.Delete(msg);
+					return await m.edit({ embeds: [errEmbed] });
 				}
 
 				const imageEmbed = await this.ImageEmbed.Base({
@@ -65,17 +62,15 @@ export default class FacepalmCommand extends BaseCommand {
 					image: res.file,
 				});
 
-				m.delete();
-				return message.channel.send({ embeds: [imageEmbed] });
+				return m.edit({ embeds: [imageEmbed] });
 			} catch (e) {
-				m.delete();
-
 				const errEmbed = await this.ErrorEmbed.UnexpectedError({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					id: message.guild.id,
 					text: this,
 				});
-				return message.channel.send({ embeds: [errEmbed] });
+
+				return m.edit({ embeds: [errEmbed] });
 			}
 		}
 	}

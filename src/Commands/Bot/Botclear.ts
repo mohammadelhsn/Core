@@ -39,8 +39,7 @@ export default class BotClearCommand extends BaseCommand {
 				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embeds: [embed] });
-			return msg.delete({ timeout: 10000 });
+			return await message.reply({ embeds: [embed] });
 		}
 
 		if (
@@ -54,8 +53,7 @@ export default class BotClearCommand extends BaseCommand {
 				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embeds: [embed] });
-			return this.Utils.Delete(msg);
+			return await message.reply({ embeds: [embed] });
 		}
 
 		if (args[0]) {
@@ -68,6 +66,7 @@ export default class BotClearCommand extends BaseCommand {
 
 		const messages = await message.channel.messages.fetch({ limit: 100 });
 		const botmessages: Message[] = [];
+
 		messages
 			.filter((m) => m.author.id == client.user.id)
 			.forEach((msg) => {

@@ -34,8 +34,7 @@ export default class BotnickCommand extends BaseCommand {
 				perms: ['MANAGE_NICKNAMES', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embeds: [embed] });
-			return msg.delete({ timeout: 10000 });
+			return await message.reply({ embeds: [embed] });
 		}
 
 		if (!message.guild.me.permissions.has(Permissions.FLAGS.MANAGE_NICKNAMES)) {
@@ -45,8 +44,7 @@ export default class BotnickCommand extends BaseCommand {
 				perms: ['MANAGE_NICKNAMES', 'ADMINISTRATOR'],
 			});
 
-			const msg = await message.channel.send({ embeds: [embed] });
-			return this.Utils.Delete(msg);
+			return await message.reply({ embeds: [embed] });
 		}
 
 		let name = args.join(' ');
@@ -76,14 +74,14 @@ export default class BotnickCommand extends BaseCommand {
 				],
 			});
 
-			return message.channel.send({ embeds: [embed] });
+			return await message.reply({ embeds: [embed] });
 		} catch (error) {
 			const embed = await this.ErrorEmbed.UnexpectedError({
 				accessor: message,
 				text: this,
 			});
 
-			return message.channel.send({ embeds: [embed] });
+			return await message.reply({ embeds: [embed] });
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {}

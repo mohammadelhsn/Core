@@ -22,7 +22,11 @@ export default class CryCommand extends BaseCommand {
 			'working'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {
+	async run(
+		client: DiscordClient,
+		message: Message,
+		args: string[]
+	): Promise<Message> {
 		const self = this;
 
 		if (args[0]) {
@@ -38,21 +42,18 @@ export default class CryCommand extends BaseCommand {
 				text: this,
 			});
 
-			const m = await message.channel.send({ embeds: [generatingEmbed] });
+			const m = await message.reply({ embeds: [generatingEmbed] });
 			try {
 				const res = await this.Reactions.Cry();
 
 				if (res.error == true) {
-					m.delete();
-
 					const errEmbed = await this.ErrorEmbed.ApiError({
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						id: message.guild.id,
 						text: this,
 					});
 
-					const msg = await message.channel.send({ embeds: [errEmbed] });
-					return this.Utils.Delete(msg);
+					return await m.edit({ embeds: [errEmbed] });
 				}
 
 				const imageEmbed = await this.ImageEmbed.Base({
@@ -63,20 +64,15 @@ export default class CryCommand extends BaseCommand {
 					image: res.file,
 				});
 
-				m.delete();
-				return message.channel.send({ embeds: [imageEmbed] });
+				return await m.edit({ embeds: [imageEmbed] });
 			} catch (e) {
-				m.delete();
-
-				return message.channel.send({
-					embeds: [
-						await this.ErrorEmbed.UnexpectedError({
-							id: message.guild.id,
-							iconURL: message.author.displayAvatarURL({ dynamic: true }),
-							text: self,
-						}),
-					],
+				const embed = await this.ErrorEmbed.UnexpectedError({
+					id: message.guild.id,
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					text: self,
 				});
+
+				return m.edit({ embeds: [embed] });
 			}
 		}
 	}
