@@ -1,4 +1,5 @@
 import { Snowflake } from 'discord.js';
+import Helpers from '../../Helpers';
 
 namespace CachedGuildTypes {
 	export interface Welcome {
@@ -32,6 +33,29 @@ namespace CachedGuildTypes {
 		voiceMemberJoin: event;
 		voiceMemberLeave: event;
 		voiceMemberMoved: event;
+	}
+
+	export interface new_events {
+		channelCreate: Helpers.ChannelCreate;
+		channelDelete: Helpers.ChannelDelete;
+		channelUpdate: Helpers.ChannelUpdate;
+		emojiCreate: Helpers.EmojiCreate;
+		emojiDelete: Helpers.EmojiDelete;
+		emojiUpdate: Helpers.EmojiUpdate;
+		guildUpdate: Helpers.GuildUpdate;
+		inviteCreate: Helpers.InviteCreate;
+		inviteDelete: Helpers.InviteDelete;
+		guildBanAdd: Helpers.BanAdd;
+		guildBanRemove: Helpers.BanRemove;
+		guildMemberAdd: Helpers.MemberAdd;
+		guildMemberRemove: Helpers.MemberRemove;
+		guildMemberUpdate: Helpers.MemberUpdate;
+		messageDelete: Helpers.MessageDelete;
+		messageDeleteBulk: Helpers.BulkDelete;
+		messageUpdate: Helpers.MessageUpdate;
+		voiceMemberJoin: Helpers.VCJoin;
+		voiceMemberLeave: Helpers.VCLeave;
+		voiceMemberMoved: Helpers.VCMove;
 	}
 
 	export interface Leave {
@@ -95,13 +119,11 @@ namespace CachedGuildTypes {
 	export interface Cached_Guild {
 		id: Snowflake;
 		prefix: string;
-		lang: string;
 		welcome: Welcome;
 		leave: Leave;
 		roles: Roles;
 		Channels: Channels;
-		Strings: Strings;
-		Events: events;
+		Events: new_events;
 	}
 
 	export interface Blacklisted {
@@ -148,6 +170,17 @@ namespace CachedGuildTypes {
 		content: string;
 	}
 	export type Notes = Note[];
+	export interface Reminder {
+		time: string;
+		userid: string;
+		message: string;
+	}
+	export type Reminders = Reminder[];
+	export interface Timer {
+		time: string;
+		userid: string;
+	}
+	export type Timers = Timer[];
 }
 
 export = CachedGuildTypes;

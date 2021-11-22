@@ -49,7 +49,7 @@ export default class PrideCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				title: 'Pride command',
-				description: guild.Strings.NekosBot,
+				description: this.Utils.FormatProvider('Nekos Bot'),
 				image: 'attachment://pride.png',
 			});
 
@@ -70,7 +70,7 @@ export default class PrideCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				title: 'Pride command',
-				description: guild.Strings.NekosBot,
+				description: this.Utils.FormatProvider('Nekos Bot'),
 				image: 'attachment://pride.png',
 			});
 
@@ -123,7 +123,7 @@ export default class PrideCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				title: 'Pride command',
-				description: guild.Strings.NekosBot,
+				description: this.Utils.FormatProvider('Nekos Bot'),
 				image: 'attachment://pride.png',
 			});
 

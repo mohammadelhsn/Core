@@ -50,7 +50,7 @@ export default class WastedCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Wasted command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://wasted.png',
 				});
 
@@ -90,7 +90,7 @@ export default class WastedCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Wasted command',
-						description: guild.Strings.DiscordIG,
+						description: this.Utils.FormatProvider('Discord IG'),
 						image: 'attachment://wasted.png',
 					});
 
@@ -122,7 +122,7 @@ export default class WastedCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Wasted command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://wasted.png',
 				});
 
@@ -184,7 +184,7 @@ export default class WastedCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Wasted command',
-						description: guild.Strings.DiscordIG,
+						description: this.Utils.FormatProvider('Discord IG'),
 						image: 'attachment://wasted.png',
 					});
 

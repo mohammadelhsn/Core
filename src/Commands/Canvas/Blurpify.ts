@@ -50,7 +50,7 @@ export default class BlurpifyCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Blurpify command',
-					description: guild.Strings.NekosBot,
+					description: this.Utils.FormatProvider('Nekos Bot'),
 					image: 'attachment://blurpify.png',
 				});
 
@@ -88,7 +88,7 @@ export default class BlurpifyCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Blurpify command',
-						description: guild.Strings.NekosBot,
+						description: this.Utils.FormatProvider('Nekos Bot'),
 						image: 'attachment://blurpify.png',
 					});
 
@@ -120,7 +120,7 @@ export default class BlurpifyCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Blurpify command',
-					description: guild.Strings.NekosBot,
+					description: this.Utils.FormatProvider('Nekos Bot'),
 					image: 'attachment://blurpify.png',
 				});
 
@@ -182,7 +182,7 @@ export default class BlurpifyCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Blurpify command',
-						description: guild.Strings.NekosBot,
+						description: this.Utils.FormatProvider('Nekos Bot'),
 						image: 'attachment://blurpify.png',
 					});
 

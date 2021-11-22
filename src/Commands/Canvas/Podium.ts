@@ -120,7 +120,7 @@ export default class PodiumCommand extends BaseCommand {
 							iconURL: message.author.displayAvatarURL({ dynamic: true }),
 							text: this,
 							title: 'Podium command',
-							description: guild.Strings.DiscordIG,
+							description: this.Utils.FormatProvider('Discord IG'),
 							image: 'attachment://podium.png',
 						});
 

@@ -31,6 +31,8 @@ export default class AdCommand extends BaseCommand {
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const guild = client.database.get(message.guild.id);
 
+		const provider = 'Provided by: `Discord IG`';
+
 		const mention = message.mentions.members.first();
 
 		const gEmbed = await this.GeneratingEmbed.DiscordIG({
@@ -51,7 +53,7 @@ export default class AdCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Ad command',
-					description: guild.Strings.DiscordIG,
+					description: provider,
 					image: 'attachment://ad.png',
 				});
 
@@ -90,7 +92,7 @@ export default class AdCommand extends BaseCommand {
 					accessor: message,
 					text: this,
 					title: 'Ad command',
-					description: guild.Strings.DiscordIG,
+					description: provider,
 					image: 'attachment://ad.png',
 				});
 
@@ -121,7 +123,7 @@ export default class AdCommand extends BaseCommand {
 					accessor: message,
 					text: this,
 					title: 'Ad command',
-					description: guild.Strings.DiscordIG,
+					description: 'Provided by: `Discord IG`',
 					image: 'attachment://ad.png',
 				});
 
@@ -184,7 +186,7 @@ export default class AdCommand extends BaseCommand {
 					accessor: message,
 					text: this,
 					title: 'Ad command',
-					description: guild.Strings.DiscordIG,
+					description: provider,
 					image: 'attachment://ad.png',
 				});
 

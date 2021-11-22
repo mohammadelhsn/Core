@@ -23,8 +23,6 @@ export default class ShibeCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id);
-
 		if (args[0]) {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -49,16 +47,14 @@ export default class ShibeCommand extends BaseCommand {
 					text: this,
 				});
 
-				return await m.edit({ embeds: [errEmbed] })
+				return await m.edit({ embeds: [errEmbed] });
 			}
 
 			const embed = await this.ImageEmbed.Base({
 				accessor: message,
 				text: this,
 				title: 'Shibe command',
-				description: `${this.Utils.Capitalize(
-					this.Translator.Getstring(lang, 'provided_by')
-				)}: \`Shibe online API\``,
+				description: this.Utils.FormatProvider('Shibe online API'),
 				image: res.file,
 			});
 
@@ -79,8 +75,6 @@ export default class ShibeCommand extends BaseCommand {
 			provider: 'Shibe Online API',
 		});
 
-		const lang = await this.Translator.Getlang(interaction.guild.id);
-
 		await interaction.editReply({ embeds: [gEmbed] });
 
 		try {
@@ -99,9 +93,7 @@ export default class ShibeCommand extends BaseCommand {
 				accessor: interaction,
 				text: this,
 				title: 'Shibe command',
-				description: `${this.Utils.Capitalize(
-					this.Translator.Getstring(lang, 'provided_by')
-				)}: \`Shibe online API\``,
+				description: this.Utils.FormatProvider('Shibe online API'),
 				image: res.file,
 			});
 

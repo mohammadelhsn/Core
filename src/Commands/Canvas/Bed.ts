@@ -55,7 +55,7 @@ export default class BedCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Bed command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://bed.png',
 				});
 
@@ -89,7 +89,7 @@ export default class BedCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Bed command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://bed.png',
 				});
 
@@ -129,7 +129,7 @@ export default class BedCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Bed command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://bed.png',
 				});
 
@@ -162,7 +162,7 @@ export default class BedCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Bed command',
-						description: guild.Strings.DiscordIG,
+						description: this.Utils.FormatProvider('Discord IG'),
 						image: 'attachment://bed.png',
 					});
 
@@ -232,7 +232,7 @@ export default class BedCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Bed command',
-						description: guild.Strings.DiscordIG,
+						description: this.Utils.FormatProvider('Discord IG'),
 						image: 'attachment://bed.png',
 					});
 

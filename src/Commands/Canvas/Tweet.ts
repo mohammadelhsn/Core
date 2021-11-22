@@ -111,7 +111,7 @@ export default class TweetCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Tweet command',
-						description: guild.Strings.SomeRandomAPI,
+						description: this.Utils.FormatProvider('Some Random API'),
 						image: 'attachment://tweet.png',
 					});
 

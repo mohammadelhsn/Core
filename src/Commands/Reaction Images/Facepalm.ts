@@ -33,45 +33,44 @@ export default class FacepalmCommand extends BaseCommand {
 				command: this,
 				accessor: message,
 			});
-		} else {
-			const generatingEmbed = await this.GeneratingEmbed.NekosFun({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
-				text: this,
-			});
+		}
+		const generatingEmbed = await this.GeneratingEmbed.NekosFun({
+			iconURL: message.author.displayAvatarURL({ dynamic: true }),
+			id: message.guild.id,
+			text: this,
+		});
 
-			const m = await message.reply({ embeds: [generatingEmbed] });
-			try {
-				const res = await this.Reactions.Facepalm();
+		const m = await message.reply({ embeds: [generatingEmbed] });
+		try {
+			const res = await this.Reactions.Facepalm();
 
-				if (res.error == true) {
-					const errEmbed = await this.ErrorEmbed.ApiError({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						id: message.guild.id,
-						text: this,
-					});
-
-					return await m.edit({ embeds: [errEmbed] });
-				}
-
-				const imageEmbed = await this.ImageEmbed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					text: this,
-					title: `Facepalm command`,
-					description: `<@${message.author.id}> facepalms 🤦‍♂️🤦‍♀️`,
-					image: res.file,
-				});
-
-				return m.edit({ embeds: [imageEmbed] });
-			} catch (e) {
-				const errEmbed = await this.ErrorEmbed.UnexpectedError({
+			if (res.error == true) {
+				const errEmbed = await this.ErrorEmbed.ApiError({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					id: message.guild.id,
 					text: this,
 				});
 
-				return m.edit({ embeds: [errEmbed] });
+				return await m.edit({ embeds: [errEmbed] });
 			}
+
+			const imageEmbed = await this.ImageEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				title: `Facepalm command`,
+				description: `<@${message.author.id}> facepalms 🤦‍♂️🤦‍♀️`,
+				image: res.file,
+			});
+
+			return m.edit({ embeds: [imageEmbed] });
+		} catch (e) {
+			const errEmbed = await this.ErrorEmbed.UnexpectedError({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				id: message.guild.id,
+				text: this,
+			});
+
+			return m.edit({ embeds: [errEmbed] });
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {

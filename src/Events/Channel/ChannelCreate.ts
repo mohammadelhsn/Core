@@ -11,24 +11,17 @@ export default class ChannelCreateEvent extends BaseEvent {
 
 		const { guild } = channel;
 
-		const lang = await this.Translator.Getlang(guild.id);
-		const { channelCreate } = await this.Settings.Events(guild.id);
+		const cache = client.database.get(guild.id);
 
-		if (channelCreate.enabled == false) return;
+		if (cache.Events.channelCreate.isEnabled() == false) return;
 
-		const log = (await client.channels.cache.get(
-			channelCreate.channel
-		)) as TextChannel;
+		const log = (await cache.Events.channelCreate.Get()).channel;
 
 		if (log == null) return;
 
-		const cache = client.database.get(guild.id);
-
-		const channels = [];
-
 		const embed = await this.Embed.Base({
 			iconURL: guild.iconURL({ dynamic: true }),
-			title: this.Translator.Getstring(lang, 'new_action'),
+			title: 'New action',
 			text: 'Channel create',
 			description: 'Event: `Channel created`',
 			fields: [
@@ -40,7 +33,7 @@ export default class ChannelCreateEvent extends BaseEvent {
 				{ name: 'Channel ID', value: `${channel.id}` },
 				{
 					name: 'Created at',
-					value: `\`${channel.createdAt.toLocaleString(lang, {
+					value: `\`${channel.createdAt.toLocaleString('en-CA', {
 						weekday: 'long',
 						year: 'numeric',
 						month: 'long',
@@ -50,6 +43,6 @@ export default class ChannelCreateEvent extends BaseEvent {
 			],
 		});
 
-		return log.send({ embeds: [embed] });
+		return await log.send({ embeds: [embed] });
 	}
 }

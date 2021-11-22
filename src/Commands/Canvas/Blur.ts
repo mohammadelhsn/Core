@@ -51,7 +51,7 @@ export default class BlurCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Blur command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://blur.png',
 				});
 
@@ -91,7 +91,7 @@ export default class BlurCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Blur command',
-						description: guild.Strings.DiscordIG,
+						description: this.Utils.FormatProvider('Discord IG'),
 						image: 'attachment://blur.png',
 					});
 
@@ -123,7 +123,7 @@ export default class BlurCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Blur command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://blur.png',
 				});
 
@@ -184,7 +184,7 @@ export default class BlurCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Blur command',
-						description: guild.Strings.DiscordIG,
+						description: this.Utils.FormatProvider('Discord IG'),
 						image: 'attachment://blur.png',
 					});
 

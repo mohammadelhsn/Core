@@ -51,7 +51,7 @@ export default class BeautifulCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Beautiful command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://beautiful.png',
 				});
 
@@ -91,7 +91,7 @@ export default class BeautifulCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Beautiful command',
-						description: guild.Strings.DiscordIG,
+						description: this.Utils.FormatProvider('Discord IG'),
 						image: 'attachment://beautiful.png',
 					});
 
@@ -123,7 +123,7 @@ export default class BeautifulCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Beautiful command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://beautiful.png',
 				});
 
@@ -185,7 +185,7 @@ export default class BeautifulCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Beautiful command',
-						description: guild.Strings.DiscordIG,
+						description: this.Utils.FormatProvider('Discord IG'),
 						image: 'attachment://beautiful.png',
 					});
 

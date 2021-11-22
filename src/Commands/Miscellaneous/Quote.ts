@@ -24,7 +24,6 @@ export default class QuoteCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id);
 		const self = this;
 
 		if (args[0]) {
@@ -51,9 +50,7 @@ export default class QuoteCommand extends BaseCommand {
 			const embed = await this.Embed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
-				description: `${this.Utils.Capitalize(
-					this.Translator.Getstring(lang, 'provided_by')
-				)}: \`Kote API\``,
+				description: this.Utils.FormatProvider('Kote API'),
 				fields: [{ name: 'Quote', value: `\`${q}\`` }],
 			});
 

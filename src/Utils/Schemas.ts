@@ -269,6 +269,28 @@ namespace Constructors {
 			return JSON.stringify(this.data);
 		}
 	}
+	export class Reminders {
+		public data: Types.Reminders;
+		constructor(data?: Types.Reminders | string) {
+			if (!data) this.data = [];
+			if (typeof data == 'string') this.data = JSON.parse(data);
+			if (typeof data == 'object') this.data = data;
+		}
+		toString(): string {
+			return JSON.stringify(this.data);
+		}
+	}
+	export class Timers {
+		public data: Types.Timers;
+		constructor(data?: Types.Timers | string) {
+			if (!data) this.data = [];
+			if (typeof data == 'string') this.data = JSON.parse(data);
+			if (typeof data == 'object') this.data = data;
+		}
+		toString(): string {
+			return JSON.stringify(this.data);
+		}
+	}
 }
 
 export = Constructors;

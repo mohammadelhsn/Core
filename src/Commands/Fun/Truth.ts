@@ -23,7 +23,6 @@ export default class TruthCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id);
 		const truth = args[0];
 
 		if (truth.toLowerCase() === 'help') {
@@ -58,9 +57,7 @@ export default class TruthCommand extends BaseCommand {
 			iconURL: message.author.displayAvatarURL({ dynamic: true }),
 			text: this,
 			title: 'Truth command',
-			description: `${this.Utils.Capitalize(
-				this.Translator.Getstring(lang, 'provided_by')
-			)}: \`Alexflip note API\``,
+			description: this.Utils.FormatProvider('AlexFlipNote API'),
 			image: `https://api.alexflipnote.dev/scroll?text=${args.join('%20')}`,
 		});
 

@@ -4,11 +4,11 @@ import Functions from '../Functions';
 import Emojis from '../../../Emojis.json';
 import Colours from '../../../Colours.json';
 import Schemas from '../Schemas';
+import Helpers from '../Helpers';
 
 export default abstract class BaseEvent {
 	protected con = StateManager.con;
 	protected Colour = new Functions.Colour();
-	protected Translator = new Functions.Translator();
 	protected Utils = new Functions.Utils();
 	protected Channels = new Functions.Channels();
 	protected Settings = new Functions.Settings();
@@ -23,6 +23,7 @@ export default abstract class BaseEvent {
 	protected Emojis = Emojis;
 	protected Colours = Colours;
 	protected Schemas = Schemas;
+	protected Helpers = Helpers;
 	constructor(private name: string) {}
 
 	getName(): string {

@@ -54,7 +54,7 @@ export default class CheatCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Cheat command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://cheat.png',
 				});
 
@@ -88,7 +88,7 @@ export default class CheatCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Cheat command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://cheat.png',
 				});
 
@@ -128,7 +128,7 @@ export default class CheatCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Cheat command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://cheat.png',
 				});
 
@@ -161,7 +161,7 @@ export default class CheatCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Cheat command',
-						description: guild.Strings.DiscordIG,
+						description: this.Utils.FormatProvider('Discord IG'),
 						image: 'attachment://cheat.png',
 					});
 
@@ -231,7 +231,7 @@ export default class CheatCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Cheat command',
-						description: guild.Strings.DiscordIG,
+						description: this.Utils.FormatProvider('Discord IG'),
 						image: 'attachment://cheat.png',
 					});
 

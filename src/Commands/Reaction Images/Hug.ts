@@ -23,7 +23,6 @@ export default class HugCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id);
 		const self = this;
 
 		let user;

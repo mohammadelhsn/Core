@@ -37,7 +37,6 @@ export default class CovidCommand extends BaseCommand {
 	): Promise<any> {
 		const choice = args[0];
 		const q = args.slice(1).join(' ');
-		const lang = await this.Translator.Getlang(message.guild.id);
 
 		if (!choice) {
 			try {

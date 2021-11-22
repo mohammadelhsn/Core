@@ -76,7 +76,6 @@ export default class HelpCommand extends BaseCommand {
 
 			if (message.guild) {
 				const prefix = await this.Settings.Prefix(message.guild.id);
-				const lang = await this.Translator.Getlang(message.guild.id);
 
 				const awwEmbed = new MessageEmbed()
 					.setAuthor(
@@ -87,13 +86,7 @@ export default class HelpCommand extends BaseCommand {
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
+						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
 					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
@@ -108,13 +101,7 @@ export default class HelpCommand extends BaseCommand {
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
+						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
 					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
@@ -129,13 +116,7 @@ export default class HelpCommand extends BaseCommand {
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
+						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.addField(
 						`${categories.titles.canvas}`,
@@ -150,13 +131,7 @@ export default class HelpCommand extends BaseCommand {
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
+						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
 					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
@@ -175,13 +150,7 @@ export default class HelpCommand extends BaseCommand {
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
+						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
 					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
@@ -197,13 +166,7 @@ export default class HelpCommand extends BaseCommand {
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
+						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
 					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
@@ -221,13 +184,7 @@ export default class HelpCommand extends BaseCommand {
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
+						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
 					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
@@ -245,13 +202,7 @@ export default class HelpCommand extends BaseCommand {
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
+						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
 					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
@@ -269,13 +220,7 @@ export default class HelpCommand extends BaseCommand {
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
+						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
 					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
@@ -293,13 +238,7 @@ export default class HelpCommand extends BaseCommand {
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
+						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
 					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
@@ -317,13 +256,7 @@ export default class HelpCommand extends BaseCommand {
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
+						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
 					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
@@ -341,13 +274,7 @@ export default class HelpCommand extends BaseCommand {
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
+						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
 					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
@@ -365,13 +292,7 @@ export default class HelpCommand extends BaseCommand {
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
-						`\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``
+						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
 					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
@@ -554,9 +475,6 @@ export default class HelpCommand extends BaseCommand {
 
 		await interaction.deferReply();
 
-		const lang = await this.Translator.Getlang(
-			this.Utils.GetGuildId(interaction)
-		);
 		const prefix = await this.Settings.Prefix(
 			this.Utils.GetGuildId(interaction)
 		);
@@ -581,13 +499,7 @@ export default class HelpCommand extends BaseCommand {
 						accessor: interaction,
 						text: this,
 						title: `Core help command | Command count: ${client.commands.size}`,
-						description: `\`<>\` ${this.Translator.Getstring(
-							lang,
-							'is_required'
-						)} \`()\` ${this.Translator.Getstring(
-							lang,
-							'is_optional'
-						)} | Prefix: \`${prefix}\``,
+						description: 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``,
 						fields: [
 							{
 								name: `${this.Utils.Capitalize(query)} [${
@@ -655,13 +567,7 @@ export default class HelpCommand extends BaseCommand {
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
-				`\`<>\` ${this.Translator.Getstring(
-					lang,
-					'is_required'
-				)} \`()\` ${this.Translator.Getstring(
-					lang,
-					'is_optional'
-				)} | Prefix: \`${prefix}\``
+				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.setColor(this.Colour.Set())
 			.setThumbnail(this.Utils.GetIcon(interaction))
@@ -671,13 +577,7 @@ export default class HelpCommand extends BaseCommand {
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
-				`\`<>\` ${this.Translator.Getstring(
-					lang,
-					'is_required'
-				)} \`()\` ${this.Translator.Getstring(
-					lang,
-					'is_optional'
-				)} | Prefix: \`${prefix}\``
+				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.setColor(this.Colour.Set())
 			.setThumbnail(this.Utils.GetIcon(interaction))
@@ -687,26 +587,14 @@ export default class HelpCommand extends BaseCommand {
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
-				`\`<>\` ${this.Translator.Getstring(
-					lang,
-					'is_required'
-				)} \`()\` ${this.Translator.Getstring(
-					lang,
-					'is_optional'
-				)} | Prefix: \`${prefix}\``
+				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.addField(`${categories.titles.canvas}`, `${categories.command.canvas}`);
 		const coEmbed = new MessageEmbed()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
-				`\`<>\` ${this.Translator.Getstring(
-					lang,
-					'is_required'
-				)} \`()\` ${this.Translator.Getstring(
-					lang,
-					'is_optional'
-				)} | Prefix: \`${prefix}\``
+				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.setColor(this.Colour.Set())
 			.setThumbnail(this.Utils.GetIcon(interaction))
@@ -717,13 +605,7 @@ export default class HelpCommand extends BaseCommand {
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
-				`\`<>\` ${this.Translator.Getstring(
-					lang,
-					'is_required'
-				)} \`()\` ${this.Translator.Getstring(
-					lang,
-					'is_optional'
-				)} | Prefix: \`${prefix}\``
+				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.setColor(this.Colour.Set())
 			.setThumbnail(this.Utils.GetIcon(interaction))
@@ -734,13 +616,7 @@ export default class HelpCommand extends BaseCommand {
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
-				`\`<>\` ${this.Translator.Getstring(
-					lang,
-					'is_required'
-				)} \`()\` ${this.Translator.Getstring(
-					lang,
-					'is_optional'
-				)} | Prefix: \`${prefix}\``
+				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.setColor(this.Colour.Set())
 			.setThumbnail(this.Utils.GetIcon(interaction))
@@ -753,13 +629,7 @@ export default class HelpCommand extends BaseCommand {
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
-				`\`<>\` ${this.Translator.Getstring(
-					lang,
-					'is_required'
-				)} \`()\` ${this.Translator.Getstring(
-					lang,
-					'is_optional'
-				)} | Prefix: \`${prefix}\``
+				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.setColor(this.Colour.Set())
 			.setThumbnail(this.Utils.GetIcon(interaction))
@@ -772,13 +642,7 @@ export default class HelpCommand extends BaseCommand {
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
-				`\`<>\` ${this.Translator.Getstring(
-					lang,
-					'is_required'
-				)} \`()\` ${this.Translator.Getstring(
-					lang,
-					'is_optional'
-				)} | Prefix: \`${prefix}\``
+				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.setColor(this.Colour.Set())
 			.setThumbnail(this.Utils.GetIcon(interaction))
@@ -788,13 +652,7 @@ export default class HelpCommand extends BaseCommand {
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
-				`\`<>\` ${this.Translator.Getstring(
-					lang,
-					'is_required'
-				)} \`()\` ${this.Translator.Getstring(
-					lang,
-					'is_optional'
-				)} | Prefix: \`${prefix}\``
+				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.setColor(this.Colour.Set())
 			.setThumbnail(this.Utils.GetIcon(interaction))
@@ -807,13 +665,7 @@ export default class HelpCommand extends BaseCommand {
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
-				`\`<>\` ${this.Translator.Getstring(
-					lang,
-					'is_required'
-				)} \`()\` ${this.Translator.Getstring(
-					lang,
-					'is_optional'
-				)} | Prefix: \`${prefix}\``
+				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.setColor(this.Colour.Set())
 			.setThumbnail(this.Utils.GetIcon(interaction))
@@ -826,13 +678,7 @@ export default class HelpCommand extends BaseCommand {
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
-				`\`<>\` ${this.Translator.Getstring(
-					lang,
-					'is_required'
-				)} \`()\` ${this.Translator.Getstring(
-					lang,
-					'is_optional'
-				)} | Prefix: \`${prefix}\``
+				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.setColor(this.Colour.Set())
 			.setThumbnail(this.Utils.GetIcon(interaction))
@@ -842,13 +688,7 @@ export default class HelpCommand extends BaseCommand {
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
-				`\`<>\` ${this.Translator.Getstring(
-					lang,
-					'is_required'
-				)} \`()\` ${this.Translator.Getstring(
-					lang,
-					'is_optional'
-				)} | Prefix: \`${prefix}\``
+				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.setColor(this.Colour.Set())
 			.setThumbnail(this.Utils.GetIcon(interaction))
@@ -861,13 +701,7 @@ export default class HelpCommand extends BaseCommand {
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
-				`\`<>\` ${this.Translator.Getstring(
-					lang,
-					'is_required'
-				)} \`()\` ${this.Translator.Getstring(
-					lang,
-					'is_optional'
-				)} | Prefix: \`${prefix}\``
+				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.setColor(this.Colour.Set())
 			.setThumbnail(this.Utils.GetIcon(interaction))

@@ -13,6 +13,10 @@ export default class MessageEvent extends BaseEvent {
 
 		const prefix = await this.Settings.Prefix(message.guild.id, true, false);
 
+		if (message.content.includes(client.user.id)) {
+			return message.reply({ content: `My prefix in this guild is ${prefix}` });
+		}
+
 		if (message.content.startsWith(prefix)) {
 			const [cmdName, ...cmdArgs] = message.content
 				.slice(prefix.length)

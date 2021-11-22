@@ -139,7 +139,7 @@ export default class CommentCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Comment command',
-						description: guild.Strings.SomeRandomAPI,
+						description: this.Utils.FormatProvider('Some Random API'),
 						image: '',
 					});
 

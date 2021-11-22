@@ -51,7 +51,7 @@ export default class ConfusedStonkCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'ConfusedStonk command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://confused_stonk.png',
 				});
 
@@ -91,7 +91,7 @@ export default class ConfusedStonkCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'ConfusedStonk command',
-						description: guild.Strings.DiscordIG,
+						description: this.Utils.FormatProvider('Discord IG'),
 						image: 'attachment://confused_stonk.png',
 					});
 
@@ -123,7 +123,7 @@ export default class ConfusedStonkCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'ConfusedStonk command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://confused_stonk.png',
 				});
 
@@ -185,7 +185,7 @@ export default class ConfusedStonkCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'ConfusedStonk command',
-						description: guild.Strings.DiscordIG,
+						description: this.Utils.FormatProvider('Discord IG'),
 						image: 'attachment://confused_stonk.png',
 					});
 

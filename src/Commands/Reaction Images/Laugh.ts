@@ -23,7 +23,6 @@ export default class LaughCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id);
 		const self = this;
 		if (args[0]) {
 			return await this.HelpEmbed.Base({

@@ -55,7 +55,7 @@ export default class KissCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Kiss command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://kiss.png',
 				});
 
@@ -89,7 +89,7 @@ export default class KissCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Kiss command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://kiss.png',
 				});
 
@@ -129,7 +129,7 @@ export default class KissCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Kiss command',
-					description: guild.Strings.DiscordIG,
+					description: this.Utils.FormatProvider('Discord IG'),
 					image: 'attachment://kiss.png',
 				});
 
@@ -162,7 +162,7 @@ export default class KissCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Kiss command',
-						description: guild.Strings.DiscordIG,
+						description: this.Utils.FormatProvider('Discord IG'),
 						image: 'attachment://kiss.png',
 					});
 
@@ -233,7 +233,7 @@ export default class KissCommand extends BaseCommand {
 							iconURL: message.author.displayAvatarURL({ dynamic: true }),
 							text: this,
 							title: 'Kiss command',
-							description: guild.Strings.DiscordIG,
+							description: this.Utils.FormatProvider('Discord IG'),
 							image: 'attachment://kiss.png',
 						});
 

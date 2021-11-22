@@ -18,7 +18,6 @@ export default abstract class BaseCommand {
 	protected Reactions = new API.Reactions();
 	// Functions
 	protected Colour = new Functions.Colour();
-	protected Translator = new Functions.Translator();
 	protected Utils = new Functions.Utils();
 	protected Channels = new Functions.Channels();
 	protected Settings = new Functions.Settings();

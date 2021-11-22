@@ -61,7 +61,7 @@ export default class FoxgirlCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				title: `Foxgirl command`,
-				description: guild.Strings.NekosFun,
+				description: this.Utils.FormatProvider('Nekos Fun API'),
 				image: res.file,
 			});
 
@@ -104,7 +104,7 @@ export default class FoxgirlCommand extends BaseCommand {
 				accessor: interaction,
 				text: this,
 				title: `Foxgirl command`,
-				description: guild.Strings.NekosFun,
+				description: this.Utils.FormatProvider('Nekos Fun API'),
 				image: res.file,
 			});
 

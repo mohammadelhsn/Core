@@ -50,7 +50,7 @@ export default class BaguetteCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Baguette command',
-					description: guild.Strings.NekosBot,
+					description: this.Utils.FormatProvider('Nekos Bot'),
 					image: 'attachment://baguette.png',
 				});
 
@@ -87,7 +87,7 @@ export default class BaguetteCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Baguette command',
-					description: guild.Strings.NekosBot,
+					description: this.Utils.FormatProvider('Nekos Bot'),
 					image: 'attachment://baguette.png',
 				});
 
@@ -118,7 +118,7 @@ export default class BaguetteCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Baguette command',
-					description: guild.Strings.NekosBot,
+					description: this.Utils.FormatProvider('Nekos Bot'),
 					image: 'attachment://baguette.png',
 				});
 
@@ -180,7 +180,7 @@ export default class BaguetteCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Baguette command',
-						description: guild.Strings.NekosBot,
+						description: this.Utils.FormatProvider('Nekos Bot'),
 						image: 'attachment://baguette.png',
 					});
 

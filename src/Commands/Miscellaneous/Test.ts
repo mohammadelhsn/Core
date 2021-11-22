@@ -32,6 +32,10 @@ export default class TesstCommand extends BaseCommand {
 			'working'
 		);
 	}
-	async run(client: DiscordClient, message: Message, args: string[]) {}
+	async run(client: DiscordClient, message: Message, args: string[]) {
+		const guild = client.database.get(message.guild.id);
+
+		console.log(guild.event_collection);
+	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }

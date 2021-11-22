@@ -23,7 +23,6 @@ export default class SmugCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id);
 		const self = this;
 		if (args[0]) {
 			if (args[0].toLowerCase().includes('help')) {
@@ -61,9 +60,7 @@ export default class SmugCommand extends BaseCommand {
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					text: this,
 					title: 'Smug command',
-					description: `${this.Utils.Capitalize(
-						this.Translator.Getstring(lang, 'provided_by')
-					)}: \`Nekos life API\``,
+					description: this.Utils.FormatProvider('Nekos Fun API'),
 					image: res.file,
 				});
 
@@ -82,8 +79,6 @@ export default class SmugCommand extends BaseCommand {
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {
-		const lang = await this.Translator.Getlang(interaction.guild.id);
-
 		const generatingEmbed = await this.GeneratingEmbed.NekosFun({
 			accessor: interaction,
 			text: this,
@@ -109,9 +104,7 @@ export default class SmugCommand extends BaseCommand {
 				accessor: interaction,
 				text: this,
 				title: 'Smug command',
-				description: `${this.Utils.Capitalize(
-					this.Translator.Getstring(lang, 'provided_by')
-				)}: \`Nekos Fun API\``,
+				description: this.Utils.FormatProvider('Nekos Fun API'),
 				image: res.file,
 			});
 

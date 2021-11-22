@@ -23,8 +23,8 @@ export default class TickleCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id);
 		const self = this;
+
 		const mention = message.mentions.users.first();
 		let user;
 

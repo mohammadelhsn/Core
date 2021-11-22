@@ -24,7 +24,6 @@ export default class TopicCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id);
 		const self = this;
 
 		if (args[0]) {
@@ -48,9 +47,7 @@ export default class TopicCommand extends BaseCommand {
 			const embed = await this.Embed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
-				description: `${this.Utils.Capitalize(
-					this.Translator.Getstring(lang, 'provided_by')
-				)}: \`Fun-responses\``,
+				description: this.Utils.FormatProvider('Fun-Responses'),
 				fields: [{ name: 'Topic', value: `\`${await fun.topic()}\`` }],
 			});
 
@@ -68,8 +65,6 @@ export default class TopicCommand extends BaseCommand {
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {
-		const lang = await this.Translator.Getlang(interaction.guild.id);
-
 		const gEmbed = await this.GeneratingEmbed.Base({
 			accessor: interaction,
 			text: this,
@@ -82,9 +77,7 @@ export default class TopicCommand extends BaseCommand {
 			const embed = await this.Embed.Base({
 				accessor: interaction,
 				text: this,
-				description: `${this.Utils.Capitalize(
-					this.Translator.Getstring(lang, 'provided_by')
-				)}: \`Fun-responses\``,
+				description: this.Utils.FormatProvider('Fun-Responses'),
 				fields: [{ name: 'Topic', value: `\`${await fun.topic()}\`` }],
 			});
 

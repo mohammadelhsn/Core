@@ -23,9 +23,6 @@ export default class NekoCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id);
-		const guild = client.database.get(message.guild.id);
-
 		if (args[0]) {
 			if (args[0].toLowerCase().includes('help')) {
 				return await this.HelpEmbed.Base({
@@ -63,9 +60,7 @@ export default class NekoCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				title: 'Neko command',
-				description: `${this.Utils.Capitalize(
-					this.Translator.Getstring(lang, 'provided_by')
-				)}: \`Nekos Fun API\``,
+				description: this.Utils.FormatProvider('Nekos Fun API'),
 				image: res.file,
 			});
 
@@ -84,8 +79,6 @@ export default class NekoCommand extends BaseCommand {
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {
-		const lang = await this.Translator.Getlang(interaction.guild.id);
-
 		const gEmbed = await this.GeneratingEmbed.NekosFun({
 			accessor: interaction,
 			text: this,
@@ -109,9 +102,7 @@ export default class NekoCommand extends BaseCommand {
 				accessor: interaction,
 				text: this,
 				title: 'Neko command',
-				description: `${this.Utils.Capitalize(
-					this.Translator.Getstring(lang, 'provided_by')
-				)}: \`Nekos Fun API\``,
+				description: this.Utils.FormatProvider('Nekos Fun API'),
 				image: res.file,
 			});
 

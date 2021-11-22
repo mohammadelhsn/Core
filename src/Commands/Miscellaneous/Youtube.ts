@@ -5,7 +5,23 @@ import youtube from 'ytsr';
 
 export default class YoutubeCommand extends BaseCommand {
 	constructor() {
-		super('youtube', 'miscellaneous', []);
+		super(
+			'youtube',
+			'miscellaneous',
+			[],
+			'',
+			'',
+			'',
+			[],
+			[],
+			[],
+			[],
+			true,
+			false,
+			false,
+			3000,
+			'working'
+		);
 	}
 	async run(
 		client: DiscordClient,

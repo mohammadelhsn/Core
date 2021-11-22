@@ -1,6 +1,6 @@
 import BaseEvent from '../../Utils/Structures/BaseEvent';
 import DiscordClient from '../../Client/Client';
-import { GuildChannel, DMChannel, TextChannel } from 'discord.js';
+import { GuildChannel, DMChannel, TextChannel, Guild } from 'discord.js';
 
 export default class ChannelDeleteEvent extends BaseEvent {
 	constructor() {
@@ -9,25 +9,19 @@ export default class ChannelDeleteEvent extends BaseEvent {
 	async run(client: DiscordClient, channel: GuildChannel | DMChannel) {
 		if (channel.type == 'DM') return;
 
-		console.log(channel);
-
 		const { guild } = channel;
 
-		const lang = await this.Translator.Getlang(guild.id);
+		const cache = await client.database.get(guild.id);
 
-		const { channelDelete } = await this.Settings.Events(guild.id);
+		if (cache.Events.channelDelete.isEnabled() == false) return;
 
-		if (channelDelete.enabled == false) return;
-
-		const log = (await client.channels.cache.get(
-			channelDelete.channel
-		)) as TextChannel;
+		const log = (await cache.Events.channelDelete.Get()).channel;
 
 		if (log == null) return;
 
 		const embed = await this.Embed.Base({
 			iconURL: guild.iconURL({ dynamic: true }),
-			title: this.Translator.Getstring(lang, 'new_action'),
+			title: 'New action',
 			text: 'Channel delete',
 			description: 'Event: `Channel delete`',
 			fields: [
@@ -39,7 +33,7 @@ export default class ChannelDeleteEvent extends BaseEvent {
 				{ name: 'Channel ID', value: `\`${channel.id}\`` },
 				{
 					name: 'Deleted at',
-					value: `\`${new Date().toLocaleString(lang, {
+					value: `\`${new Date().toLocaleString('en-CA', {
 						weekday: 'long',
 						year: 'numeric',
 						month: 'long',

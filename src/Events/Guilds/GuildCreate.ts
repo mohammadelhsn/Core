@@ -12,9 +12,9 @@ export default class GuildCreateEvent extends BaseEvent {
 		try {
 			await con.query(`BEGIN`);
 			await con.query(
-				`INSERT INTO Guilds(guildid, welcome, leave, roles, logging, blacklisted, disableditems, moderations, protected, ranks, tags, notes, events) VALUES('${
+				`INSERT INTO Guilds(guildid, welcome, leave, roles, logging, blacklisted, disableditems, moderations, protected, ranks, tags, notes, events, timers, reminders) VALUES('${
 					guild.id
-				}', '${new Schemas.Welcome().toString()}', '${new Schemas.Leave().toString()}', '${new Schemas.Roles().toString()}', '${new Schemas.Logging().toString()}', '${new Schemas.Blacklisted().toString()}', '${new Schemas.Disabled().toString()}', '${new Schemas.Moderations().toString()}', '${new Schemas.Protected().toString()}', '${new Schemas.Ranks().toString()}', '${new Schemas.Tags().toString()}', '${new Schemas.Notes().toString()}', '${new Schemas.Events().toString()}')`
+				}', '${new Schemas.Welcome().toString()}', '${new Schemas.Leave().toString()}', '${new Schemas.Roles().toString()}', '${new Schemas.Logging().toString()}', '${new Schemas.Blacklisted().toString()}', '${new Schemas.Disabled().toString()}', '${new Schemas.Moderations().toString()}', '${new Schemas.Protected().toString()}', '${new Schemas.Ranks().toString()}', '${new Schemas.Tags().toString()}', '${new Schemas.Notes().toString()}', '${new Schemas.Events().toString()}', '${new Schemas.Timers().toString()}', '${new Schemas.Reminders().toString()}')`
 			);
 			await con.query(`COMMIT`);
 		} finally {

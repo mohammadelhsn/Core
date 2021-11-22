@@ -149,7 +149,7 @@ export default class PhcommentCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Phcomment command',
-						description: guild.Strings.SomeRandomAPI,
+						description: this.Utils.FormatProvider('Some Random API'),
 						image: '',
 					});
 

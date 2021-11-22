@@ -60,7 +60,7 @@ export default class BakaCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				title: 'Baka command',
-				description: guild.Strings.NekosFun,
+				description: this.Utils.FormatProvider('Nekos Fun API'),
 				image: res.file,
 			});
 
@@ -103,7 +103,7 @@ export default class BakaCommand extends BaseCommand {
 				accessor: interaction,
 				text: this,
 				title: 'Baka command',
-				description: guild.Strings.NekosFun,
+				description: this.Utils.FormatProvider("Nekos Fun API"),
 				image: res.file,
 			});
 

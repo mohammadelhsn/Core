@@ -55,7 +55,7 @@ export default class LisaCommand extends BaseCommand {
 			const embed = await this.ImageEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				title: 'Lisa command',
-				description: guild.Strings.DiscordIG,
+				description: this.Utils.FormatProvider('Discord IG'),
 				text: this,
 				image: 'attachment://lisa.png',
 			});

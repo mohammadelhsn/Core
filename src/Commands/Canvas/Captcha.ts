@@ -53,7 +53,7 @@ export default class CaptchaCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				title: 'Captcha command',
-				description: guild.Strings.NekosBot,
+				description: this.Utils.FormatProvider('Nekos Bot'),
 				image: 'attachment://captcha.png',
 			});
 
@@ -76,7 +76,7 @@ export default class CaptchaCommand extends BaseCommand {
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
 				title: 'Captcha command',
-				description: guild.Strings.NekosBot,
+				description: this.Utils.FormatProvider('Nekos Bot'),
 				image: 'attachment://captcha.png',
 			});
 
@@ -141,7 +141,7 @@ export default class CaptchaCommand extends BaseCommand {
 						iconURL: message.author.displayAvatarURL({ dynamic: true }),
 						text: this,
 						title: 'Captcha command',
-						description: guild.Strings.NekosBot,
+						description: this.Utils.FormatProvider('Nekos Bot'),
 						image: 'attachment://captcha.png',
 					});
 

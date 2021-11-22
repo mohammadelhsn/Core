@@ -23,8 +23,6 @@ export default class AdviceCommand extends BaseCommand {
 		);
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
-		const lang = await this.Translator.Getlang(message.guild.id);
-
 		if (args[0] && args[0].toLowerCase().includes('help')) {
 			return await this.HelpEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
@@ -61,9 +59,7 @@ export default class AdviceCommand extends BaseCommand {
 			const embed = await this.Embed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
 				text: this,
-				description: `${this.Utils.Capitalize(
-					this.Translator.Getstring(lang, 'provided_by')
-				)}: \`Advice slip API\``,
+				description: this.Utils.FormatProvider('Advice slip API'),
 				fields: [
 					{ name: 'Advice', value: `\`${res.text}\`` },
 					{ name: 'ID:', value: `\`${res.id}\`` },
@@ -84,7 +80,6 @@ export default class AdviceCommand extends BaseCommand {
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {
-		const lang = await this.Translator.Getlang(interaction.guild.id);
 		const gEmbed = await this.GeneratingEmbed.Base({
 			accessor: interaction,
 			text: this,
@@ -108,9 +103,7 @@ export default class AdviceCommand extends BaseCommand {
 			const embed = await this.Embed.Base({
 				accessor: interaction,
 				text: this,
-				description: `${this.Utils.Capitalize(
-					this.Translator.Getstring(lang, 'provided_by')
-				)}: \`Advice slip API\``,
+				description: this.Utils.FormatProvider('Advice slip API'),
 				fields: [
 					{ name: 'Advice', value: `\`${res.text}\`` },
 					{ name: 'ID:', value: `\`${res.id}\`` },

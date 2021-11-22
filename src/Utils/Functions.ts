@@ -7,12 +7,8 @@ import {
 	Message,
 	MessageEmbed,
 	Collection,
-	MessageReaction,
 	HexColorString,
-	AwaitMessagesOptions,
 	Permissions,
-	PermissionResolvable,
-	ReactionCollectorOptions,
 	PresenceStatus,
 	UserFlags,
 	Channel,
@@ -21,33 +17,22 @@ import {
 	TextBasedChannels,
 	PermissionString,
 	CommandInteraction,
-	InteractionCollector,
 	GuildMember,
 	Guild,
 	User,
 	GuildEmoji,
 	Role,
-	Util,
-	Options,
 } from 'discord.js';
 import CachedGuild from './Structures/CachedGuild';
 import Colours from '../../Colours.json';
-import Languages from '../../Languages.json';
-import Descriptions from '../../Descriptions.json';
 import CachedGuildTypes from './Structures/Interfaces/CachedGuild';
 import Emojis from '../../Emojis.json';
 import Schemas from './Schemas';
-import moment, { relativeTimeThreshold } from 'moment';
-import { ChannelTypes } from 'discord.js/typings/enums';
-import {
-	APIApplicationCommandOption,
-	APIInteractionDataResolvedChannel,
-} from 'discord-api-types';
+import { APIInteractionDataResolvedChannel } from 'discord-api-types';
 import {
 	SlashCommandBuilder,
 	SlashCommandSubcommandsOnlyBuilder,
 } from '@discordjs/builders';
-import types from 'discord-api-types/v9';
 
 namespace Functions {
 	export class Colour {
@@ -85,8 +70,61 @@ namespace Functions {
 			];
 
 			let shade = null;
+
 			if (options) {
 				shade = options.shade ? options.shade : null;
+			}
+
+			const date = new Date(Date.now())
+				.toLocaleDateString('en-US', {
+					timeZone: 'America/Toronto',
+				})
+				.split('/');
+
+			const month = parseInt(date[0]);
+			const day = parseInt(date[1]);
+
+			if (month == 12) {
+				const newColours = [Colours.red, Colours.green, Colours.blue];
+				const ranNum = Math.floor(Math.random() * newColours.length);
+				return newColours[ranNum] as HexColorString;
+			}
+
+			if (month == 10) {
+				const newColours = ['#000000', Colours.orange];
+				const ranNum = Math.floor(Math.random() * newColours.length);
+				return newColours[ranNum] as HexColorString;
+			}
+
+			if (month == 2 && day == 14) {
+				const newColours = [Colours.pink, Colours.red];
+				const ranNum = Math.floor(Math.random() * newColours.length);
+				return newColours[ranNum] as HexColorString;
+			}
+
+			if (month == 7 && day == 1) {
+				const newColours = [Colours.red, '#FFFFFF'];
+				const ranNum = Math.floor(Math.random() * newColours.length);
+				return newColours[ranNum] as HexColorString;
+			}
+
+			if (month == 7 && day == 4) {
+				const newColours = [Colours.blue, Colours.red, '#FFFFFF'];
+				const ranNum = Math.floor(Math.random() * newColours.length);
+				return newColours[ranNum] as HexColorString;
+			}
+
+			if (month == 1 && day == 1) {
+				const newColours: HexColorString[] = [
+					'#03172F',
+					'#062844',
+					'#093657',
+					'#FFF7B6',
+					'#EFD466',
+					'#D7B030',
+				];
+				const ranNum = Math.floor(Math.random() * newColours.length);
+				return newColours[ranNum] as HexColorString;
 			}
 
 			if (colour != 'random' && shade != null) {
@@ -95,96 +133,26 @@ namespace Functions {
 					throw new ReferenceError(
 						"I couldn't find this shade for this specific colour"
 					);
-				return color;
+				return color as HexColorString;
 			}
 			if (colour == 'random') {
 				const ranNum = Math.floor(Math.random() * colours.length);
 				const colour = colours[ranNum];
-				// @ts-ignore
-				return colour;
+				return colour as HexColorString;
 			}
 			if (colour && shade == null) {
 				const color = Colours[colour];
 				if (color == undefined)
 					throw new ReferenceError('I could not find this colour!');
-				return color;
+				return color as HexColorString;
 			}
-		}
-	}
-	export class Translator {
-		protected con: Pool;
-		protected client: DiscordClient;
-		protected cache: Collection<Snowflake, CachedGuild>;
-		constructor() {
-			this.con = StateManager.con;
-			this.client = globalThis.client;
-			this.cache = this.client.database;
-			this.Translate = this.Translate.bind(this);
-			this.Getlang = this.Getlang.bind(this);
-			this.Getstring = this.Getstring.bind(this);
-			this.Getdescription = this.Getdescription.bind(this);
-		}
-		async Translate(lang: string, text: string) {}
-		async Getlang(id: Snowflake, force?: boolean, cache?: boolean) {
-			const con = await this.con.connect();
-			try {
-				if (!force) force = false;
-				if (!cache) cache = true;
-
-				const guild = this.cache.get(id);
-
-				if (this.cache.size == 0 || !guild) {
-					force = true;
-					cache = false;
-				}
-
-				if (force == false) {
-					if (cache == true) {
-						const res = await con.query(
-							`SELECT lang FROM Guilds WHERE guildId = '${id}'`
-						);
-						const lang: string = await res.rows[0].lang;
-
-						guild.lang = lang;
-					}
-					return guild.lang;
-				}
-				if (force == true) {
-					const res = await con.query(
-						`SELECT lang FROM Guilds WHERE guildId = '${id}'`
-					);
-					const lang: string = await res.rows[0].lang;
-					if (cache == true) {
-						guild.lang = lang;
-					}
-					return lang;
-				}
-			} catch (error) {
-				console.log(error);
-			} finally {
-				con.release();
-			}
-		}
-		Getstring(lang: string, string: string, ...vars: string[]): string {
-			let locale = Languages[lang][string];
-
-			if (vars.length > 0) {
-				for (let i in vars) {
-					locale = locale.replace(/%VAR%/, i);
-				}
-			}
-			return locale;
-		}
-		Getdescription(lang: string, string: string): string {
-			const locale = Descriptions[lang][string];
-			return locale;
 		}
 	}
 	export class Utils {
 		protected con: Pool;
 		protected client: DiscordClient;
 		protected cache: Collection<Snowflake, CachedGuild>;
-		Emojis = Emojis;
+		protected Emojis = Emojis;
 		constructor() {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
@@ -325,11 +293,9 @@ namespace Functions {
 				if (!guild) return null;
 
 				if (toFetch == 'prefix') return guild.prefix;
-				if (toFetch == 'lang') return guild.lang;
 				if (toFetch == 'channels') return guild.Channels;
 				if (toFetch == 'roles') return guild.roles;
 				if (toFetch == 'leave') return guild.leave;
-				if (toFetch == 'strings') return guild.Strings;
 				if (toFetch == 'welcome') return guild.welcome;
 
 				return guild;
@@ -414,7 +380,7 @@ namespace Functions {
 				| APIInteractionDataResolvedChannel
 				| ThreadChannel
 				| TextBasedChannels
-		) {
+		): string {
 			if (channel.type == 'DM') return 'DM';
 			if (channel.type == 'GROUP_DM') return 'Group DM';
 			if (channel.type == 'GUILD_CATEGORY') return 'Category';
@@ -436,7 +402,7 @@ namespace Functions {
 				| Role
 				| GuildChannel
 				| Guild
-		) {
+		): string {
 			if (toGrab instanceof Guild) return toGrab.id;
 			return toGrab.guild.id;
 		}
@@ -444,7 +410,7 @@ namespace Functions {
 			toGrab: GuildMember | Guild | CommandInteraction | Message | User,
 			type?: 'guild' | 'user',
 			dynamic?: boolean
-		) {
+		): string {
 			if (!dynamic) dynamic = true;
 			if (toGrab instanceof Guild) return toGrab.iconURL({ dynamic: dynamic });
 			if (toGrab instanceof User)
@@ -470,17 +436,20 @@ namespace Functions {
 			);
 			return user.displayAvatarURL({ dynamic: true });
 		}
-		async FetchChannel(id: Snowflake) {
+		async FetchChannel(id: Snowflake): Promise<Channel> {
 			return (
 				this.client.channels.cache.find((ch) => ch.id == id) ||
 				(await this.client.channels.fetch(id))
 			);
 		}
-		async FetchUser(id: Snowflake) {
+		async FetchUser(id: Snowflake): Promise<User> {
 			return (
 				this.client.users.cache.find((u) => u.id == id) ||
 				(await this.client.users.fetch(id))
 			);
+		}
+		FormatProvider(provider: string): string {
+			return `Provided by: \`${provider}\``;
 		}
 	}
 
@@ -1101,43 +1070,24 @@ namespace Functions {
 				con.release();
 			}
 		}
-		async Events(id: Snowflake, force?: boolean, cache?: boolean) {
+		async Events(id: Snowflake, force?: boolean) {
 			const con = await this.con.connect();
 			try {
 				if (!force) force = false;
-				if (!cache) cache = true;
 
 				const guild = this.cache.get(id);
 
 				if (this.cache.size == 0 || !guild) {
 					force = true;
-					cache = false;
 				}
 
-				if (force == false) {
-					if (cache == true) {
-						const res = await con.query(
-							`SELECT events FROM Guilds WHERE guildId = '${id}'`
-						);
+				const res = await con.query(
+					`SELECT events FROM Guilds WHERE guildId = '${id}'`
+				);
 
-						const index = await new Schemas.Events(res.rows[0].events).data;
+				const index = await new Schemas.Events(res.rows[0].events).data;
 
-						guild.Events = index;
-					}
-					return guild.Events;
-				}
-				if (force == true) {
-					const res = await con.query(
-						`SELECT events FROM Guilds WHERE guildId = '${id}'`
-					);
-
-					const index = await new Schemas.Events(res.rows[0].events).data;
-
-					if (cache == true) {
-						guild.Events = index;
-					}
-					return index;
-				}
+				return index;
 			} catch (error) {
 				console.log(error);
 			} finally {
@@ -1299,8 +1249,6 @@ namespace Functions {
 		protected cache: Collection<Snowflake, CachedGuild>;
 		protected Capitalize: Utils['Capitalize'];
 		protected Set: Colour['Set'];
-		protected Getstring: Translator['Getstring'];
-		protected Getlang: Translator['Getlang'];
 		protected Embed: Embed['Base'];
 		protected GetIcon: Utils['GetIcon'];
 		protected GetGuildId: Utils['GetGuildId'];
@@ -1310,8 +1258,6 @@ namespace Functions {
 			this.cache = this.client.database;
 			this.Capitalize = new Utils().Capitalize;
 			this.Set = new Colour().Set;
-			this.Getlang = new Translator().Getlang;
-			this.Getstring = new Translator().Getstring;
 			this.Embed = new Embed().Base;
 			this.Base = this.Base.bind(this);
 			this.GetIcon = new Utils().GetIcon;
@@ -1327,14 +1273,10 @@ namespace Functions {
 			if (!opts.id && !opts.accessor) throw new Error('Manual or defualt');
 			if (!opts.id && opts.accessor) opts.id = this.GetGuildId(opts.accessor);
 
-			const lang = await this.Getlang(opts.id);
-
 			const embed = this.Embed({
 				iconURL: opts.iconURL,
 				text: opts.text,
-				title: `${Emojis.success} | ${this.Capitalize(
-					this.Getstring(lang, 'success')
-				)}`,
+				title: `Success!`,
 				description: `${this.Capitalize(opts.success_message)}`,
 				fields: opts.fields,
 				image: opts.image,
@@ -1350,8 +1292,6 @@ namespace Functions {
 		protected client: DiscordClient;
 		protected cache: Collection<Snowflake, CachedGuild>;
 		protected Capitalize: Utils['Capitalize'];
-		protected Getlang: Translator['Getlang'];
-		protected Getstring: Translator['Getstring'];
 		protected Set: Colour['Set'];
 		protected Embed: Embed['Base'];
 		protected GetIcon: Utils['GetIcon'];
@@ -1361,8 +1301,6 @@ namespace Functions {
 			this.client = globalThis.client;
 			this.cache = this.client.database;
 			this.Capitalize = new Utils().Capitalize;
-			this.Getlang = new Translator().Getlang;
-			this.Getstring = new Translator().Getstring;
 			this.Set = new Colour().Set;
 			this.Embed = new Embed().Base;
 			this.Base = this.Base.bind(this);
@@ -1386,16 +1324,14 @@ namespace Functions {
 				opts.iconURL = this.GetIcon(opts.accessor);
 			if (!opts.id && !opts.accessor) throw new Error('Manual or defualt');
 			if (!opts.id && opts.accessor) opts.id = this.GetGuildId(opts.accessor);
-
-			const lang = await this.Getlang(opts.id);
-
+			// "unexpected_error": "An unexpected error has occurred",
+			// "user_blocked": "You are blacklisted from using the bot!",
+			// "cooldown_message": "Slow down! Wait until %VAR% you can use %VAR% again!",
 			const embed = this.Embed({
 				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
-				title: `${Emojis.error} | ${this.Capitalize(
-					this.Getstring(lang, 'error_message')
-				)}`,
+				title: `${Emojis.error} | Oops, an error has occurred!`,
 				description: `\`\`\`Error details: ${this.Capitalize(
 					opts.error_message
 				)}\`\`\``,
@@ -1433,12 +1369,7 @@ namespace Functions {
 			});
 		}
 		async CooldownError(opts: Funcs.CooldownErrorOpts) {
-			const lang = await this.Getlang(opts.id);
-
-			const second = `${opts.seconds} ${this.Getstring(lang, 'seconds')}`;
-			const description = `${this.Capitalize(
-				this.Getstring(lang, 'cooldown_message', second, opts.toUse)
-			)}`;
+			const description = `Slow down! Wait ${opts.seconds}s you can use ${opts.toUse} again!`;
 
 			return await this.Base({
 				accessor: opts.accessor,
@@ -1456,16 +1387,12 @@ namespace Functions {
 			if (!opts.id && !opts.accessor) throw new Error('Manual or defualt');
 			if (!opts.id && opts.accessor) opts.id = this.GetGuildId(opts.accessor);
 
-			const lang = await this.Getlang(opts.id);
-
-			const description = this.Getstring(lang, 'unexpected_error');
-
 			return await this.Base({
 				accessor: opts.accessor,
 				iconURL: opts.iconURL,
 				text: opts.text,
 				id: opts.id,
-				error_message: description,
+				error_message: 'An unexpected error has occurred!',
 				fields: opts.fields,
 				image: opts.image,
 				link: opts.link,
@@ -1541,9 +1468,6 @@ namespace Functions {
 		protected con: Pool;
 		protected client: DiscordClient;
 		protected cache: Collection<Snowflake, CachedGuild>;
-		protected Getlang: Translator['Getlang'];
-		protected Getstring: Translator['Getstring'];
-		protected Translate: Translator['Translate'];
 		protected Set: Colour['Set'];
 		protected Paginate: Utils['Paginate'];
 		protected Capitalize: Utils['Capitalize'];
@@ -1553,9 +1477,6 @@ namespace Functions {
 			this.con = StateManager.con;
 			this.client = globalThis.client;
 			this.cache = this.client.database;
-			this.Getlang = new Translator().Getlang;
-			this.Getstring = new Translator().Getstring;
-			this.Translate = new Translator().Translate;
 			this.Set = new Colour().Set;
 			this.Paginate = new Utils().Paginate;
 			this.Capitalize = new Utils().Capitalize;
@@ -1566,7 +1487,7 @@ namespace Functions {
 		async Base(opts: Funcs.HelpEmbedOpts) {
 			const { iconURL, command, accessor } = opts;
 
-			const { lang, prefix, Strings } = this.cache.get(
+			const { prefix } = this.cache.get(
 				accessor instanceof CommandInteraction
 					? accessor.guild.id
 					: accessor.guild.id
@@ -1574,29 +1495,29 @@ namespace Functions {
 
 			const strings = {
 				titles: {
-					status: Strings.status,
-					working: Strings.working,
-					name: Strings.name,
-					category: Strings.category,
-					aliases: Strings.aliases,
-					usage: Strings.usage,
-					description: Strings.description,
-					accessible_by: Strings.accessible_by,
-					permissions: Strings.permissions,
-					subCommands: Strings.subCommands,
-					example: Strings.example,
-					guild_only: Strings.guild_only,
-					owner_only: Strings.owner_only,
-					cooldown: Strings.cooldown,
-					user_permissions: Strings.user_permissions,
+					status: 'status',
+					working: 'working',
+					name: 'name',
+					category: 'category',
+					aliases: 'aliases',
+					usage: 'usage',
+					description: 'description',
+					accessible_by: 'accessible by',
+					permissions: 'permissions',
+					subCommands: 'sub commands',
+					example: 'example',
+					guild_only: 'guild only',
+					owner_only: 'owner only',
+					cooldown: 'cooldown',
+					user_permissions: 'permissions',
 				},
 				values: {
-					yes: Strings.yes,
-					no: Strings.no,
-					none: Strings.none,
-					is_required: Strings.is_required,
-					is_optional: Strings.is_optional,
-					seconds: Strings.seconds,
+					yes: 'yes',
+					no: 'no',
+					none: 'none',
+					is_required: 'is required',
+					is_optional: 'is optional',
+					seconds: 'second(s)',
 				},
 			};
 
@@ -1771,8 +1692,6 @@ namespace Functions {
 		protected Embed: Embed['Base'];
 		protected Capitalize: Utils['Capitalize'];
 		protected Set: Colour['Set'];
-		protected Getstring: Translator['Getstring'];
-		protected Getlang: Translator['Getlang'];
 		protected GetIcon: Utils['GetIcon'];
 		protected GetGuildId: Utils['GetGuildId'];
 		constructor() {
@@ -1782,8 +1701,6 @@ namespace Functions {
 			this.Embed = new Embed().Base;
 			this.Capitalize = new Utils().Capitalize;
 			this.Set = new Colour().Set;
-			this.Getstring = new Translator().Getstring;
-			this.Getlang = new Translator().Getlang;
 			this.GetIcon = new Utils().GetIcon;
 			this.GetGuildId = new Utils().GetGuildId;
 			this.Base = this.Base.bind(this);
@@ -1805,14 +1722,8 @@ namespace Functions {
 			if (!opts.id && !opts.accessor) throw new Error('Manual or defualt');
 			if (!opts.id && opts.accessor) opts.id = this.GetGuildId(opts.accessor);
 
-			const lang = await this.Getlang(opts.id);
-
-			const title: string = `${this.Capitalize(
-				this.Getstring(lang, 'generating')
-			)}...`;
-			const description: string = `${this.Capitalize(
-				this.Getstring(lang, 'provided_by')
-			)}: \`${opts.provider}\``;
+			const title: string = `Generating...`;
+			const description: string = `Provided by: \`${opts.provider}\``;
 
 			return this.Embed({
 				accessor: opts.accessor,

@@ -79,11 +79,9 @@ export default class GuildMemberAddEvent extends BaseEvent {
 
 			const { user, guild } = member;
 
-			const lang = await this.Translator.Getlang(guild.id);
-
 			const embed = this.Embed.Base({
 				iconURL: user.displayAvatarURL({ dynamic: true }),
-				title: this.Translator.Getstring(lang, 'new_action'),
+				title: 'New action',
 				text: 'Member join',
 				description: 'Event: `New member`',
 				fields: [
@@ -95,7 +93,7 @@ export default class GuildMemberAddEvent extends BaseEvent {
 					{ name: 'User ID', value: `\`${user.id}\``, inline: true },
 					{
 						name: 'Created at',
-						value: `\`${user.createdAt.toLocaleString(lang, {
+						value: `\`${user.createdAt.toLocaleString('en-CA', {
 							weekday: 'long',
 							year: 'numeric',
 							month: 'long',

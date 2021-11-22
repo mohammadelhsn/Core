@@ -4,6 +4,7 @@ import Guild from '../../Utils/Structures/CachedGuild';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
+import Collection from '@discordjs/collection';
 
 export default class ReadyEvent extends BaseEvent {
 	constructor() {
@@ -16,28 +17,28 @@ export default class ReadyEvent extends BaseEvent {
 
 		client.user.setPresence({
 			activities: [{ name: status, type: 'WATCHING' }],
-			status: 'dnd',
+			status: 'online',
 		});
 
-		const commands = this.Slash.All().toJSON();
+		// const commands = this.Slash.All().toJSON();
 
-		const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
+		// const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
-		rest
-			.put(
-				Routes.applicationGuildCommands(client.user.id, '890636612839563325'),
-				{ body: commands }
-			)
-			.then(() => console.log('Successfully registered application commands.'))
-			.catch((err) => {
-				console.log(err);
-				console.log(err.errors);
-			});
+		// rest
+		// 	.put(
+		// 		Routes.applicationGuildCommands(client.user.id, '890636612839563325'),
+		// 		{ body: commands }
+		// 	)
+		// 	.then(() => console.log('Successfully registered application commands.'))
+		// 	.catch((err) => {
+		// 		console.log(err);
+		// 		console.log(err.errors);
+		// 	});
 
 		for (const g of client.guilds.cache) {
+			const channels = [];
 			const guildId = g[1].id;
 			const Prefix = await this.Settings.Prefix(guildId, true, false);
-			const Lang = await this.Translator.Getlang(guildId, true, false);
 			const Modlog = await this.Channels.Modlog(guildId, true, false);
 			const Appeals = await this.Channels.Appeals(guildId, true, false);
 			const Reports = await this.Channels.Reports(guildId, true, false);
@@ -54,11 +55,11 @@ export default class ReadyEvent extends BaseEvent {
 			const Warningrole = await this.Settings.Warningrole(guildId, true, false);
 			const Welcome = await this.Settings.WelcomeSystem(guildId, true, false);
 			const Leave = await this.Settings.LeaveSystem(guildId, true, false);
-			const Events = await this.Settings.Events(guildId, true, false);
+			const Events = await this.Settings.Events(guildId, true);
+
 			const guild = new Guild({
 				id: guildId,
 				prefix: Prefix,
-				lang: Lang,
 				welcome: Welcome,
 				leave: Leave,
 				roles: {
@@ -76,82 +77,26 @@ export default class ReadyEvent extends BaseEvent {
 					publicmodlog: Publicmodlog,
 				},
 				Events: {
-					channelCreate: Events.channelCreate,
-					channelDelete: Events.channelDelete,
-					channelUpdate: Events.channelUpdate,
-					emojiCreate: Events.emojiCreate,
-					emojiDelete: Events.emojiDelete,
-					emojiUpdate: Events.emojiUpdate,
-					guildBanAdd: Events.guildBanAdd,
-					guildBanRemove: Events.guildBanRemove,
-					guildMemberAdd: Events.guildBanAdd,
-					guildMemberRemove: Events.guildMemberRemove,
-					guildMemberUpdate: Events.guildMemberUpdate,
-					inviteCreate: Events.inviteCreate,
-					inviteDelete: Events.inviteDelete,
-					voiceMemberJoin: Events.voiceMemberJoin,
-					voiceMemberLeave: Events.voiceMemberLeave,
-					voiceMemberMoved: Events.voiceMemberMoved,
-					guildUpdate: Events.guildUpdate,
-					messageDelete: Events.messageDelete,
-					messageDeleteBulk: Events.messageDeleteBulk,
-					messageUpdate: Events.messageUpdate,
-				},
-				Strings: {
-					error_message: this.Utils.Capitalize(
-						this.Translator.Getstring(Lang, 'error_message')
-					),
-					generating: this.Utils.Capitalize(
-						this.Translator.Getstring(Lang, 'generating')
-					),
-					SomeRandomAPI: `${this.Utils.Capitalize(
-						this.Translator.Getstring(Lang, 'provided_by')
-					)}: \`Some-Random-API\``,
-					NekosFun: `${this.Utils.Capitalize(
-						this.Translator.Getstring(Lang, 'provided_by')
-					)}: \`Nekos Fun API\``,
-					NekosBot: `${this.Utils.Capitalize(
-						this.Translator.Getstring(Lang, 'provided_by')
-					)}: \`Neko Bot API\``,
-					NekosLife: `${this.Utils.Capitalize(
-						this.Translator.Getstring(Lang, 'provided_by')
-					)}: \`Nekos Life API\``,
-					DiscordIG: `${this.Utils.Capitalize(
-						this.Translator.Getstring(Lang, 'provided_by')
-					)}: \`Discord-Image-Generation\``,
-					Duncte123: `${this.Utils.Capitalize(
-						this.Translator.Getstring(Lang, 'provided_by')
-					)}: \`Duncte123 API\``,
-					DogCeoAPI: `${this.Utils.Capitalize(
-						this.Translator.Getstring(Lang, 'provided_by')
-					)}: \`Dog CEO API\``,
-					FunResponses: `${this.Utils.Capitalize(
-						this.Translator.Getstring(Lang, 'provided_by')
-					)}: \`Fun-Responses\``,
-					Alexflipnote: `${this.Utils.Capitalize(
-						this.Translator.Getstring(Lang, 'provided_by')
-					)}: \`Alexflipnote API\``,
-					status: this.Translator.Getstring(Lang, 'status'),
-					category: this.Translator.Getstring(Lang, 'category'),
-					working: this.Translator.Getstring(Lang, 'working'),
-					name: this.Translator.Getstring(Lang, 'name'),
-					aliases: this.Translator.Getstring(Lang, 'aliases'),
-					usage: this.Translator.Getstring(Lang, 'usage'),
-					description: this.Translator.Getstring(Lang, 'description'),
-					accessible_by: this.Translator.Getstring(Lang, 'accessible_by'),
-					permissions: this.Translator.Getstring(Lang, 'permissions'),
-					subCommands: this.Translator.Getstring(Lang, 'sub_commands'),
-					example: this.Translator.Getstring(Lang, 'example'),
-					guild_only: this.Translator.Getstring(Lang, 'guildonly'),
-					owner_only: this.Translator.Getstring(Lang, 'owner_only'),
-					cooldown: this.Translator.Getstring(Lang, 'cooldown'),
-					user_permissions: this.Translator.Getstring(Lang, 'user_permissions'),
-					yes: this.Translator.Getstring(Lang, 'yes'),
-					no: this.Translator.Getstring(Lang, 'no'),
-					none: this.Translator.Getstring(Lang, 'none'),
-					is_required: this.Translator.Getstring(Lang, 'is_required'),
-					is_optional: this.Translator.Getstring(Lang, 'is_optional'),
-					seconds: this.Translator.Getstring(Lang, 'seconds'),
+					channelCreate: new this.Helpers.ChannelCreate(Events, guildId),
+					channelDelete: new this.Helpers.ChannelDelete(Events, guildId),
+					channelUpdate: new this.Helpers.ChannelUpdate(Events, guildId),
+					emojiCreate: new this.Helpers.EmojiCreate(Events, guildId),
+					emojiDelete: new this.Helpers.EmojiDelete(Events, guildId),
+					emojiUpdate: new this.Helpers.EmojiUpdate(Events, guildId),
+					guildBanAdd: new this.Helpers.BanAdd(Events, guildId),
+					guildBanRemove: new this.Helpers.BanRemove(Events, guildId),
+					guildMemberAdd: new this.Helpers.MemberAdd(Events, guildId),
+					guildMemberRemove: new this.Helpers.MemberRemove(Events, guildId),
+					guildMemberUpdate: new this.Helpers.MemberUpdate(Events, guildId),
+					inviteCreate: new this.Helpers.InviteCreate(Events, guildId),
+					inviteDelete: new this.Helpers.InviteDelete(Events, guildId),
+					voiceMemberJoin: new this.Helpers.VCJoin(Events, guildId),
+					voiceMemberLeave: new this.Helpers.VCLeave(Events, guildId),
+					voiceMemberMoved: new this.Helpers.VCMove(Events, guildId),
+					guildUpdate: new this.Helpers.GuildUpdate(Events, guildId),
+					messageDelete: new this.Helpers.MessageDelete(Events, guildId),
+					messageDeleteBulk: new this.Helpers.BulkDelete(Events, guildId),
+					messageUpdate: new this.Helpers.MessageUpdate(Events, guildId),
 				},
 			});
 			client.database.set(guildId, guild);

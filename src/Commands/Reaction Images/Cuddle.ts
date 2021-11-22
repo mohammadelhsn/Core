@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { CommandInteraction, Message } from 'discord.js';
+import { CommandInteraction, GuildMember, Message } from 'discord.js';
 
 export default class CuddleCommand extends BaseCommand {
 	constructor() {
@@ -25,12 +25,18 @@ export default class CuddleCommand extends BaseCommand {
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const mention = message.mentions.users.first();
 
-		let user;
+		let user: GuildMember | string = args[0];
 
-		if (mention) {
-			user = mention;
-		} else {
-			user = args[0];
+		if (message.mentions.members.size > 0) {
+			user = message.mentions.members.first();
+		}
+
+		if (typeof user == 'string') {
+			return await this.HelpEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				command: this,
+				accessor: message,
+			});
 		}
 
 		if (!user) {
@@ -40,54 +46,48 @@ export default class CuddleCommand extends BaseCommand {
 				id: message.guild.id,
 				error_message: 'Missing a required user mention',
 			});
-			const msg = await message.channel.send({ embeds: [errorEmbed] });
-			return this.Utils.Delete(msg);
-		} else if (user == args[0] && user.toLowerCase().includes('help')) {
-			return await this.HelpEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				command: this,
-				accessor: message,
-			});
-		} else {
-			const generatingEmbed = await this.GeneratingEmbed.NekosFun({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
-				text: this,
-			});
 
-			const m = await message.reply({ embeds: [generatingEmbed] });
+			return await message.reply({ embeds: [errorEmbed] });
+		}
 
-			try {
-				const res = await this.Reactions.Cuddle();
+		const generatingEmbed = await this.GeneratingEmbed.NekosFun({
+			iconURL: message.author.displayAvatarURL({ dynamic: true }),
+			id: message.guild.id,
+			text: this,
+		});
 
-				if (res.error == true) {
-					const errEmbed = await this.ErrorEmbed.ApiError({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						id: message.guild.id,
-						text: this,
-					});
+		const m = await message.reply({ embeds: [generatingEmbed] });
 
-					return await m.edit({ embeds: [errEmbed] });
-				}
+		try {
+			const res = await this.Reactions.Cuddle();
 
-				const cuddleEmbed = await this.ImageEmbed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					text: this,
-					title: 'Cuddle command',
-					description: `<@${message.author.id}> has cuddled ${user}! Awww!`,
-					image: res.file,
-				});
-
-				return await m.edit({ embeds: [cuddleEmbed] });
-			} catch (e) {
-				const errorEmbed = await this.ErrorEmbed.UnexpectedError({
+			if (res.error == true) {
+				const errEmbed = await this.ErrorEmbed.ApiError({
 					iconURL: message.author.displayAvatarURL({ dynamic: true }),
 					id: message.guild.id,
 					text: this,
 				});
 
-				return await m.edit({ embeds: [errorEmbed] });
+				return await m.edit({ embeds: [errEmbed] });
 			}
+
+			const cuddleEmbed = await this.ImageEmbed.Base({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: this,
+				title: 'Cuddle command',
+				description: `${message.author.toString()} has cuddled ${user.toString()}! Awww!`,
+				image: res.file,
+			});
+
+			return await m.edit({ embeds: [cuddleEmbed] });
+		} catch (e) {
+			const errorEmbed = await this.ErrorEmbed.UnexpectedError({
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				id: message.guild.id,
+				text: this,
+			});
+
+			return await m.edit({ embeds: [errorEmbed] });
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {

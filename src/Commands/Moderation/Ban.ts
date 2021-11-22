@@ -32,8 +32,6 @@ export default class BanCommand extends BaseCommand {
 		message: Message,
 		args: string[]
 	): Promise<Message | void> {
-		const lang = await this.Translator.Getlang(message.guild.id);
-
 		if (
 			!message.member.permissions.has([
 				Permissions.FLAGS.BAN_MEMBERS || Permissions.FLAGS.ADMINISTRATOR,

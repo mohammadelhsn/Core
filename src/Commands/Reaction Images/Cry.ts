@@ -35,45 +35,45 @@ export default class CryCommand extends BaseCommand {
 				command: this,
 				accessor: message,
 			});
-		} else {
-			const generatingEmbed = await this.GeneratingEmbed.NekosFun({
+		}
+		const gEmbed = await this.GeneratingEmbed.NekosFun({
+			iconURL: message.author.displayAvatarURL({ dynamic: true }),
+			id: message.guild.id,
+			text: this,
+		});
+
+		const m = await message.reply({ embeds: [gEmbed] });
+
+		try {
+			const res = await this.Reactions.Cry();
+
+			if (res.error == true) {
+				const errEmbed = await this.ErrorEmbed.ApiError({
+					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					id: message.guild.id,
+					text: this,
+				});
+
+				return await m.edit({ embeds: [errEmbed] });
+			}
+
+			const imageEmbed = await this.ImageEmbed.Base({
 				iconURL: message.author.displayAvatarURL({ dynamic: true }),
-				id: message.guild.id,
-				text: this,
+				text: self,
+				title: `Cry command`,
+				description: `<@${message.author.id}> is crying :sob:`,
+				image: res.file,
 			});
 
-			const m = await message.reply({ embeds: [generatingEmbed] });
-			try {
-				const res = await this.Reactions.Cry();
+			return await m.edit({ embeds: [imageEmbed] });
+		} catch (e) {
+			const embed = await this.ErrorEmbed.UnexpectedError({
+				id: message.guild.id,
+				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				text: self,
+			});
 
-				if (res.error == true) {
-					const errEmbed = await this.ErrorEmbed.ApiError({
-						iconURL: message.author.displayAvatarURL({ dynamic: true }),
-						id: message.guild.id,
-						text: this,
-					});
-
-					return await m.edit({ embeds: [errEmbed] });
-				}
-
-				const imageEmbed = await this.ImageEmbed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					text: self,
-					title: `Cry command`,
-					description: `<@${message.author.id}> is crying :sob:`,
-					image: res.file,
-				});
-
-				return await m.edit({ embeds: [imageEmbed] });
-			} catch (e) {
-				const embed = await this.ErrorEmbed.UnexpectedError({
-					id: message.guild.id,
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
-					text: self,
-				});
-
-				return m.edit({ embeds: [embed] });
-			}
+			return m.edit({ embeds: [embed] });
 		}
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {
