@@ -770,8 +770,12 @@ namespace API {
 					author: postData.data.author,
 					link: `https://www.reddit.com${postData.data.permalink}`,
 					misc: {
-						upvotes: postData.data.ups ? FormatNumber(postData.data.ups) : 'N/A',
-						downvotes: postData.data.downs ? FormatNumber(postData.data.downs) : 'N/A',
+						upvotes: postData.data.ups
+							? FormatNumber(postData.data.ups)
+							: 'N/A',
+						downvotes: postData.data.downs
+							? FormatNumber(postData.data.downs)
+							: 'N/A',
 						subreddit: postData.data.subreddit_name_prefixed,
 						postedAt: moment
 							.unix(postData.data.created)
@@ -792,7 +796,7 @@ namespace API {
 		}
 		async Equelmeme(): Promise<BaseObj> {
 			try {
-				const { FormatNumber } = new Utils()
+				const { FormatNumber } = new Utils();
 
 				const res = await axios.get(
 					`https://www.reddit.com/r/equelMemes.json?sort=top&t=week`
@@ -823,8 +827,12 @@ namespace API {
 					author: postData.data.author ? postData.data.author : '?',
 					link: `https://www.reddit.com${postData.data.permalink}`,
 					misc: {
-						upvotes: postData.data.ups ? FormatNumber(postData.data.ups) : 'N/A',
-						downvotes: postData.data.downs ? FormatNumber(postData.data.downs) : 'N/A',
+						upvotes: postData.data.ups
+							? FormatNumber(postData.data.ups)
+							: 'N/A',
+						downvotes: postData.data.downs
+							? FormatNumber(postData.data.downs)
+							: 'N/A',
 						subreddit: postData.data.subreddit_name_prefixed
 							? postData.data.subreddit_name_prefixed
 							: 'r/Equelmemes',
@@ -878,8 +886,12 @@ namespace API {
 					author: postData.data.author,
 					link: `https://www.reddit.com${postData.data.permalink}`,
 					misc: {
-						upvotes: postData.data.ups ? FormatNumber(postData.data.ups) : 'N/A',
-						downvotes: postData.data.downs ? FormatNumber(postData.data.downs) : 'N/A',
+						upvotes: postData.data.ups
+							? FormatNumber(postData.data.ups)
+							: 'N/A',
+						downvotes: postData.data.downs
+							? FormatNumber(postData.data.downs)
+							: 'N/A',
 						subreddit: postData.data.subreddit_name_prefixed,
 						postedAt: moment
 							.unix(postData.data.created)
@@ -931,8 +943,12 @@ namespace API {
 					author: postData.data.author,
 					link: `https://www.reddit.com${postData.data.permalink}`,
 					misc: {
-						upvotes: postData.data.ups ? FormatNumber(postData.data.ups) : 'N/A',
-						downvotes: postData.data.downs ? FormatNumber(postData.data.downs) : 'N/A',
+						upvotes: postData.data.ups
+							? FormatNumber(postData.data.ups)
+							: 'N/A',
+						downvotes: postData.data.downs
+							? FormatNumber(postData.data.downs)
+							: 'N/A',
 						subreddit: postData.data.subreddit_name_prefixed,
 						postedAt: moment
 							.unix(postData.data.created)

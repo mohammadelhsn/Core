@@ -1,6 +1,7 @@
-import { Role, TextChannel } from 'discord.js';
+import { Role, TextChannel, Collection } from 'discord.js';
 import DiscordClient from '../Client/Client';
 import Functions from './Functions';
+import Schemas from './Schemas';
 import StateManager from './StateManager';
 import CachedGuildTypes from './Structures/Interfaces/CachedGuild';
 
@@ -15,41 +16,33 @@ namespace Helpers {
 		enabled: boolean;
 	}
 
+	export interface Values {
+		name: string;
+		value: string;
+	}
+
 	export abstract class BaseEventHelper {
-		private _data: CachedGuildTypes.event;
-		private _id: string;
-		private _channel: string;
-		private _enabled: boolean;
-		private _client = globalThis.client as DiscordClient;
+		public data: CachedGuildTypes.event;
+		public id: string;
+		public channel: string;
+		public enabled: boolean;
+		public client = globalThis.client as DiscordClient;
+		public con = StateManager.con;
+		public cache: Collection<string, CachedGuildTypes.Cached_Guild>;
 
 		constructor(data: CachedGuildTypes.event, id: string) {
-			this._data = data;
-			this._id = id;
-			this._channel = data.channel;
-			this._enabled = data.enabled;
+			this.data = data;
+			this.id = id;
+			this.channel = data.channel;
+			this.enabled = data.enabled;
+			this.cache = this.client.database;
 		}
 		abstract Type(): this;
-		abstract Cache(): this;
+		//	abstract Cache(): this;
 		abstract Fetch(): Promise<this>;
 		abstract Get(): Promise<ChannelData>;
 		abstract Insert(value: string): Promise<void>;
 		abstract Disable(): Promise<void>;
-
-		get data(): CachedGuildTypes.event {
-			return this._data;
-		}
-		get id(): string {
-			return this._id;
-		}
-		get enabled(): boolean {
-			return this._enabled;
-		}
-		get client(): DiscordClient {
-			return this._client;
-		}
-		get channel(): string {
-			return this._channel;
-		}
 	}
 	export class ChannelCreate extends BaseEventHelper {
 		constructor(data: CachedGuildTypes.events, id: string) {
@@ -63,9 +56,45 @@ namespace Helpers {
 			return this.enabled;
 		}
 		async Fetch() {
+			const con = await this.con.connect();
+
+			try {
+				const res = await con.query(
+					`SELECT events FROM Guilds WHERE guildId = '${this.id}'`
+				);
+				const data = new Schemas.Events(res.rows[0].events).data;
+
+				if (
+					data.channelCreate.channel != this.channel ||
+					data.channelCreate.enabled != this.enabled
+				) {
+					this.channel = data.channelCreate.channel;
+					this.enabled = data.channelCreate.enabled;
+					this.data = data.channelCreate;
+
+					this.Cache();
+
+					return this;
+				}
+
+				this.channel = data.channelCreate.channel;
+				this.enabled = data.channelCreate.enabled;
+				this.data = data.channelCreate;
+			} catch (error) {
+				console.log(error);
+			} finally {
+				con.release();
+			}
+
 			return this;
 		}
 		Cache() {
+			const cache = this.client.database.get(this.id);
+
+			cache.Events.channelCreate.channel = this.channel;
+			cache.Events.channelCreate.enabled = this.enabled;
+			cache.Events.channelCreate.data = this.data;
+
 			return this;
 		}
 		async Get() {
@@ -741,16 +770,16 @@ namespace Helpers {
 	}
 
 	export abstract class BaseRoleHelper {
-		protected _data: string;
-		protected _id: string;
-		protected _role: string;
-		protected _enabled: boolean;
+		protected data: string;
+		protected id: string;
+		protected role: string;
+		protected enabled: boolean;
 		protected client = globalThis.client as DiscordClient;
 		constructor(data: string, id: string) {
-			this._data = data;
-			this._id = id;
-			this._role = data;
-			this._enabled = data != null ? true : false;
+			this.data = data;
+			this.id = id;
+			this.role = data;
+			this.enabled = data != null ? true : false;
 		}
 
 		abstract Type(): this;
@@ -771,7 +800,7 @@ namespace Helpers {
 			return this;
 		}
 		isEnabled() {
-			return this._enabled;
+			return this.enabled;
 		}
 		async Fetch() {
 			return this;
@@ -788,9 +817,9 @@ namespace Helpers {
 		async Get() {
 			const enabled = this.isEnabled();
 
-			if (enabled && this._role != null) {
-				const guild = this.client.guilds.cache.get(this._id);
-				const role = guild.roles.cache.find((r) => r.id == this._role);
+			if (enabled && this.role != null) {
+				const guild = this.client.guilds.cache.get(this.id);
+				const role = guild.roles.cache.find((r) => r.id == this.role);
 
 				return { role: role, enabled: enabled };
 			}
@@ -808,7 +837,7 @@ namespace Helpers {
 			return this;
 		}
 		isEnabled() {
-			return this._enabled;
+			return this.enabled;
 		}
 		async Fetch() {
 			return this;
@@ -825,9 +854,9 @@ namespace Helpers {
 		async Get() {
 			const enabled = this.isEnabled();
 
-			if (enabled && this._role != null) {
-				const guild = this.client.guilds.cache.get(this._id);
-				const role = guild.roles.cache.find((r) => r.id == this._role);
+			if (enabled && this.role != null) {
+				const guild = this.client.guilds.cache.get(this.id);
+				const role = guild.roles.cache.find((r) => r.id == this.role);
 
 				return { role: role, enabled: enabled };
 			}
@@ -844,7 +873,7 @@ namespace Helpers {
 			return this;
 		}
 		isEnabled() {
-			return this._enabled;
+			return this.enabled;
 		}
 		async Fetch() {
 			return this;
@@ -861,9 +890,9 @@ namespace Helpers {
 		async Get() {
 			const enabled = this.isEnabled();
 
-			if (enabled && this._role != null) {
-				const guild = this.client.guilds.cache.get(this._id);
-				const role = guild.roles.cache.find((r) => r.id == this._role);
+			if (enabled && this.role != null) {
+				const guild = this.client.guilds.cache.get(this.id);
+				const role = guild.roles.cache.find((r) => r.id == this.role);
 
 				return { role: role, enabled: enabled };
 			}
@@ -881,7 +910,7 @@ namespace Helpers {
 			return this;
 		}
 		isEnabled() {
-			return this._enabled;
+			return this.enabled;
 		}
 		async Fetch() {
 			return this;
@@ -898,9 +927,9 @@ namespace Helpers {
 		async Get() {
 			const enabled = this.isEnabled();
 
-			if (enabled && this._role != null) {
-				const guild = this.client.guilds.cache.get(this._id);
-				const role = guild.roles.cache.find((r) => r.id == this._role);
+			if (enabled && this.role != null) {
+				const guild = this.client.guilds.cache.get(this.id);
+				const role = guild.roles.cache.find((r) => r.id == this.role);
 
 				return { role: role, enabled: enabled };
 			}

@@ -11,6 +11,7 @@ import {
 import BaseObj from '../../Utils/Structures/BaseObj';
 import axios from 'axios';
 import Responses from '../../Utils/Structures/Interfaces/Response';
+import { Console } from 'console';
 
 export default class TesstCommand extends BaseCommand {
 	constructor() {
@@ -35,7 +36,10 @@ export default class TesstCommand extends BaseCommand {
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const guild = client.database.get(message.guild.id);
 
-		console.log(guild.event_collection);
+		console.log(guild.Events.channelCreate.Get());
+		console.log(await (await guild.Events.channelCreate.Fetch()).Get());
+
+		1 + 2;
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {}
 }
