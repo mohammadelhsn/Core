@@ -13,12 +13,12 @@ router.get('/', (req, res) => {
 	});
 });
 
-router.use('/docs', (req, res) => {
+router.get('/docs', (req, res) => {
 	console.log('hi!');
 
 	return res.status(200).json({ test: true });
 });
 
-router.use('/guilds/', (req, res) => {});
+router.get('/guilds/', (req, res) => {});
 
 export default Router;
