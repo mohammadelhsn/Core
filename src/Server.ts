@@ -12,10 +12,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.set('trust proxy', true);
 
-app.use((req, res, next) => {
-	next();
-});
-
 app.use('/', Routes);
 
 app.listen(process.env.PORT || 3000, () => {
