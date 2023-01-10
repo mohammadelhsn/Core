@@ -13,7 +13,7 @@ export default class SupportCommand extends BaseCommand {
 			'',
 			[],
 			[],
-			['SEND_MESSAGES', 'EMBED_LINKS'],
+			['SendMessages', 'EmbedLinks'],
 			[],
 			true,
 			false,

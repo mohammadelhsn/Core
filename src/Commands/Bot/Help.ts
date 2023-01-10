@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { CommandInteraction, Message, MessageEmbed } from 'discord.js';
+import { CommandInteraction, Message, EmbedBuilder } from 'discord.js';
 
 export default class HelpCommand extends BaseCommand {
 	constructor() {
@@ -13,7 +13,7 @@ export default class HelpCommand extends BaseCommand {
 			'',
 			[],
 			[],
-			['SEND_MESSAGES', 'EMBED_LINKS'],
+			['SendMessages', 'EmbedLinks'],
 			[],
 			true,
 			false,
@@ -77,11 +77,11 @@ export default class HelpCommand extends BaseCommand {
 			if (message.guild) {
 				const prefix = await this.Settings.Prefix(message.guild.id);
 
-				const awwEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+				const awwEmbed = new EmbedBuilder()
+					.setAuthor({
+						name: client.user.username,
+						iconURL: message.author.displayAvatarURL(),
+					})
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
@@ -89,14 +89,19 @@ export default class HelpCommand extends BaseCommand {
 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+					.setThumbnail(message.author.displayAvatarURL())
 					.setTimestamp()
-					.addField(`${categories.titles.aww}`, `${categories.command.aww}`);
-				const botEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+					.addFields([
+						{
+							name: `${categories.titles.aww}`,
+							value: `${categories.command.aww}`,
+						},
+					]);
+				const botEmbed = new EmbedBuilder()
+					.setAuthor({
+						name: client.user.username,
+						iconURL: message.author.displayAvatarURL(),
+					})
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
@@ -104,29 +109,36 @@ export default class HelpCommand extends BaseCommand {
 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+					.setThumbnail(message.author.displayAvatarURL())
 					.setTimestamp()
-					.addField(`${categories.titles.bot}`, `${categories.command.bot}`);
-				const cEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+					.addFields([
+						{
+							name: `${categories.titles.bot}`,
+							value: `${categories.command.bot}`,
+						},
+					]);
+				const cEmbed = new EmbedBuilder()
+					.setAuthor({
+						name: client.user.username,
+						iconURL: message.author.displayAvatarURL(),
+					})
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
 					.setDescription(
 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
-					.addField(
-						`${categories.titles.canvas}`,
-						`${categories.command.canvas}`
-					);
-				const coEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+					.addFields([
+						{
+							name: `${categories.titles.canvas}`,
+							value: `${categories.command.canvas}`,
+						},
+					]);
+				const coEmbed = new EmbedBuilder()
+					.setAuthor({
+						name: client.user.username,
+						iconURL: message.author.displayAvatarURL(),
+					})
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
@@ -134,18 +146,17 @@ export default class HelpCommand extends BaseCommand {
 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+					.setThumbnail(message.author.displayAvatarURL())
 					.setTimestamp()
-					.addField(
-						`${categories.titles.config}`,
-						`${categories.command.config}`
-					);
+					.addFields([
+						{
+							name: `${categories.titles.config}`,
+							value: `${categories.command.config}`,
+						},
+					]);
 
-				const fuEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+				const fuEmbed = new EmbedBuilder()
+					.setAuthor({ name: client.user.username, iconURL: message.author.displayAvatarURL()})
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
@@ -153,15 +164,14 @@ export default class HelpCommand extends BaseCommand {
 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+					.setThumbnail(message.author.displayAvatarURL())
 					.setTimestamp()
-					.addField(`${categories.titles.fun}`, `${categories.command.fun}`);
+					.addFields([
+						{ name: `${categories.titles.fun}`, value: `${categories.command.fun}`}
+					])
 
-				const logEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+				const logEmbed = new EmbedBuilder()
+					.setAuthor({ name: client.user.username, iconURL: message.author.displayAvatarURL()})
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
@@ -169,17 +179,13 @@ export default class HelpCommand extends BaseCommand {
 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+					.setThumbnail(message.author.displayAvatarURL())
 					.setTimestamp()
-					.addField(
-						`${categories.titles.logging}`,
-						`${categories.command.logging}`
-					);
-				const mEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+					.addFields([
+						{ name: `${categories.titles.logging}`, value: `${categories.command.logging}`}
+					])
+				const mEmbed = new EmbedBuilder()
+					.setAuthor({ name: client.user.username, iconURL: message.author.displayAvatarURL()})
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
@@ -187,17 +193,13 @@ export default class HelpCommand extends BaseCommand {
 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+					.setThumbnail(message.author.displayAvatarURL())
 					.setTimestamp()
-					.addField(
-						`${categories.titles.manager}`,
-						`${categories.command.manager}`
-					);
-				const meEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+					.addFields([
+						{ name: `${categories.titles.manager}`, value: `${categories.command.manager}`}
+					])
+				const meEmbed = new EmbedBuilder()
+					.setAuthor({ name: client.user.username, iconURL: message.author.displayAvatarURL()})
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
@@ -205,17 +207,13 @@ export default class HelpCommand extends BaseCommand {
 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+					.setThumbnail(message.author.displayAvatarURL())
 					.setTimestamp()
-					.addField(
-						`${categories.titles.memes}`,
-						`${categories.command.memes}`
-					);
-				const miEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+					.addFields([
+						{ name: `${categories.titles.memes}`, value: `${categories.command.memes}`}
+					])
+				const miEmbed = new EmbedBuilder()
+					.setAuthor({ name: client.user.username, iconURL: message.author.displayAvatarURL()})
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
@@ -223,17 +221,14 @@ export default class HelpCommand extends BaseCommand {
 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+					.setThumbnail(message.author.displayAvatarURL())
 					.setTimestamp()
 					.addField(
 						`${categories.titles.miscellaneous}`,
 						`${categories.command.miscellaneous}`
 					);
-				const moEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+				const moEmbed = new EmbedBuilder()
+					.setAuthor({ name: client.user.username, iconURL: message.author.displayAvatarURL())
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
@@ -241,17 +236,14 @@ export default class HelpCommand extends BaseCommand {
 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+					.setThumbnail(message.author.displayAvatarURL())
 					.setTimestamp()
 					.addField(
 						`${categories.titles.moderation}`,
 						`${categories.command.moderation}`
 					);
-				const oEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+				const oEmbed = new EmbedBuilder()
+					.setAuthor({ name: client.user.username, iconURL: message.author.displayAvatarURL())
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
@@ -259,17 +251,14 @@ export default class HelpCommand extends BaseCommand {
 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+					.setThumbnail(message.author.displayAvatarURL())
 					.setTimestamp()
 					.addField(
 						`${categories.titles.owner}`,
 						`${categories.command.owner}`
 					);
-				const rEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+				const rEmbed = new EmbedBuilder()
+					.setAuthor({ name: client.user.username, iconURL: message.author.displayAvatarURL())
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
@@ -277,17 +266,14 @@ export default class HelpCommand extends BaseCommand {
 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+					.setThumbnail(message.author.displayAvatarURL())
 					.setTimestamp()
 					.addField(
 						`${categories.titles.reaction_images}`,
 						`${categories.command.reaction_images}`
 					);
-				const suEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+				const suEmbed = new EmbedBuilder()
+					.setAuthor({ name: client.user.username, iconURL: message.author.displayAvatarURL())
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
@@ -295,7 +281,7 @@ export default class HelpCommand extends BaseCommand {
 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 					)
 					.setColor(this.Colour.Set())
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+					.setThumbnail(message.author.displayAvatarURL())
 					.setTimestamp()
 					.addField(
 						`${categories.titles.server_utilities}`,
@@ -321,7 +307,7 @@ export default class HelpCommand extends BaseCommand {
 				);
 			} else {
 				const awwEmbed = this.Embed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					iconURL: message.author.displayAvatarURL(),
 					text: this,
 					title: `Core help command | Command count: ${client.commands.size}`,
 					description: `\`<>\` is required \`()\` is optional`,
@@ -333,7 +319,7 @@ export default class HelpCommand extends BaseCommand {
 					],
 				});
 				const botEmbed = this.Embed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					iconURL: message.author.displayAvatarURL(),
 					text: this,
 					title: `Core help command | Command count: ${client.commands.size}`,
 					description: `\`<>\` is required \`()\` is optional`,
@@ -345,7 +331,7 @@ export default class HelpCommand extends BaseCommand {
 					],
 				});
 				const cEmbed = this.Embed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					iconURL: message.author.displayAvatarURL(),
 					text: this,
 					title: `Core help command | Command count: ${client.commands.size}`,
 					description: `\`<>\` is required \`()\` is optional`,
@@ -357,7 +343,7 @@ export default class HelpCommand extends BaseCommand {
 					],
 				});
 				const coEmbed = this.Embed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					iconURL: message.author.displayAvatarURL(),
 					text: this,
 					title: `Core help command | Command count: ${client.commands.size}`,
 					description: `\`<>\` is required \`()\` is optional`,
@@ -370,7 +356,7 @@ export default class HelpCommand extends BaseCommand {
 				});
 
 				const fuEmbed = this.Embed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					iconURL: message.author.displayAvatarURL(),
 					text: this,
 					title: `Core help command | Command count: ${client.commands.size}`,
 					description: `\`<>\` is required \`()\` is optional`,
@@ -382,7 +368,7 @@ export default class HelpCommand extends BaseCommand {
 					],
 				});
 				const miEmbed = this.Embed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					iconURL: message.author.displayAvatarURL(),
 					text: this,
 					title: `Core help command | Command count: ${client.commands.size}`,
 					description: `\`<>\` is required \`()\` is optional`,
@@ -395,7 +381,7 @@ export default class HelpCommand extends BaseCommand {
 				});
 
 				const oEmbed = this.Embed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					iconURL: message.author.displayAvatarURL(),
 					text: this,
 					title: `Core help command | Command count: ${client.commands.size}`,
 					description: `\`<>\` is required \`()\` is optional`,
@@ -407,7 +393,7 @@ export default class HelpCommand extends BaseCommand {
 					],
 				});
 				const rEmbed = this.Embed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					iconURL: message.author.displayAvatarURL(),
 					text: this,
 					title: `Core help command | Command count: ${client.commands.size}`,
 					description: `\`<>\` is required \`()\` is optional`,
@@ -419,11 +405,8 @@ export default class HelpCommand extends BaseCommand {
 					],
 				});
 
-				const suEmbed = new MessageEmbed()
-					.setAuthor(
-						client.user.username,
-						message.author.displayAvatarURL({ dynamic: true })
-					)
+				const suEmbed = new EmbedBuilder()
+					.setAuthor({ name: client.user.username, iconURL: message.author.displayAvatarURL())
 					.setTitle(
 						`Core help command | Command count: ${client.commands.size}`
 					)
@@ -433,7 +416,7 @@ export default class HelpCommand extends BaseCommand {
 						`${categories.command.server_utilities}`
 					)
 					.setTimestamp()
-					.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+					.setThumbnail(message.author.displayAvatarURL())
 					.setColor(this.Colour.Set());
 
 				return this.Utils.Paginate(
@@ -464,7 +447,7 @@ export default class HelpCommand extends BaseCommand {
 			}
 
 			return await this.HelpEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				iconURL: message.author.displayAvatarURL(),
 				command: command,
 				accessor: message,
 			});
@@ -499,7 +482,7 @@ export default class HelpCommand extends BaseCommand {
 						accessor: interaction,
 						text: this,
 						title: `Core help command | Command count: ${client.commands.size}`,
-						description: 						`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``,
+						description: `\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``,
 						fields: [
 							{
 								name: `${this.Utils.Capitalize(query)} [${
@@ -563,7 +546,7 @@ export default class HelpCommand extends BaseCommand {
 			},
 		};
 
-		const awwEmbed = new MessageEmbed()
+		const awwEmbed = new EmbedBuilder()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
@@ -573,7 +556,7 @@ export default class HelpCommand extends BaseCommand {
 			.setThumbnail(this.Utils.GetIcon(interaction))
 			.setTimestamp()
 			.addField(`${categories.titles.aww}`, `${categories.command.aww}`);
-		const botEmbed = new MessageEmbed()
+		const botEmbed = new EmbedBuilder()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
@@ -583,14 +566,14 @@ export default class HelpCommand extends BaseCommand {
 			.setThumbnail(this.Utils.GetIcon(interaction))
 			.setTimestamp()
 			.addField(`${categories.titles.bot}`, `${categories.command.bot}`);
-		const cEmbed = new MessageEmbed()
+		const cEmbed = new EmbedBuilder()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
 				`\`<>\` **__is required__** \`()\` **__is optional__** | Prefix: \`${prefix}\``
 			)
 			.addField(`${categories.titles.canvas}`, `${categories.command.canvas}`);
-		const coEmbed = new MessageEmbed()
+		const coEmbed = new EmbedBuilder()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
@@ -601,7 +584,7 @@ export default class HelpCommand extends BaseCommand {
 			.setTimestamp()
 			.addField(`${categories.titles.config}`, `${categories.command.config}`);
 
-		const fuEmbed = new MessageEmbed()
+		const fuEmbed = new EmbedBuilder()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
@@ -612,7 +595,7 @@ export default class HelpCommand extends BaseCommand {
 			.setTimestamp()
 			.addField(`${categories.titles.fun}`, `${categories.command.fun}`);
 
-		const logEmbed = new MessageEmbed()
+		const logEmbed = new EmbedBuilder()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
@@ -625,7 +608,7 @@ export default class HelpCommand extends BaseCommand {
 				`${categories.titles.logging}`,
 				`${categories.command.logging}`
 			);
-		const mEmbed = new MessageEmbed()
+		const mEmbed = new EmbedBuilder()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
@@ -638,7 +621,7 @@ export default class HelpCommand extends BaseCommand {
 				`${categories.titles.manager}`,
 				`${categories.command.manager}`
 			);
-		const meEmbed = new MessageEmbed()
+		const meEmbed = new EmbedBuilder()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
@@ -648,7 +631,7 @@ export default class HelpCommand extends BaseCommand {
 			.setThumbnail(this.Utils.GetIcon(interaction))
 			.setTimestamp()
 			.addField(`${categories.titles.memes}`, `${categories.command.memes}`);
-		const miEmbed = new MessageEmbed()
+		const miEmbed = new EmbedBuilder()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
@@ -661,7 +644,7 @@ export default class HelpCommand extends BaseCommand {
 				`${categories.titles.miscellaneous}`,
 				`${categories.command.miscellaneous}`
 			);
-		const moEmbed = new MessageEmbed()
+		const moEmbed = new EmbedBuilder()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
@@ -674,7 +657,7 @@ export default class HelpCommand extends BaseCommand {
 				`${categories.titles.moderation}`,
 				`${categories.command.moderation}`
 			);
-		const oEmbed = new MessageEmbed()
+		const oEmbed = new EmbedBuilder()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
@@ -684,7 +667,7 @@ export default class HelpCommand extends BaseCommand {
 			.setThumbnail(this.Utils.GetIcon(interaction))
 			.setTimestamp()
 			.addField(`${categories.titles.owner}`, `${categories.command.owner}`);
-		const rEmbed = new MessageEmbed()
+		const rEmbed = new EmbedBuilder()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(
@@ -697,7 +680,7 @@ export default class HelpCommand extends BaseCommand {
 				`${categories.titles.reaction_images}`,
 				`${categories.command.reaction_images}`
 			);
-		const suEmbed = new MessageEmbed()
+		const suEmbed = new EmbedBuilder()
 			.setAuthor(client.user.username, this.Utils.GetIcon(interaction))
 			.setTitle(`Core help command | Command count: ${client.commands.size}`)
 			.setDescription(

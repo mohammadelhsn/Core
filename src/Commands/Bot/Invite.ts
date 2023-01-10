@@ -13,7 +13,7 @@ export default class InviteCommand extends BaseCommand {
 			'',
 			[],
 			[],
-			['SEND_MESSAGES', 'EMBED_LINKS'],
+			['SendMessages', 'EmbedLinks'],
 			[],
 			true,
 			false,
@@ -24,7 +24,7 @@ export default class InviteCommand extends BaseCommand {
 	}
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		const embed = await this.Embed.Base({
-			iconURL: client.user.displayAvatarURL({ dynamic: true }),
+			iconURL: client.user.displayAvatarURL(),
 			text: this,
 			title: `${client.user.username} invite`,
 			description: `[Invite me!](https://discord.com/oauth2/authorize?client_id=704034868547289089&permissions=4294438903&scope=bot%20applications.commands)`,
@@ -34,7 +34,7 @@ export default class InviteCommand extends BaseCommand {
 	}
 	async slash(client: DiscordClient, interaction: CommandInteraction) {
 		const embed = await this.Embed.Base({
-			iconURL: client.user.displayAvatarURL({ dynamic: true }),
+			iconURL: client.user.displayAvatarURL(),
 			text: this,
 			title: `${client.user.username} invite`,
 			description: `[Invite me!](https://discord.com/oauth2/authorize?client_id=704034868547289089&permissions=4294438903&scope=bot%20applications.commands)`,

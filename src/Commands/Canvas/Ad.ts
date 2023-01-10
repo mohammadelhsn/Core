@@ -4,7 +4,7 @@ import {
 	AwaitMessagesOptions,
 	CommandInteraction,
 	Message,
-	MessageAttachment,
+	AttachmentBuilder,
 } from 'discord.js';
 import { Ad } from 'discord-image-generation';
 
@@ -19,7 +19,7 @@ export default class AdCommand extends BaseCommand {
 			'',
 			[],
 			[],
-			['SEND_MESSAGES', 'EMBED_LINKS'],
+			['SendMessages', 'EmbedLinks'],
 			[],
 			true,
 			false,
@@ -36,7 +36,7 @@ export default class AdCommand extends BaseCommand {
 		const mention = message.mentions.members.first();
 
 		const gEmbed = await this.GeneratingEmbed.DiscordIG({
-			iconURL: message.author.displayAvatarURL({ dynamic: true }),
+			iconURL: message.author.displayAvatarURL(),
 			id: message.guild.id,
 			text: this,
 		});
@@ -45,12 +45,12 @@ export default class AdCommand extends BaseCommand {
 			const m = await message.channel.send({ embeds: [gEmbed] });
 
 			try {
-				const avatar = mention.user.displayAvatarURL({ format: 'png' });
+				const avatar = mention.user.displayAvatarURL({ forceStatic: true });
 				const image = await new Ad().getImage(avatar);
-				const file = new MessageAttachment(image, 'ad.png');
+				const file = new AttachmentBuilder(image, { name: 'ad.png' });
 
 				const embed = await this.ImageEmbed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					iconURL: message.author.displayAvatarURL(),
 					text: this,
 					title: 'Ad command',
 					description: provider,
@@ -64,7 +64,7 @@ export default class AdCommand extends BaseCommand {
 
 				m.delete();
 				const embed = await this.ErrorEmbed.UnexpectedError({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					iconURL: message.author.displayAvatarURL(),
 					id: message.guild.id,
 					text: this,
 				});
@@ -75,7 +75,7 @@ export default class AdCommand extends BaseCommand {
 
 		if (args[0] && args[0].toLowerCase().includes('help')) {
 			return await this.HelpEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				iconURL: message.author.displayAvatarURL(),
 				command: this,
 				accessor: message,
 			});
@@ -102,7 +102,7 @@ export default class AdCommand extends BaseCommand {
 				m.delete();
 
 				const embed = await this.ErrorEmbed.UnexpectedError({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					iconURL: message.author.displayAvatarURL(),
 					id: message.guild.id,
 					text: this,
 				});

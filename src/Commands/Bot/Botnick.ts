@@ -1,6 +1,6 @@
 import BaseCommand from '../../Utils/Structures/BaseCommand';
 import DiscordClient from '../../Client/Client';
-import { CommandInteraction, Message, Permissions } from 'discord.js';
+import { CommandInteraction, Message, PermissionsBitField } from 'discord.js';
 
 export default class BotnickCommand extends BaseCommand {
 	constructor() {
@@ -13,8 +13,8 @@ export default class BotnickCommand extends BaseCommand {
 			'',
 			[],
 			[],
-			['MANAGE_NICKNAMES', 'ADMINISTRATOR', 'SEND_MESSAGES', 'EMBED_LINKS'],
-			['MANAGE_NICKNAMES', 'ADMINISTRATOR'],
+			['ManageNicknames', 'Administrator', 'SendMessages', 'EmbedLinks'],
+			['ManageNicknames', 'Administrator'],
 			true,
 			false,
 			false,
@@ -25,23 +25,28 @@ export default class BotnickCommand extends BaseCommand {
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		if (
 			!message.member.permissions.has([
-				Permissions.FLAGS.MANAGE_NICKNAMES || Permissions.FLAGS.ADMINISTRATOR,
+				PermissionsBitField.Flags.ManageNicknames ||
+					PermissionsBitField.Flags.Administrator,
 			])
 		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				accessor: message,
 				text: this,
-				perms: ['MANAGE_NICKNAMES', 'ADMINISTRATOR'],
+				perms: ['ManageNicknames', 'Administrator'],
 			});
 
 			return await message.reply({ embeds: [embed] });
 		}
 
-		if (!message.guild.me.permissions.has(Permissions.FLAGS.MANAGE_NICKNAMES)) {
+		if (
+			!message.guild.members.me.permissions.has(
+				PermissionsBitField.Flags.ManageNicknames
+			)
+		) {
 			const embed = await this.ErrorEmbed.ClientPermissions({
 				accessor: message,
 				text: this,
-				perms: ['MANAGE_NICKNAMES', 'ADMINISTRATOR'],
+				perms: ['ManageNicknames', 'Administrator'],
 			});
 
 			return await message.reply({ embeds: [embed] });
@@ -53,16 +58,16 @@ export default class BotnickCommand extends BaseCommand {
 
 		if (name.toLowerCase() == 'help') {
 			return await this.HelpEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				iconURL: message.author.displayAvatarURL(),
 				command: this,
 				accessor: message,
 			});
 		}
 
 		try {
-			const oldNickname = message.guild.me.nickname;
+			const oldNickname = message.guild.members.me.nickname;
 
-			await message.guild.me.setNickname(name);
+			await message.guild.members.me.setNickname(name);
 
 			const embed = await this.SuccessEmbed.Base({
 				accessor: message,

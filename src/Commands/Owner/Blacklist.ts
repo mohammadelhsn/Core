@@ -5,7 +5,7 @@ import { CommandInteraction, Message } from 'discord.js';
 export default class BlacklistCommand extends BaseCommand {
 	constructor() {
 		super(
-			'',
+			'blacklist',
 			'owner',
 			[],
 			'',

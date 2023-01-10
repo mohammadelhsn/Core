@@ -1,10 +1,9 @@
 import BaseEvent from '../../Utils/Structures/BaseEvent';
 import DiscordClient from '../../Client/Client';
 import Guild from '../../Utils/Structures/CachedGuild';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
-import Collection from '@discordjs/collection';
+import { ActivityType } from 'discord.js';
 
 export default class ReadyEvent extends BaseEvent {
 	constructor() {
@@ -16,24 +15,24 @@ export default class ReadyEvent extends BaseEvent {
 		let status = `${client.guilds.cache.size} servers | ${client.users.cache.size} users`;
 
 		client.user.setPresence({
-			activities: [{ name: status, type: 'WATCHING' }],
+			activities: [{ name: status, type: ActivityType.Watching }],
 			status: 'online',
 		});
 
-		// const commands = this.Slash.All().toJSON();
+		const commands = this.Slash.All().toJSON();
 
-		// const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
+		const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
-		// rest
-		// 	.put(
-		// 		Routes.applicationGuildCommands(client.user.id, '890636612839563325'),
-		// 		{ body: commands }
-		// 	)
-		// 	.then(() => console.log('Successfully registered application commands.'))
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 		console.log(err.errors);
-		// 	});
+		rest
+			.put(
+				Routes.applicationGuildCommands(client.user.id, '937375988856279140'),
+				{ body: commands }
+			)
+			.then(() => console.log('Successfully registered application commands.'))
+			.catch((err) => {
+				console.log(err);
+				console.log(err.errors);
+			});
 
 		for (const g of client.guilds.cache) {
 			const channels = [];

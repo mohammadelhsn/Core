@@ -13,7 +13,7 @@ export default class PingCommand extends BaseCommand {
 			'',
 			[],
 			[],
-			['SEND_MESSAGES', 'EMBED_LINKS'],
+			['SendMessages', 'EmbedLinks'],
 			[],
 			true,
 			false,
@@ -25,7 +25,7 @@ export default class PingCommand extends BaseCommand {
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		if (args[0]) {
 			return await this.HelpEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				iconURL: message.author.displayAvatarURL(),
 				command: this,
 				accessor: message,
 			});

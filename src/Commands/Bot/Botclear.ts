@@ -5,6 +5,7 @@ import {
 	TextChannel,
 	Permissions,
 	CommandInteraction,
+	PermissionsBitField,
 } from 'discord.js';
 
 export default class BotClearCommand extends BaseCommand {
@@ -18,8 +19,8 @@ export default class BotClearCommand extends BaseCommand {
 			'',
 			[],
 			[],
-			['MANAGE_MESSAGES', 'ADMINISTRATOR', 'SEND_MESSAGES', 'EMBED_LINKS'],
-			['MANAGE_MESSAGES', 'ADMINISTRATOR'],
+			['ManageMessages', 'Administrator', 'SendMessages', 'EmbedLinks'],
+			['ManageMessages', 'Administrator'],
 			true,
 			false,
 			false,
@@ -30,27 +31,29 @@ export default class BotClearCommand extends BaseCommand {
 	async run(client: DiscordClient, message: Message, args: string[]) {
 		if (
 			!message.member.permissions.has([
-				Permissions.FLAGS.MANAGE_MESSAGES || Permissions.FLAGS.ADMINISTRATOR,
+				PermissionsBitField.Flags.ManageMessages ||
+					PermissionsBitField.Flags.Administrator,
 			])
 		) {
 			const embed = await this.ErrorEmbed.UserPermissions({
 				accessor: message,
 				text: this,
-				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
+				perms: ['ManageMessages', 'Administrator'],
 			});
 
 			return await message.reply({ embeds: [embed] });
 		}
 
 		if (
-			!message.guild.me.permissions.has([
-				Permissions.FLAGS.MANAGE_MESSAGES || Permissions.FLAGS.ADMINISTRATOR,
+			!message.guild.members.me.permissions.has([
+				PermissionsBitField.Flags.ManageMessages ||
+					PermissionsBitField.Flags.Administrator,
 			])
 		) {
 			const embed = await this.ErrorEmbed.ClientPermissions({
 				accessor: message,
 				text: this,
-				perms: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
+				perms: ['ManageMessages', 'Administrator'],
 			});
 
 			return await message.reply({ embeds: [embed] });
@@ -58,7 +61,7 @@ export default class BotClearCommand extends BaseCommand {
 
 		if (args[0]) {
 			return await this.HelpEmbed.Base({
-				iconURL: message.author.displayAvatarURL({ dynamic: true }),
+				iconURL: message.author.displayAvatarURL(),
 				command: this,
 				accessor: message,
 			});
@@ -66,8 +69,7 @@ export default class BotClearCommand extends BaseCommand {
 
 		const messages = await message.channel.messages.fetch({ limit: 100 });
 		const botmessages: Message[] = [];
-
-		messages
+		messages // @ts-ignore
 			.filter((m) => m.author.id == client.user.id)
 			.forEach((msg) => {
 				botmessages.push(msg);

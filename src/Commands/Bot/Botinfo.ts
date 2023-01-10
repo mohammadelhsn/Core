@@ -13,7 +13,7 @@ export default class BotinfoCommand extends BaseCommand {
 			'',
 			[],
 			[],
-			['SEND_MESSAGES', 'EMBED_LINKS'],
+			['SendMessages', 'EmbedLinks'],
 			[],
 			true,
 			false,
@@ -52,14 +52,14 @@ export default class BotinfoCommand extends BaseCommand {
 
 			if (args[0]) {
 				return await this.HelpEmbed.Base({
-					iconURL: message.author.displayAvatarURL({ dynamic: true }),
+					iconURL: message.author.displayAvatarURL(),
 					command: this,
 					accessor: message,
 				});
 			}
 
 			const embed = await this.Embed.Base({
-				iconURL: client.user.displayAvatarURL({ dynamic: true }),
+				iconURL: client.user.displayAvatarURL(),
 				text: this,
 				title: `${client.user.username}'s information`,
 				description: `The prefix for ${message.guild.name} is \`${bot.prefix}\``,
@@ -108,7 +108,7 @@ export default class BotinfoCommand extends BaseCommand {
 			const guildCommands = response.rows[0].commandsused;
 
 			const embed = await this.Embed.Base({
-				iconURL: client.user.displayAvatarURL({ dynamic: true }),
+				iconURL: client.user.displayAvatarURL(),
 				text: this,
 				title: `${client.user.username}'s information`,
 				description: `The prefix for ${interaction.guild.name} is \`${prefix}\``,

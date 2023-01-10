@@ -7,6 +7,8 @@ export default class Event extends BaseEvent {
 		super('interactionCreate');
 	}
 	async run(client: DiscordClient, interaction: Interaction) {
+		if (!interaction.isChatInputCommand()) return;
+
 		if (interaction.isCommand()) {
 			const con = await this.con.connect();
 
